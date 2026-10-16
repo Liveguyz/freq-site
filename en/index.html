@@ -5,11 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FREQ — Drive together. Talk together.</title>
 <meta name="description" content="FREQ is the convoy app for you and your friends: push-to-talk radio, one destination for everyone, arrive relaxed.">
+<meta name="theme-color" content="#0b0d0f">
+<link rel="icon" href="../bild/freq-touch.png">
+<link rel="apple-touch-icon" href="../bild/freq-touch.png">
+<link rel="preload" as="image" href="../bild/freq-logo.webp" fetchpriority="high">
 <style>
-/* ── FREQ-Landeseite: der Tachoring zeichnet sich beim Scrollen. ──────────
-   Farben und Schrift sind die der App (dunkles Chrome, ein Cyan, System-
-   schrift). Bewegung nur aus Transform/Opacity; prefers-reduced-motion
-   schaltet alles still. Kein Framework. */
+/* ── FREQ — der Radarstrahl deckt das Logo auf, während du scrollst. ──────
+   Die Scroll-Kopplung läuft über CSS-Scroll-Timelines: der Browser fährt sie
+   im Compositor, Bild für Bild, unabhängig davon wie schnell oder langsam
+   gescrollt wird. Nur wo das fehlt (ältere Browser) springt ein geglätteter
+   rAF-Lauf ein — nie Scroll-Ereignisse direkt auf Stile, das ruckelt.
+   Farben und Schrift sind die der App. */
+
+@property --bogen { syntax: "<angle>"; inherits: true; initial-value: 0deg; }
+@property --kante { syntax: "<angle>"; inherits: true; initial-value: 0deg; }
+
 :root {
   --asphalt: #0b0d0f;
   --karte: #16181c;
@@ -19,9 +29,11 @@
   --cyan: #27c4e8;
   --rot: #e8402a;
   --gruen: #30d158;
+  /* Ringmitte im Logo, nachgemessen am PNG. */
+  --mx: 51.9%;
+  --my: 48.0%;
 }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
 body {
   margin: 0;
   background: var(--asphalt);
@@ -29,72 +41,82 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   line-height: 1.6;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 a { color: var(--cyan); }
+img { display: block; max-width: 100%; }
 
 /* ── Kopf ── */
 header.kopf {
   position: fixed; inset: 0 0 auto 0; z-index: 50;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 20px;
-  background: color-mix(in srgb, var(--asphalt) 72%, transparent);
+  padding: 12px 20px;
+  background: rgba(11, 13, 15, 0.72);
   -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
   border-bottom: 1px solid transparent;
-  transition: border-color .3s;
 }
-header.kopf.gefahren { border-bottom-color: var(--rand); }
-.marke { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--licht); }
-.marke svg { display: block; }
-.marke b { font-size: 18px; letter-spacing: 3px; }
+.marke { display: flex; align-items: center; gap: 9px; text-decoration: none; color: var(--licht); }
+.marke img { width: 30px; height: auto; }
+.marke b { font-size: 17px; letter-spacing: 3px; font-weight: 700; }
 nav.sprachen a { color: var(--nebel); text-decoration: none; margin-left: 12px; font-size: 14px; }
 nav.sprachen a.aktiv { color: var(--cyan); }
 
-/* ── Prolog: 260vh Scrollstrecke, die Bühne klebt. ── */
-.prolog { height: 260vh; position: relative; }
+/* ── Prolog: 300svh Scrollstrecke, die Bühne klebt. ── */
+.prolog { height: 300svh; position: relative; }
 .buehne {
-  position: sticky; top: 0; height: 100vh; overflow: hidden;
+  position: sticky; top: 0; height: 100svh; overflow: hidden;
   display: grid; place-items: center;
 }
-.buehne .glut {
-  position: absolute; inset: -20%;
+.glut {
+  position: absolute; inset: 0; pointer-events: none;
   background:
-    radial-gradient(60% 40% at 50% 60%, rgba(39, 196, 232, 0.14), transparent 70%),
-    radial-gradient(35% 25% at 62% 38%, rgba(232, 64, 42, 0.10), transparent 70%);
-  filter: blur(10px);
-  transform: scale(1.1);
+    radial-gradient(42% 34% at 50% 46%, rgba(39, 196, 232, 0.17), transparent 72%),
+    radial-gradient(30% 24% at 66% 34%, rgba(232, 64, 42, 0.13), transparent 72%);
 }
-.ringhalter { position: relative; width: min(62vmin, 460px); }
-.ringhalter svg { width: 100%; height: auto; display: block; }
-.ring-spur { stroke: rgba(255, 255, 255, 0.08); }
-.ring-zug {
-  stroke: var(--cyan);
-  stroke-dasharray: var(--ringlaenge, 1000);
-  stroke-dashoffset: var(--ringlaenge, 1000);
-  filter: drop-shadow(0 0 14px rgba(39, 196, 232, 0.55));
+
+.logobuehne {
+  position: relative;
+  width: min(74vmin, 520px);
+  aspect-ratio: 1420 / 1409;
+  transform: translateZ(0);
 }
-.zacken path {
-  stroke: var(--rot);
-  stroke-dasharray: 120; stroke-dashoffset: 120;
-  filter: drop-shadow(0 0 10px rgba(232, 64, 42, 0.6));
+/* Der Strahl deckt auf: conic-Maske in der Zeichenrichtung des Tachos.
+   Der Bogen beginnt unten (180° = 6 Uhr), läuft über links und oben zum
+   roten Ausschlag — genau wie das Logo gezeichnet ist. */
+.logo {
+  width: 100%; height: 100%; object-fit: contain;
+  -webkit-mask-image: conic-gradient(from 180deg at var(--mx) var(--my),
+      #000 var(--bogen), rgba(0,0,0,0) calc(var(--bogen) + 9deg));
+  mask-image: conic-gradient(from 180deg at var(--mx) var(--my),
+      #000 var(--bogen), rgba(0,0,0,0) calc(var(--bogen) + 9deg));
 }
-.wortmarke {
-  font-weight: 800; letter-spacing: .18em;
-  font-size: clamp(28px, 6vmin, 44px);
-  fill: var(--licht);
+/* Die leuchtende Kante, die mitläuft — begrenzt auf den Ring, nicht bis in die Mitte. */
+.strahl {
+  position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen;
+  background: conic-gradient(from 180deg at var(--mx) var(--my),
+      rgba(0,0,0,0) calc(var(--kante) - 14deg),
+      rgba(39, 196, 232, 0.55) var(--kante),
+      rgba(0,0,0,0) calc(var(--kante) + 2deg));
+  -webkit-mask-image: radial-gradient(circle at var(--mx) var(--my),
+      rgba(0,0,0,0) 26%, #000 34%, #000 61%, rgba(0,0,0,0) 68%);
+  mask-image: radial-gradient(circle at var(--mx) var(--my),
+      rgba(0,0,0,0) 26%, #000 34%, #000 61%, rgba(0,0,0,0) 68%);
   opacity: 0;
 }
+
 .prolog-text {
   position: absolute; inset: auto 0 0 0; text-align: center;
-  padding: 0 24px calc(24px + env(safe-area-inset-bottom));
+  padding: 0 24px calc(26px + env(safe-area-inset-bottom));
+  will-change: transform, opacity;
 }
 .prolog-text h1 {
   margin: 0 0 6px;
-  font-size: clamp(34px, 8.5vw, 110px);
-  font-weight: 800; letter-spacing: -0.03em; line-height: 1.02;
+  font-size: clamp(32px, 7.6vw, 92px);
+  font-weight: 800; letter-spacing: -0.03em; line-height: 1.04;
 }
-.prolog-text p { margin: 0; color: var(--nebel); font-size: clamp(16px, 2.4vw, 22px); }
+.prolog-text p { margin: 0; color: var(--nebel); font-size: clamp(16px, 2.4vw, 21px); }
 .runter {
-  position: absolute; left: 50%; bottom: calc(10px + env(safe-area-inset-bottom));
+  position: absolute; left: 50%; bottom: calc(8px + env(safe-area-inset-bottom));
   transform: translateX(-50%);
   color: var(--nebel); font-size: 13px; letter-spacing: .08em;
 }
@@ -102,51 +124,50 @@ nav.sprachen a.aktiv { color: var(--cyan); }
 /* ── Lichtspuren ── */
 .spuren {
   position: relative; overflow: hidden;
-  padding: 18vh 24px;
+  padding: 20svh 24px;
   background: linear-gradient(var(--asphalt), var(--karte) 50%, var(--asphalt));
 }
-.spuren .strasse {
-  position: absolute; inset: 0; pointer-events: none;
-}
+.strasse { position: absolute; inset: 0; pointer-events: none; }
 .spur {
-  position: absolute; height: 3px; border-radius: 3px; width: 42vw; min-width: 260px;
-  opacity: .9; will-change: transform;
+  position: absolute; height: 3px; border-radius: 3px;
+  width: 46vw; min-width: 280px; will-change: transform;
 }
-.spur.cyan { background: linear-gradient(90deg, transparent, var(--cyan)); box-shadow: 0 0 18px rgba(39,196,232,.5); }
-.spur.rot  { background: linear-gradient(90deg, var(--rot), transparent);  box-shadow: 0 0 18px rgba(232,64,42,.45); }
-.spuren .satz {
+.spur.cyan { background: linear-gradient(90deg, transparent, var(--cyan)); box-shadow: 0 0 18px rgba(39,196,232,.45); }
+.spur.rot  { background: linear-gradient(90deg, var(--rot), transparent);  box-shadow: 0 0 18px rgba(232,64,42,.4); }
+.satz {
   position: relative; max-width: 820px; margin: 0 auto; text-align: center;
-  font-size: clamp(24px, 4.6vw, 48px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2;
+  font-size: clamp(23px, 4.4vw, 46px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.22;
 }
-.spuren .satz em { font-style: normal; color: var(--nebel); display: block; font-weight: 500; font-size: .55em; margin-top: 14px; letter-spacing: 0; }
+.satz em {
+  font-style: normal; color: var(--nebel); display: block;
+  font-weight: 500; font-size: .52em; margin-top: 16px; letter-spacing: 0;
+}
 
 /* ── Kapitel ── */
 .kapitel {
-  max-width: 1060px; margin: 0 auto; padding: 14vh 24px;
+  max-width: 1060px; margin: 0 auto; padding: 14svh 24px;
   display: grid; gap: 40px; align-items: center;
 }
 @media (min-width: 820px) {
   .kapitel { grid-template-columns: 1fr 1fr; }
   .kapitel.gespiegelt .text { order: 2; }
 }
-.kapitel .text h2 {
+.kapitel h2 {
   margin: 0 0 12px;
-  font-size: clamp(30px, 4.5vw, 54px); font-weight: 800; letter-spacing: -0.025em; line-height: 1.08;
+  font-size: clamp(29px, 4.4vw, 52px); font-weight: 800; letter-spacing: -0.025em; line-height: 1.1;
 }
 .kapitel .text p { margin: 0; color: var(--nebel); font-size: 18px; max-width: 32em; }
 .kapitel .text p b { color: var(--licht); font-weight: 600; }
 .szene { position: relative; display: grid; place-items: center; min-height: 320px; }
 
-/* Szene 1: die Funktaste */
 .taste {
   width: 168px; height: 168px; border-radius: 50%;
   background: var(--cyan); color: #06252d;
-  display: grid; place-items: center;
+  display: grid; place-items: center; text-align: center;
   font-weight: 700; font-size: 22px;
   border: 6px solid var(--asphalt);
-  box-shadow: 0 0 0 2px var(--rand), 0 24px 70px rgba(39, 196, 232, 0.35);
+  box-shadow: 0 0 0 2px var(--rand), 0 24px 70px rgba(39, 196, 232, 0.32);
 }
-.taste svg { display: block; margin-bottom: 4px; }
 .welle { position: absolute; width: 168px; height: 168px; border-radius: 50%; border: 2px solid var(--cyan); opacity: 0; }
 .caption {
   position: absolute; bottom: 8%; display: flex; align-items: center; gap: 8px;
@@ -157,24 +178,16 @@ nav.sprachen a.aktiv { color: var(--cyan); }
 .caption .punkt { width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); }
 .sichtbar .welle { animation: welle 1.8s ease-out .3s 2; }
 .sichtbar .caption { opacity: 1; transform: none; transition: opacity .5s .9s, transform .5s .9s; }
-@keyframes welle {
-  from { transform: scale(1); opacity: .8; }
-  to   { transform: scale(2.1); opacity: 0; }
-}
+@keyframes welle { from { transform: scale(1); opacity: .8; } to { transform: scale(2.1); opacity: 0; } }
 
-/* Szene 2: drei Routen, ein Ziel */
 .routen svg { width: 100%; max-width: 460px; height: auto; }
-.routen .linie {
-  fill: none; stroke-width: 4; stroke-linecap: round;
-  stroke-dasharray: 520; stroke-dashoffset: 520;
-}
+.routen .linie { fill: none; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 520; stroke-dashoffset: 520; }
 .routen .ziel { opacity: 0; transform-origin: center; transform: scale(.4); }
 .sichtbar .routen .linie { transition: stroke-dashoffset 1.3s cubic-bezier(.3,.7,.2,1); stroke-dashoffset: 0; }
 .sichtbar .routen .linie:nth-child(2) { transition-delay: .15s; }
 .sichtbar .routen .linie:nth-child(3) { transition-delay: .3s; }
 .sichtbar .routen .ziel { transition: opacity .4s 1.2s, transform .5s 1.2s cubic-bezier(.2,1.4,.4,1); opacity: 1; transform: scale(1); }
 
-/* Szene 3: der Tempo-Ring */
 .tempo {
   position: relative; width: 220px; height: 220px; border-radius: 50%;
   background: var(--karte); border: 1px solid var(--rand);
@@ -184,58 +197,90 @@ nav.sprachen a.aktiv { color: var(--cyan); }
 .tempo .zahl { font-size: 64px; font-weight: 800; line-height: 1; }
 .tempo .abstand { color: var(--rot); font-weight: 700; font-size: 20px; }
 .tempo svg.bogen { position: absolute; inset: -6px; width: calc(100% + 12px); height: calc(100% + 12px); }
-.tempo .bogenzug {
-  fill: none; stroke: var(--licht); stroke-width: 5; stroke-linecap: round;
-  stroke-dasharray: 700; stroke-dashoffset: 700;
-}
-.sichtbar .tempo .bogenzug { transition: stroke-dashoffset 1.4s cubic-bezier(.3,.7,.2,1) .2s; stroke-dashoffset: 210; }
+.bogenzug { fill: none; stroke: var(--licht); stroke-width: 5; stroke-linecap: round; stroke-dasharray: 700; stroke-dashoffset: 700; }
+.sichtbar .bogenzug { transition: stroke-dashoffset 1.4s cubic-bezier(.3,.7,.2,1) .2s; stroke-dashoffset: 210; }
 .schild {
   position: absolute; right: -6px; bottom: 6px;
   width: 72px; height: 72px; border-radius: 50%;
   background: #fff; color: #111; font-weight: 800; font-size: 28px;
-  display: grid; place-items: center;
-  border: 7px solid var(--rot);
+  display: grid; place-items: center; border: 7px solid var(--rot);
   opacity: 0; transform: scale(.5) rotate(-12deg);
 }
 .sichtbar .schild { transition: opacity .35s 1.1s, transform .5s 1.1s cubic-bezier(.2,1.5,.4,1); opacity: 1; transform: none; }
 
 /* ── Stand & Fuß ── */
-.stand {
-  max-width: 760px; margin: 0 auto; padding: 12vh 24px 8vh; text-align: center;
-}
+.stand { max-width: 760px; margin: 0 auto; padding: 12svh 24px 8svh; text-align: center; }
 .stand h2 { font-size: clamp(26px, 4vw, 40px); font-weight: 800; letter-spacing: -0.02em; margin: 0 0 10px; }
 .stand p { color: var(--nebel); font-size: 18px; margin: 0 0 18px; }
-.stand .status {
+.status {
   display: inline-flex; align-items: center; gap: 10px;
   background: var(--karte); border: 1px solid var(--rand); border-radius: 999px;
   padding: 10px 18px; font-weight: 600;
 }
-.stand .status .puls { width: 9px; height: 9px; border-radius: 50%; background: var(--gruen); animation: puls 2.4s ease-in-out infinite; }
+.status .puls { width: 9px; height: 9px; border-radius: 50%; background: var(--gruen); animation: puls 2.4s ease-in-out infinite; }
 @keyframes puls { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
 footer {
-  max-width: 1060px; margin: 0 auto; padding: 28px 24px calc(40px + env(safe-area-inset-bottom));
+  max-width: 1060px; margin: 0 auto;
+  padding: 28px 24px calc(40px + env(safe-area-inset-bottom));
   border-top: 1px solid var(--rand);
   color: var(--nebel); font-size: 14px;
   display: flex; flex-wrap: wrap; gap: 8px 18px; justify-content: center;
 }
-footer a { color: var(--nebel); text-decoration-color: var(--rand); }
+footer a { color: var(--nebel); }
 
-/* Reveal-Grundlage: eine Bewegung je Kapitel, keine Fade-Konfetti. */
-.kapitel .text, .spuren .satz { opacity: 0; transform: translateY(18px); }
+/* Kapitel-Auftritt: eine Bewegung je Abschnitt, einmalig. */
+.kapitel .text, .satz { opacity: 0; transform: translateY(18px); }
 .sichtbar.kapitel .text, .spuren.sichtbar .satz { opacity: 1; transform: none; transition: opacity .6s, transform .6s; }
 
 :focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 4px; }
 
+/* ══ Scroll-Timelines: der Browser fährt sie, nicht JavaScript. ══════════ */
+@supports (animation-timeline: scroll()) {
+  .prolog { timeline-scope: --prolog; }
+  .buehne { view-timeline: --prolog block; }
+
+  .logobuehne {
+    animation: radar linear both;
+    animation-timeline: --prolog;
+    animation-range: contain 0% contain 72%;
+  }
+  @keyframes radar { from { --bogen: 0deg; --kante: 0deg; } to { --bogen: 312deg; --kante: 312deg; } }
+
+  .strahl {
+    animation: strahlan linear both;
+    animation-timeline: --prolog;
+    animation-range: contain 0% contain 78%;
+  }
+  @keyframes strahlan { 0% { opacity: 0; } 8% { opacity: 1; } 88% { opacity: 1; } 100% { opacity: 0; } }
+
+  .prolog-text {
+    animation: titelweicht linear both;
+    animation-timeline: --prolog;
+    animation-range: contain 0% contain 42%;
+  }
+  @keyframes titelweicht { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(42px); } }
+
+  .runter { animation: titelweicht linear both; animation-timeline: --prolog; animation-range: contain 0% contain 18%; }
+
+  .spur { animation: ziehen linear both; animation-timeline: view(); animation-range: entry 0% exit 100%; }
+  @keyframes ziehen { from { transform: translate3d(var(--von), 0, 0); } to { transform: translate3d(var(--bis), 0, 0); } }
+
+  header.kopf { animation: kopflinie linear both; animation-timeline: scroll(root block); animation-range: 0 60px; }
+  @keyframes kopflinie { to { border-bottom-color: var(--rand); } }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
   .prolog { height: auto; }
-  .buehne { position: static; height: auto; padding: 120px 0 40px; }
-  .ring-zug, .zacken path { stroke-dashoffset: 0 !important; }
-  .wortmarke, .kapitel .text, .spuren .satz, .caption, .routen .ziel, .schild { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .buehne { position: static; height: auto; padding: 110px 0 40px; }
+  .logo { -webkit-mask-image: none; mask-image: none; }
+  .strahl { display: none; }
+  .prolog-text, .kapitel .text, .satz, .caption, .routen .ziel, .schild {
+    opacity: 1 !important; transform: none !important; animation: none !important; transition: none !important;
+  }
   .routen .linie { stroke-dashoffset: 0 !important; }
-  .tempo .bogenzug { stroke-dashoffset: 210 !important; }
-  .welle, .puls, .spur { animation: none !important; }
-  .prolog-text h1, .prolog-text p, .ringhalter { opacity: 1 !important; transform: none !important; }
+  .bogenzug { stroke-dashoffset: 210 !important; }
+  .welle, .puls, .spur, .logobuehne { animation: none !important; }
+  .spur { transform: none !important; }
   .runter { display: none; }
 }
 </style>
@@ -244,52 +289,43 @@ footer a { color: var(--nebel); text-decoration-color: var(--rand); }
 
 <header class="kopf" id="kopf">
   <a class="marke" href="index.html" aria-label="FREQ — Home">
-    <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
-      <circle cx="13" cy="13" r="10" fill="none" stroke="#27c4e8" stroke-width="3"
-              stroke-dasharray="47 16" stroke-linecap="round" transform="rotate(120 13 13)"/>
-      <path d="M16 6 l2.2 3.4 1.8 -1.6" fill="none" stroke="#e8402a" stroke-width="2" stroke-linecap="round"/>
-    </svg>
+    <picture>
+      <source srcset="../bild/freq-mark.webp" type="image/webp">
+      <img src="../bild/freq-mark.png" alt="" width="30" height="30">
+    </picture>
     <b>FREQ</b>
   </a>
   <nav class="sprachen"><a href="../index.html">DE</a><a class="aktiv" href="index.html" aria-current="page">EN</a></nav>
 </header>
 
-<!-- Prolog: der Ring zeichnet sich, die Zacken schlagen aus, der Titel weicht. -->
 <section class="prolog" aria-label="FREQ">
   <div class="buehne">
-    <div class="glut" id="glut" aria-hidden="true"></div>
-    <div class="ringhalter" id="ringhalter">
-      <svg viewBox="0 0 400 400" role="img" aria-label="FREQ logo: speedometer ring with a frequency spike">
-        <circle class="ring-spur" cx="200" cy="200" r="150" fill="none" stroke-width="14"/>
-        <circle class="ring-zug" id="ringzug" cx="200" cy="200" r="150" fill="none" stroke-width="14"
-                stroke-linecap="round" transform="rotate(118 200 200)"/>
-        <g class="zacken" id="zacken" fill="none" stroke-width="7" stroke-linejoin="round">
-          <path d="M252 72 l12 22 14 -34 16 40 14 -22"/>
-          <path d="M312 104 l16 18 10 -26 14 30"/>
-        </g>
-        <text class="wortmarke" id="wortmarke" x="200" y="216" text-anchor="middle">FREQ</text>
-      </svg>
+    <div class="glut" aria-hidden="true"></div>
+    <div class="logobuehne" id="logobuehne">
+      <picture>
+        <source srcset="../bild/freq-logo.webp" type="image/webp">
+        <img class="logo" id="logo" src="../bild/freq-logo.png" alt="FREQ" width="900" height="893" fetchpriority="high">
+      </picture>
+      <div class="strahl" id="strahl" aria-hidden="true"></div>
     </div>
     <div class="prolog-text" id="prologtext">
       <h1>Drive together.<br>Talk together.</h1>
       <p>The convoy app for you and your friends.</p>
     </div>
-    <div class="runter" aria-hidden="true">Scroll</div>
+    <div class="runter" id="runter" aria-hidden="true">Scroll</div>
   </div>
 </section>
 
-<!-- Lichtspuren -->
 <section class="spuren" id="spuren">
   <div class="strasse" aria-hidden="true">
-    <div class="spur cyan" style="top: 18%;" data-tempo="0.35"></div>
-    <div class="spur rot"  style="top: 34%;" data-tempo="-0.25"></div>
-    <div class="spur cyan" style="top: 72%;" data-tempo="0.2"></div>
-    <div class="spur rot"  style="top: 86%;" data-tempo="-0.4"></div>
+    <div class="spur cyan" style="top: 16%; --von: -30vw; --bis: 34vw;"></div>
+    <div class="spur rot"  style="top: 33%; --von: 40vw; --bis: -26vw;"></div>
+    <div class="spur cyan" style="top: 71%; --von: -18vw; --bis: 22vw;"></div>
+    <div class="spur rot"  style="top: 87%; --von: 52vw; --bis: -34vw;"></div>
   </div>
   <p class="satz">For nights on the road together — every car on its own route, everyone on one channel.<em>No ads. No data sales. No listening in.</em></p>
 </section>
 
-<!-- Kapitel 1: Funk -->
 <section class="kapitel" data-reveal>
   <div class="text">
     <h2>Radio like a walkie-talkie.</h2>
@@ -299,7 +335,7 @@ footer a { color: var(--nebel); text-decoration-color: var(--rand); }
     <div class="welle"></div>
     <div class="taste">
       <div>
-        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
         Open
       </div>
     </div>
@@ -307,7 +343,6 @@ footer a { color: var(--nebel); text-decoration-color: var(--rand); }
   </div>
 </section>
 
-<!-- Kapitel 2: Ein Ziel für alle -->
 <section class="kapitel gespiegelt" data-reveal>
   <div class="text">
     <h2>One destination for everyone.</h2>
@@ -327,7 +362,6 @@ footer a { color: var(--nebel); text-decoration-color: var(--rand); }
   </div>
 </section>
 
-<!-- Kapitel 3: Entspannt ankommen -->
 <section class="kapitel" data-reveal>
   <div class="text">
     <h2>Arrive relaxed.</h2>
@@ -347,7 +381,6 @@ footer a { color: var(--nebel); text-decoration-color: var(--rand); }
   </div>
 </section>
 
-<!-- Stand -->
 <section class="stand" data-reveal>
   <h2>FREQ is on its way.</h2>
   <p>The app is under development and not yet on the App Store. This page is the official home for privacy, terms, and support.</p>
@@ -365,84 +398,82 @@ footer a { color: var(--nebel); text-decoration-color: var(--rand); }
 <script>
 (function () {
   'use strict';
-  var ruhig = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Kopfzeile bekommt ihre Linie, sobald die Seite fährt.
-  var kopf = document.getElementById('kopf');
-  function kopfzeile() { kopf.classList.toggle('gefahren', window.scrollY > 24); }
-  kopfzeile();
-  window.addEventListener('scroll', kopfzeile, { passive: true });
-
-  // Kapitel: EIN komponierter Auftritt je Abschnitt, einmalig.
-  var beobachter = new IntersectionObserver(function (eintraege) {
-    eintraege.forEach(function (e) {
-      if (e.isIntersecting) { e.target.classList.add('sichtbar'); beobachter.unobserve(e.target); }
+  // Kapitel-Auftritte: einmalig, zeitbasiert — unabhängig vom Scrolltempo.
+  var beobachter = new IntersectionObserver(function (liste) {
+    liste.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('sichtbar');
+      beobachter.unobserve(e.target);
     });
-  }, { threshold: 0.35 });
+  }, { threshold: 0.3 });
   document.querySelectorAll('[data-reveal], .spuren').forEach(function (el) { beobachter.observe(el); });
 
-  if (ruhig) return; // Ab hier nur Bewegung.
+  var ruhig = window.matchMedia('(prefers-reduced-motion: reduce)');
+  // Kann der Browser Scroll-Timelines? Dann macht CSS alles — flüssig im
+  // Compositor, egal wie langsam gescrollt wird. Sonst der Ersatz unten.
+  var hatTimeline = window.CSS && CSS.supports && CSS.supports('animation-timeline', 'scroll()');
+  if (hatTimeline || ruhig.matches) return;
 
-  // Prolog: Ringlänge messen, dann zeichnet der Scroll.
-  var ringzug = document.getElementById('ringzug');
-  var laenge = ringzug.getTotalLength();
-  ringzug.style.setProperty('--ringlaenge', laenge);
-  ringzug.style.strokeDasharray = laenge;
-  ringzug.style.strokeDashoffset = laenge;
-
-  var zacken = Array.prototype.slice.call(document.querySelectorAll('#zacken path'));
-  zacken.forEach(function (z) {
-    var l = z.getTotalLength();
-    z.style.strokeDasharray = l;
-    z.style.strokeDashoffset = l;
-  });
-
+  // ── Ersatzlauf für ältere Browser ──────────────────────────────────────
+  // Eine Dauerschleife mit Glättung: der Zielwert kommt vom Scrollstand,
+  // der gezeigte Wert zieht in jedem Bild ein Stück nach. Dadurch bleibt die
+  // Bewegung weich, auch wenn Scroll-Ereignisse klumpig eintreffen — und sie
+  // schläft ein, sobald nichts mehr zu tun ist.
   var prolog = document.querySelector('.prolog');
+  var buehne = document.querySelector('.buehne');
+  var logobuehne = document.getElementById('logobuehne');
+  var strahl = document.getElementById('strahl');
   var text = document.getElementById('prologtext');
-  var halter = document.getElementById('ringhalter');
-  var wortmarke = document.getElementById('wortmarke');
-  var glut = document.getElementById('glut');
+  var runter = document.getElementById('runter');
+  var kopf = document.getElementById('kopf');
   var spuren = Array.prototype.slice.call(document.querySelectorAll('.spur'));
   var spurenBox = document.getElementById('spuren');
-  var angefragt = false;
 
-  function klemm(x) { return Math.max(0, Math.min(1, x)); }
+  var ist = 0, laeuft = false, ruhe = 0;
 
-  function malen() {
-    angefragt = false;
-    var hoehe = prolog.offsetHeight - window.innerHeight;
-    var p = klemm(window.scrollY / Math.max(1, hoehe));
+  function klemm(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
+  function zahl(wert, standard) { var n = parseFloat(wert); return isNaN(n) ? standard : n; }
 
-    // 0 → 0.62: der Ring zeichnet sich (260° sichtbarer Bogen wie im Logo).
-    var ring = klemm(p / 0.62);
-    ringzug.style.strokeDashoffset = laenge * (1 - ring * 0.72);
-    // 0.55 → 0.8: die roten Zacken schlagen aus.
-    zacken.forEach(function (z, i) {
-      var a = klemm((p - 0.55 - i * 0.08) / 0.18);
-      z.style.strokeDashoffset = parseFloat(z.style.strokeDasharray) * (1 - a);
-    });
-    // 0.7 → 0.9: die Wortmarke tritt in den Ring.
-    wortmarke.style.opacity = klemm((p - 0.7) / 0.2);
-    // Titel weicht nach unten-hinten, Ring rückt minimal auf, Glut dreht.
-    text.style.opacity = 1 - klemm(p / 0.4);
-    text.style.transform = 'translateY(' + (p * 60) + 'px)';
-    halter.style.transform = 'scale(' + (0.92 + 0.12 * klemm(p / 0.8)) + ')';
-    glut.style.transform = 'scale(1.1) rotate(' + (p * 18) + 'deg)';
+  function ziel() {
+    var strecke = prolog.offsetHeight - buehne.offsetHeight;
+    return klemm(-prolog.getBoundingClientRect().top / Math.max(1, strecke));
+  }
 
-    // Lichtspuren: Parallax quer über die Straße.
+  function zeichnen(p) {
+    var bogen = klemm(p / 0.72) * 312;
+    logobuehne.style.setProperty('--bogen', bogen + 'deg');
+    logobuehne.style.setProperty('--kante', bogen + 'deg');
+    strahl.style.opacity = p < 0.02 ? 0 : (p > 0.78 ? 0 : 1);
+    var weg = klemm(p / 0.42);
+    text.style.opacity = 1 - weg;
+    text.style.transform = 'translate3d(0,' + (weg * 42) + 'px,0)';
+    runter.style.opacity = 1 - klemm(p / 0.18);
+    kopf.style.borderBottomColor = window.scrollY > 60 ? 'rgba(255,255,255,0.10)' : 'transparent';
+
     var r = spurenBox.getBoundingClientRect();
-    var sichtbarkeit = klemm((window.innerHeight - r.top) / (window.innerHeight + r.height));
-    spuren.forEach(function (s) {
-      var tempo = parseFloat(s.dataset.tempo);
-      s.style.transform = 'translateX(' + ((sichtbarkeit - 0.5) * tempo * 160) + 'vw)';
+    var s = klemm((window.innerHeight - r.top) / (window.innerHeight + r.height));
+    spuren.forEach(function (sp) {
+      var von = zahl(sp.style.getPropertyValue('--von'), 0);
+      var bis = zahl(sp.style.getPropertyValue('--bis'), 0);
+      sp.style.transform = 'translate3d(' + (von + (bis - von) * s) + 'vw,0,0)';
     });
   }
 
-  window.addEventListener('scroll', function () {
-    if (!angefragt) { angefragt = true; requestAnimationFrame(malen); }
-  }, { passive: true });
-  window.addEventListener('resize', malen);
-  malen();
+  function bild() {
+    var soll = ziel();
+    ist += (soll - ist) * 0.18;              // weiches Nachziehen
+    if (Math.abs(soll - ist) < 0.0004) { ist = soll; ruhe++; } else { ruhe = 0; }
+    zeichnen(ist);
+    if (ruhe > 12) { laeuft = false; return; } // fertig: Schleife schläft ein
+    requestAnimationFrame(bild);
+  }
+
+  function wecken() { if (!laeuft) { laeuft = true; requestAnimationFrame(bild); } }
+  window.addEventListener('scroll', wecken, { passive: true });
+  window.addEventListener('resize', wecken);
+  window.addEventListener('touchmove', wecken, { passive: true });
+  wecken();
 })();
 </script>
 </body>

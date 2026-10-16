@@ -1,4 +1,5 @@
-/* FREQ-Website — dunkles Chrome, ein Cyan, Systemschrift (wie die App). */
+/* FREQ-Unterseiten — dunkles Chrome, ein Cyan, Systemschrift (wie die App).
+   Die Startseite bringt ihre Stile selbst mit (Scroll-Erzählung). */
 :root {
   --bg: #0b0d0f;
   --karte: #16181c;
@@ -23,12 +24,8 @@ header.kopf {
   padding: 20px 0; gap: 12px;
 }
 .marke { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
-.marke .ring {
-  width: 34px; height: 34px; border-radius: 50%;
-  border: 3px solid var(--akzent); border-top-color: #e8402a;
-  transform: rotate(-45deg);
-}
-.marke b { font-size: 20px; letter-spacing: 2px; }
+.marke img { width: 30px; height: auto; display: block; }
+.marke b { font-size: 17px; letter-spacing: 3px; font-weight: 700; }
 nav.sprachen a { color: var(--neben); text-decoration: none; margin-left: 10px; font-size: 14px; }
 nav.sprachen a.aktiv { color: var(--akzent); }
 .held { padding: 48px 0 24px; }
