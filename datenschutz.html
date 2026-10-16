@@ -25,36 +25,54 @@
     <h2>Das Wichtigste in Kürze</h2>
     <ul>
       <li>FREQ verkauft keine Daten und zeigt keine Werbung.</li>
-      <li>Deine Position wird nur geteilt, solange du in einem Convoy bist — und nur mit den Mitgliedern dieses Convoys.</li>
-      <li>Der Funk ist live: Gespräche werden übertragen, aber nicht aufgezeichnet oder gespeichert.</li>
-      <li>Die App hört nie im Hintergrund mit. Das Mikrofon ist nur offen, wenn du die Funktaste nutzt.</li>
+      <li><b>Dein Punkt auf der Karte</b> wird nur den Mitgliedern deines laufenden Convoys gezeigt. Daneben geht dein Standort an Karten-, Such- und Preisdienste, wenn du sie nutzt — und bei „Freunde in der Nähe" sowie bei Blitzer- und Gefahrenmeldungen liegt ein Eintrag in der Datenbank, den andere Fahrer abrufen können. Die Einzelheiten stehen unten in der Tabelle.</li>
+      <li><b>Der Funk ist ein offener Kanal, keine Drücktaste.</b> Sobald du im Funk eines Convoys bist, ist dein Mikrofon offen und die anderen hören dich — auch bei ausgeschaltetem Bildschirm. „Ruhe" oder Stummschalten beendet das sofort. Außerhalb eines Convoys ist das Mikrofon aus.</li>
+      <li>Gespräche werden <b>nicht aufgezeichnet und nicht gespeichert</b> — sie laufen live über den Sprachserver und sind danach weg.</li>
+      <li>Die App hört nie heimlich mit und wertet nichts Gesprochenes aus.</li>
     </ul>
 
     <h2>Welche Daten die App verarbeitet</h2>
     <table class="daten">
       <tr><th>Daten</th><th>Wozu</th><th>Wo</th></tr>
-      <tr><td>Konto (Name, E-Mail, Profilbild deines Google-Kontos)</td><td>Anmeldung und dein Profil in der App</td><td>Google Firebase Authentication (EU-Region, soweit verfügbar)</td></tr>
-      <tr><td>Position und Geschwindigkeit</td><td>Navigation auf deinem Gerät; im Convoy sehen die Mitglieder deinen Punkt auf der Karte</td><td>Lokal; im Convoy über Firebase Realtime Database (Region Belgien, europe-west1), nach Convoy-Ende gelöscht</td></tr>
-      <tr><td>Sprache (Funk)</td><td>Live-Übertragung an die Convoy-Mitglieder</td><td>Eigener LiveKit-Sprachserver (EU); keine Aufzeichnung</td></tr>
-      <tr><td>Freundesliste und Convoy-Zugehörigkeit</td><td>Freunde einladen, Convoys bilden, Mitfahr-Anfragen</td><td>Firebase Realtime Database (europe-west1)</td></tr>
-      <tr><td>Absturzberichte (Gerätemodell, Systemversion, technischer Ablauf)</td><td>Fehler finden und beheben</td><td>Firebase Crashlytics</td></tr>
+      <tr><td>Konto: Name, E-Mail, Profilbild deines Google-Kontos; dazu Erstellungs- und Anmeldezeitpunkt, IP-Adresse und Gerätekennung</td><td>Anmeldung und dein Profil in der App</td><td>Google Firebase Authentication (Google Ireland Ltd. / Google LLC) — <b>Verarbeitung auch in den USA</b></td></tr>
+      <tr><td>Position und Geschwindigkeit</td><td>Navigation auf deinem Gerät; im Convoy sehen die Mitglieder deinen Punkt auf der Karte</td><td>Auf dem Gerät; im Convoy über Firebase Realtime Database (Belgien, europe-west1), nach Convoy-Ende gelöscht</td></tr>
+      <tr><td>„Freunde in der Nähe": dein auf etwa 11 Meter gerundeter Standort mit Kennung, Funkname und Zeitpunkt</td><td>Freunde in deiner Umgebung finden, solange du suchst</td><td>Firebase Realtime Database; dieser Eintrag ist für angemeldete FREQ-Nutzer abrufbar</td></tr>
+      <tr><td>Suchbegriffe, Ziele und (meist gerundete) Position bei Abfragen</td><td>Adresssuche, Route, Tankstellen, Parkplätze, Lokale, Tankpreise</td><td>Externe Dienste, siehe „Empfänger" unten</td></tr>
+      <tr><td>Sprache (Funk)</td><td>Live-Übertragung an die Convoy-Mitglieder</td><td>Eigener LiveKit-Sprachserver (Hetzner, Deutschland); keine Aufzeichnung</td></tr>
+      <tr><td>Freundesliste, Online-Status und Convoy-Zugehörigkeit</td><td>Freunde einladen, Convoys bilden, Mitfahr-Anfragen</td><td>Firebase Realtime Database (europe-west1); der Online-Status nur, solange du online bist</td></tr>
+      <tr><td>Mitteilungen: Geräte-Token, Plattform, App-Sprache und eine zufällige Kennung dieser Installation</td><td>Einladungen, Freundschaftsanfragen und „Ein Freund startet einen Convoy" erreichen dich auch bei geschlossener App</td><td>Firebase Realtime Database und Google Firebase Cloud Messaging (USA); der Versand läuft über unseren Dienst bei Cloudflare</td></tr>
+      <tr><td>Absturzberichte: Gerätemodell, Systemversion, technischer Ablauf</td><td>Fehler finden und beheben</td><td>Google Firebase Crashlytics (auch USA) — <b>nur nach deinem Ja</b>, die App fragt beim ersten Start; jederzeit änderbar unter Einstellungen → Datenschutz</td></tr>
+      <tr><td>Meldungen: mobile Blitzer, Gefahren, Meldungen über andere Nutzer</td><td>Warnungen für andere Fahrer; Missbrauch verhindern</td><td>Firebase Realtime Database. <b>Nicht anonym, sondern pseudonym:</b> andere sehen die Meldung ohne deinen Namen, intern bleibt getrennt gespeichert, welches Konto sie gesetzt hat. Bei Meldungen über Nutzer wird deine Kennung zwingend gespeichert.</td></tr>
+      <tr><td>Anfragen an unseren eigenen Dienst (Funk-Ticket mit Anmeldetoken, Mitteilungen, Meldungen, Kontolöschung) samt IP-Adresse</td><td>Betrieb, Missbrauchsschutz, Begrenzung der Anfragen</td><td>Cloudflare Workers (Cloudflare, Inc., weltweites Netz, auch USA)</td></tr>
       <tr><td>Kartenabrufe (IP-Adresse, abgerufene Kacheln)</td><td>Darstellung der Karte</td><td>OpenFreeMap / OpenStreetMap-Kacheldienste</td></tr>
-      <tr><td>Routenberechnung (Start, Ziel)</td><td>Deine Route</td><td>OSRM-Routingdienst</td></tr>
       <tr><td>Community-Treffen („fahre hin")</td><td>Anonymer Zähler, wie viele hinfahren</td><td>Eigener Dienst; andere sehen nur eine Zahl, nie wer</td></tr>
-      <tr><td>Meldungen (mobile Blitzer, Gefahren, Nutzer-Meldungen)</td><td>Warnungen für andere; Missbrauch verhindern</td><td>Firebase Realtime Database, anonymisiert</td></tr>
     </table>
 
+    <h2>Empfänger</h2>
+    <p>Neben den oben genannten Diensten erhalten je nach Nutzung Positions-, Ziel- oder IP-Daten: <b>Photon/komoot</b> (Adresssuche), <b>OSRM</b> (Routen), <b>Overpass</b> (Tankstellen, Parkplätze, Lokale), <b>E-Control</b> (Tankpreise Österreich), <b>Open Charge Map</b> (Ladestationen) sowie <b>GitHub, Inc.</b> als Hoster dieser Website. Die vollständige Liste mit Lizenzen steht in der App unter Einstellungen → Datenschutz → Quellen und Lizenzen.</p>
+
+    <h2>Übermittlung in Länder außerhalb der EU</h2>
+    <p>Ein Teil der Verarbeitung findet außerhalb der EU statt:</p>
+    <ul>
+      <li><b>USA:</b> Google (Firebase Authentication, Crashlytics, Cloud Messaging), Cloudflare, GitHub. Grundlage ist der Angemessenheitsbeschluss zum EU-US Data Privacy Framework (Durchführungsbeschluss (EU) 2023/1795 vom 10.07.2023); ergänzend gelten EU-Standardvertragsklauseln nach Art. 46 Abs. 2 lit. c DSGVO.</li>
+      <li><b>Vereinigtes Königreich:</b> OpenStreetMap Foundation. Grundlage ist der Angemessenheitsbeschluss der EU-Kommission für das Vereinigte Königreich.</li>
+    </ul>
+    <p>Eine Kopie der Standardvertragsklauseln erhältst du auf Anfrage an die oben genannte E-Mail-Adresse.</p>
+
     <h2>Rechtsgrundlagen</h2>
-    <p>Die Verarbeitung erfolgt zur Erfüllung des Nutzungsvertrags (Art. 6 Abs. 1 lit. b DSGVO — Anmeldung, Convoy, Funk, Navigation), auf Grundlage berechtigter Interessen (Art. 6 Abs. 1 lit. f — Absturzberichte, Missbrauchsschutz) und, wo die App dich eigens fragt (z.&nbsp;B. Standortfreigabe, Mikrofon, Blitzerwarnungen in Ländern mit Opt-in), auf Grundlage deiner Einwilligung (Art. 6 Abs. 1 lit. a), die du jederzeit in den Einstellungen widerrufen kannst.</p>
+    <p>Die Verarbeitung erfolgt zur Erfüllung des Nutzungsvertrags (Art. 6 Abs. 1 lit. b DSGVO — Anmeldung, Convoy, Funk, Navigation), auf Grundlage berechtigter Interessen (Art. 6 Abs. 1 lit. f — Missbrauchsschutz und Betriebssicherheit) und, wo die App dich eigens fragt, auf Grundlage deiner <b>Einwilligung</b> (Art. 6 Abs. 1 lit. a; bei Absturzberichten zusätzlich § 165 Abs. 3 TKG 2021): Standortfreigabe, Mikrofon, <b>Absturzberichte</b> und Blitzerwarnungen in Ländern mit Zustimmungspflicht. Eine Einwilligung kannst du jederzeit in den Einstellungen widerrufen.</p>
+
+    <h2>Meldungen und automatische Sperre</h2>
+    <p>Melden <b>drei verschiedene Konten</b> innerhalb von 30 Tagen dasselbe Konto, wird es <b>automatisch und vorläufig gesperrt</b> — ohne vorherige menschliche Prüfung, für höchstens 7 Tage. Du siehst die Begründung in der App und kannst der Sperre jederzeit per E-Mail widersprechen; sie wird dann von Hand geprüft. Gespeichert werden dabei die Kennung des Meldenden, das gemeldete Konto, der Grund und der Zeitpunkt.</p>
 
     <h2>Speicherdauer</h2>
-    <p>Positionsdaten eines Convoys werden mit dessen Ende gelöscht; verwaiste Convoy-Räume räumt ein Serverdienst automatisch. Dein Konto und deine Freundesliste bleiben, bis du dein Konto löschst (in der App unter Einstellungen oder per Mail an den Support). Absturzberichte löscht Firebase nach den dort geltenden Fristen (90 Tage).</p>
+    <p>Positionsdaten eines Convoys werden mit dessen Ende gelöscht; verwaiste Convoy-Räume räumt ein Serverdienst automatisch. Dein Konto und deine Freundesliste bleiben, bis du dein Konto löschst (in der App unter Einstellungen oder per E-Mail). Absturzberichte löscht Firebase nach 90 Tagen.</p>
 
     <h2>Deine Rechte</h2>
-    <p>Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit und Widerspruch (Art. 15–21 DSGVO) sowie auf Beschwerde bei der österreichischen Datenschutzbehörde (dsb.gv.at). Schreib dafür an die Support-Adresse.</p>
+    <p>Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit und Widerspruch (Art. 15–21 DSGVO) sowie auf Beschwerde bei der österreichischen Datenschutzbehörde (dsb.gv.at). Schreib dafür an die oben genannte E-Mail-Adresse.</p>
 
     <h2>Diese Website</h2>
-    <p>Diese Seite wird über GitHub Pages ausgeliefert (GitHub, Inc.). Beim Abruf fallen technisch notwendige Server-Logs (IP-Adresse) bei GitHub an; die Seite selbst setzt keine Cookies und bindet keine Tracker ein.</p>
+    <p>Diese Seite wird über GitHub Pages ausgeliefert (GitHub, Inc., USA). Beim Abruf fallen technisch notwendige Server-Logs (IP-Adresse) bei GitHub an; die Seite selbst setzt keine Cookies und bindet keine Tracker ein.</p>
   </main>
 
   <footer>

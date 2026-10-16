@@ -25,36 +25,54 @@
     <h2>The short version</h2>
     <ul>
       <li>FREQ does not sell data and shows no ads.</li>
-      <li>Your location is shared only while you are in a convoy — and only with that convoy's members.</li>
-      <li>The radio is live: voice is transmitted, never recorded or stored.</li>
-      <li>The app never listens in the background. The microphone is only open while you use the radio key.</li>
+      <li><b>Your dot on the map</b> is shown only to the members of your running convoy. Beyond that, your location goes to map, search and price services when you use them — and with "friends nearby" as well as speed-camera and hazard reports, an entry sits in the database that other drivers can read. The details are in the table below.</li>
+      <li><b>The radio is an open channel, not a push-to-talk key.</b> Once you are on a convoy's radio, your microphone is open and the others hear you — even with the screen off. "Quiet" or muting ends that immediately. Outside a convoy the microphone is off.</li>
+      <li>Conversations are <b>never recorded or stored</b> — they pass live through the voice server and are gone afterwards.</li>
+      <li>The app never listens secretly and does not analyse anything you say.</li>
     </ul>
 
     <h2>What the app processes</h2>
     <table class="daten">
       <tr><th>Data</th><th>Purpose</th><th>Where</th></tr>
-      <tr><td>Account (name, e-mail, photo of your Google account)</td><td>Sign-in and your in-app profile</td><td>Google Firebase Authentication</td></tr>
+      <tr><td>Account: name, e-mail, photo of your Google account; plus creation and last sign-in time, IP address and device identifier</td><td>Sign-in and your in-app profile</td><td>Google Firebase Authentication (Google Ireland Ltd. / Google LLC) — <b>also processed in the USA</b></td></tr>
       <tr><td>Location and speed</td><td>Navigation on your device; convoy members see your dot on the map</td><td>On device; in a convoy via Firebase Realtime Database (Belgium, europe-west1), deleted when the convoy ends</td></tr>
-      <tr><td>Voice (radio)</td><td>Live transmission to convoy members</td><td>Self-hosted LiveKit voice server (EU); no recording</td></tr>
-      <tr><td>Friends list and convoy membership</td><td>Inviting friends, forming convoys, join requests</td><td>Firebase Realtime Database (europe-west1)</td></tr>
-      <tr><td>Crash reports (device model, OS version, technical trace)</td><td>Finding and fixing bugs</td><td>Firebase Crashlytics</td></tr>
+      <tr><td>"Friends nearby": your location rounded to about 11 metres, with identifier, radio name and time</td><td>Finding friends around you while you search</td><td>Firebase Realtime Database; this entry is readable by signed-in FREQ users</td></tr>
+      <tr><td>Search terms, destinations and (mostly rounded) location on queries</td><td>Address search, routing, fuel stations, parking, food, fuel prices</td><td>External services, see "Recipients" below</td></tr>
+      <tr><td>Voice (radio)</td><td>Live transmission to convoy members</td><td>Self-hosted LiveKit voice server (Hetzner, Germany); no recording</td></tr>
+      <tr><td>Friends list, online status and convoy membership</td><td>Inviting friends, forming convoys, join requests</td><td>Firebase Realtime Database (europe-west1); online status only while you are online</td></tr>
+      <tr><td>Notifications: device token, platform, app language and a random identifier for this installation</td><td>Invitations, friend requests and "a friend starts a convoy" reach you with the app closed</td><td>Firebase Realtime Database and Google Firebase Cloud Messaging (USA); delivery runs through our Cloudflare service</td></tr>
+      <tr><td>Crash reports: device model, OS version, technical trace</td><td>Finding and fixing bugs</td><td>Google Firebase Crashlytics (also USA) — <b>only after you say yes</b>; the app asks at first start, changeable any time under Settings → Privacy</td></tr>
+      <tr><td>Reports: mobile speed cameras, hazards, reports about other users</td><td>Warnings for other drivers; abuse prevention</td><td>Firebase Realtime Database. <b>Not anonymous but pseudonymous:</b> others see the report without your name, while it is stored separately which account filed it. For reports about users your identifier is always stored.</td></tr>
+      <tr><td>Requests to our own service (radio ticket with sign-in token, notifications, reports, account deletion) including IP address</td><td>Operation, abuse prevention, rate limiting</td><td>Cloudflare Workers (Cloudflare, Inc., global network, also USA)</td></tr>
       <tr><td>Map requests (IP address, requested tiles)</td><td>Rendering the map</td><td>OpenFreeMap / OpenStreetMap tile services</td></tr>
-      <tr><td>Routing (origin, destination)</td><td>Your route</td><td>OSRM routing service</td></tr>
       <tr><td>Community meets ("going")</td><td>Anonymous counter of how many are going</td><td>Own service; others only ever see a number</td></tr>
-      <tr><td>Reports (mobile speed cameras, hazards, user reports)</td><td>Warnings for others; abuse prevention</td><td>Firebase Realtime Database, anonymised</td></tr>
     </table>
 
+    <h2>Recipients</h2>
+    <p>Depending on use, location, destination or IP data also reach: <b>Photon/komoot</b> (address search), <b>OSRM</b> (routing), <b>Overpass</b> (fuel, parking, food), <b>E-Control</b> (Austrian fuel prices), <b>Open Charge Map</b> (charging points), and <b>GitHub, Inc.</b> as the host of this website. The full list with licences is in the app under Settings → Privacy → Sources and licences.</p>
+
+    <h2>Transfers outside the EU</h2>
+    <p>Part of the processing happens outside the EU:</p>
+    <ul>
+      <li><b>USA:</b> Google (Firebase Authentication, Crashlytics, Cloud Messaging), Cloudflare, GitHub. The basis is the adequacy decision on the EU-US Data Privacy Framework (Implementing Decision (EU) 2023/1795 of 10 July 2023); EU standard contractual clauses under Art. 46(2)(c) GDPR apply in addition.</li>
+      <li><b>United Kingdom:</b> OpenStreetMap Foundation. The basis is the European Commission's adequacy decision for the United Kingdom.</li>
+    </ul>
+    <p>A copy of the standard contractual clauses is available on request at the e-mail address above.</p>
+
     <h2>Legal bases</h2>
-    <p>Processing is based on the user agreement (Art. 6(1)(b) GDPR — sign-in, convoy, radio, navigation), on legitimate interests (Art. 6(1)(f) — crash reports, abuse prevention), and, where the app explicitly asks you (e.g. location, microphone, speed-camera warnings in opt-in countries), on your consent (Art. 6(1)(a)), which you can withdraw at any time in the settings.</p>
+    <p>Processing is based on the user agreement (Art. 6(1)(b) GDPR — sign-in, convoy, radio, navigation), on legitimate interests (Art. 6(1)(f) — abuse prevention and operational security), and, where the app explicitly asks you, on your <b>consent</b> (Art. 6(1)(a); for crash reports additionally § 165(3) Austrian TKG 2021): location, microphone, <b>crash reports</b> and speed-camera warnings in countries requiring opt-in. You can withdraw any consent at any time in the settings.</p>
+
+    <h2>Reports and automatic suspension</h2>
+    <p>If <b>three different accounts</b> report the same account within 30 days, it is <b>suspended automatically and provisionally</b> — without prior human review, for at most 7 days. You see the reason in the app and can object by e-mail at any time; the case is then reviewed by a human. Stored for this are the reporter's identifier, the reported account, the reason and the time.</p>
 
     <h2>Retention</h2>
-    <p>A convoy's position data is deleted when the convoy ends; a server job cleans up orphaned convoy rooms. Your account and friends list remain until you delete your account (in the app settings or by e-mail to support). Crashlytics retains crash reports for 90 days.</p>
+    <p>A convoy's position data is deleted when the convoy ends; a server job cleans up orphaned convoy rooms. Your account and friends list remain until you delete your account (in the app settings or by e-mail). Crashlytics retains crash reports for 90 days.</p>
 
     <h2>Your rights</h2>
-    <p>You have the rights of access, rectification, erasure, restriction, portability, and objection (Art. 15–21 GDPR), and the right to complain to the Austrian data protection authority (dsb.gv.at). Contact the support address for any of these.</p>
+    <p>You have the rights of access, rectification, erasure, restriction, portability and objection (Art. 15–21 GDPR), and the right to complain to the Austrian data protection authority (dsb.gv.at). Contact the e-mail address above for any of these.</p>
 
     <h2>This website</h2>
-    <p>This site is served by GitHub Pages (GitHub, Inc.). Technically necessary server logs (IP address) occur at GitHub; the site itself sets no cookies and embeds no trackers.</p>
+    <p>This site is served by GitHub Pages (GitHub, Inc., USA). Technically necessary server logs (IP address) occur at GitHub; the site itself sets no cookies and embeds no trackers.</p>
   </main>
 
   <footer>
