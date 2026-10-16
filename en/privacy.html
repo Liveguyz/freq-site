@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — FREQ</title>
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body>
+<div class="hülle">
+  <header class="kopf">
+    <a class="marke" href="index.html"><span class="ring"></span><b>FREQ</b></a>
+    <nav class="sprachen"><a href="../datenschutz.html">DE</a><a class="aktiv" href="privacy.html">EN</a></nav>
+  </header>
+
+  <main>
+    <h1>Privacy Policy</h1>
+    <p class="stand">Last updated: 16 October 2026 · applies to the FREQ app (iOS and Android) and this website.</p>
+
+    <h2>Who is responsible</h2>
+    <p>Controller under the GDPR: <b>Luka Veselinovic</b>, Nordwestbahnstraße 91/39, 1200 Vienna, Austria — <a href="mailto:lukaves567@gmail.com">lukaves567@gmail.com</a>.</p>
+
+    <h2>The short version</h2>
+    <ul>
+      <li>FREQ does not sell data and shows no ads.</li>
+      <li>Your location is shared only while you are in a convoy — and only with that convoy's members.</li>
+      <li>The radio is live: voice is transmitted, never recorded or stored.</li>
+      <li>The app never listens in the background. The microphone is only open while you use the radio key.</li>
+    </ul>
+
+    <h2>What the app processes</h2>
+    <table class="daten">
+      <tr><th>Data</th><th>Purpose</th><th>Where</th></tr>
+      <tr><td>Account (name, e-mail, photo of your Google account)</td><td>Sign-in and your in-app profile</td><td>Google Firebase Authentication</td></tr>
+      <tr><td>Location and speed</td><td>Navigation on your device; convoy members see your dot on the map</td><td>On device; in a convoy via Firebase Realtime Database (Belgium, europe-west1), deleted when the convoy ends</td></tr>
+      <tr><td>Voice (radio)</td><td>Live transmission to convoy members</td><td>Self-hosted LiveKit voice server (EU); no recording</td></tr>
+      <tr><td>Friends list and convoy membership</td><td>Inviting friends, forming convoys, join requests</td><td>Firebase Realtime Database (europe-west1)</td></tr>
+      <tr><td>Crash reports (device model, OS version, technical trace)</td><td>Finding and fixing bugs</td><td>Firebase Crashlytics</td></tr>
+      <tr><td>Map requests (IP address, requested tiles)</td><td>Rendering the map</td><td>OpenFreeMap / OpenStreetMap tile services</td></tr>
+      <tr><td>Routing (origin, destination)</td><td>Your route</td><td>OSRM routing service</td></tr>
+      <tr><td>Community meets ("going")</td><td>Anonymous counter of how many are going</td><td>Own service; others only ever see a number</td></tr>
+      <tr><td>Reports (mobile speed cameras, hazards, user reports)</td><td>Warnings for others; abuse prevention</td><td>Firebase Realtime Database, anonymised</td></tr>
+    </table>
+
+    <h2>Legal bases</h2>
+    <p>Processing is based on the user agreement (Art. 6(1)(b) GDPR — sign-in, convoy, radio, navigation), on legitimate interests (Art. 6(1)(f) — crash reports, abuse prevention), and, where the app explicitly asks you (e.g. location, microphone, speed-camera warnings in opt-in countries), on your consent (Art. 6(1)(a)), which you can withdraw at any time in the settings.</p>
+
+    <h2>Retention</h2>
+    <p>A convoy's position data is deleted when the convoy ends; a server job cleans up orphaned convoy rooms. Your account and friends list remain until you delete your account (in the app settings or by e-mail to support). Crashlytics retains crash reports for 90 days.</p>
+
+    <h2>Your rights</h2>
+    <p>You have the rights of access, rectification, erasure, restriction, portability, and objection (Art. 15–21 GDPR), and the right to complain to the Austrian data protection authority (dsb.gv.at). Contact the support address for any of these.</p>
+
+    <h2>This website</h2>
+    <p>This site is served by GitHub Pages (GitHub, Inc.). Technically necessary server logs (IP address) occur at GitHub; the site itself sets no cookies and embeds no trackers.</p>
+  </main>
+
+  <footer>
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+    <a href="support.html">Support</a>
+    <a href="imprint.html">Imprint</a>
+    <div>© 2026 FREQ</div>
+  </footer>
+</div>
+</body>
+</html>
