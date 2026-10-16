@@ -62,7 +62,7 @@ nav.sprachen a { color: var(--nebel); text-decoration: none; margin-left: 12px; 
 nav.sprachen a.aktiv { color: var(--cyan); }
 
 /* ── Prolog: 300svh Scrollstrecke, die Bühne klebt. ── */
-.prolog { height: 300svh; position: relative; }
+.prolog { height: 250svh; position: relative; }
 .buehne {
   position: sticky; top: 0; height: 100svh; overflow: hidden;
   display: grid; place-items: center;
@@ -271,7 +271,7 @@ footer a { color: var(--nebel); }
   .mitte {
     animation: titelweicht linear both;
     animation-timeline: --prolog;
-    animation-range: contain 68% contain 100%;
+    animation-range: contain 66% contain 94%;
   }
   @keyframes titelweicht { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(54px) scale(.94); } }
 
@@ -368,9 +368,9 @@ footer a { color: var(--nebel); }
   </div>
   <div class="szene routen" aria-hidden="true">
     <svg viewBox="0 0 460 360">
-      <path class="linie" style="stroke:#27c4e8" d="M40 330 C 120 300, 150 210, 226 150 S 228 90, 230 70"/>
-      <path class="linie" style="stroke:#7ad7ef" d="M230 336 C 230 280, 232 200, 230 70"/>
-      <path class="linie" style="stroke:#1b8fae" d="M420 324 C 350 290, 300 210, 236 148 S 232 90, 230 70"/>
+      <path class="linie" style="stroke:#27c4e8" d="M40 332 C 120 302, 152 216, 224 162 S 229 122, 230 106"/>
+      <path class="linie" style="stroke:#7ad7ef" d="M230 336 C 230 282, 232 190, 230 106"/>
+      <path class="linie" style="stroke:#1b8fae" d="M420 326 C 352 294, 304 214, 236 160 S 231 122, 230 106"/>
       <g class="ziel">
         <circle cx="230" cy="62" r="20" fill="#27c4e8"/>
         <circle cx="230" cy="62" r="8" fill="#06252d"/>
