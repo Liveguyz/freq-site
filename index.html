@@ -17,8 +17,8 @@
    rAF-Lauf ein — nie Scroll-Ereignisse direkt auf Stile, das ruckelt.
    Farben und Schrift sind die der App. */
 
-@property --bogen { syntax: "<angle>"; inherits: true; initial-value: 0deg; }
-@property --kante { syntax: "<angle>"; inherits: true; initial-value: 0deg; }
+@property --auftakt { syntax: "<angle>"; inherits: true; initial-value: 0deg; }
+@property --gescrollt { syntax: "<angle>"; inherits: true; initial-value: 0deg; }
 
 :root {
   --asphalt: #0b0d0f;
@@ -76,15 +76,22 @@ nav.sprachen a.aktiv { color: var(--cyan); }
 
 .logobuehne {
   position: relative;
-  width: min(74vmin, 520px);
+  width: min(56vmin, 420px);
   aspect-ratio: 1420 / 1409;
   transform: translateZ(0);
+  /* Auftakt: beim Laden zeichnet der Radar den cyanen Bogen — sonst stünde
+     die Seite leer da, bevor jemand scrollt. Den Rest holt der Scroll. */
+  animation: auftakt 1500ms cubic-bezier(.22,.7,.2,1) both;
 }
+@keyframes auftakt { from { --auftakt: 0deg; } to { --auftakt: 168deg; } }
+.strahl { animation: strahlauf 1700ms ease-out both; }
+@keyframes strahlauf { 0% { opacity: 0; } 12% { opacity: 1; } 88% { opacity: 1; } 100% { opacity: .55; } }
 /* Der Strahl deckt auf: conic-Maske in der Zeichenrichtung des Tachos.
    Der Bogen beginnt unten (180° = 6 Uhr), läuft über links und oben zum
    roten Ausschlag — genau wie das Logo gezeichnet ist. */
 .logo {
   width: 100%; height: 100%; object-fit: contain;
+  --bogen: calc(var(--auftakt) + var(--gescrollt));
   -webkit-mask-image: conic-gradient(from 180deg at var(--mx) var(--my),
       #000 var(--bogen), rgba(0,0,0,0) calc(var(--bogen) + 9deg));
   mask-image: conic-gradient(from 180deg at var(--mx) var(--my),
@@ -93,9 +100,10 @@ nav.sprachen a.aktiv { color: var(--cyan); }
 /* Die leuchtende Kante, die mitläuft — begrenzt auf den Ring, nicht bis in die Mitte. */
 .strahl {
   position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen;
+  --kante: calc(var(--auftakt) + var(--gescrollt));
   background: conic-gradient(from 180deg at var(--mx) var(--my),
       rgba(0,0,0,0) calc(var(--kante) - 14deg),
-      rgba(39, 196, 232, 0.55) var(--kante),
+      rgba(39, 196, 232, 0.6) var(--kante),
       rgba(0,0,0,0) calc(var(--kante) + 2deg));
   -webkit-mask-image: radial-gradient(circle at var(--mx) var(--my),
       rgba(0,0,0,0) 26%, #000 34%, #000 61%, rgba(0,0,0,0) 68%);
@@ -104,11 +112,12 @@ nav.sprachen a.aktiv { color: var(--cyan); }
   opacity: 0;
 }
 
-.prolog-text {
-  position: absolute; inset: auto 0 0 0; text-align: center;
-  padding: 0 24px calc(26px + env(safe-area-inset-bottom));
-  will-change: transform, opacity;
+.mitte {
+  display: flex; flex-direction: column; align-items: center;
+  gap: clamp(10px, 2.4svh, 26px);
+  padding: 72px 24px calc(56px + env(safe-area-inset-bottom));
 }
+.prolog-text { text-align: center; will-change: transform, opacity; }
 .prolog-text h1 {
   margin: 0 0 6px;
   font-size: clamp(32px, 7.6vw, 92px);
@@ -236,31 +245,38 @@ footer a { color: var(--nebel); }
 
 /* ══ Scroll-Timelines: der Browser fährt sie, nicht JavaScript. ══════════ */
 @supports (animation-timeline: scroll()) {
-  .prolog { timeline-scope: --prolog; }
-  .buehne { view-timeline: --prolog block; }
+  /* Die Zeitleiste gehört auf den HOHEN Prolog, nicht auf die klebende
+     Bühne: deren "contain"-Phase ist null lang (sie ist so hoch wie das
+     Fenster), die Animation hätte keine Strecke zum Laufen. Am Prolog ist
+     contain genau die Strecke, auf der die Bühne klebt. */
+  .prolog { view-timeline: --prolog block; }
 
+  /* Der Scroll setzt den Auftakt fort: er fügt den fehlenden Rest hinzu.
+     Die Timeline läuft im Compositor — Bild für Bild, auch sehr langsam. */
   .logobuehne {
-    animation: radar linear both;
-    animation-timeline: --prolog;
-    animation-range: contain 0% contain 72%;
+    animation: auftakt 1500ms cubic-bezier(.22,.7,.2,1) both,
+               radar linear both;
+    animation-timeline: auto, --prolog;
+    animation-range: normal, contain 0% contain 52%;
   }
-  @keyframes radar { from { --bogen: 0deg; --kante: 0deg; } to { --bogen: 312deg; --kante: 312deg; } }
+  @keyframes radar { from { --gescrollt: 0deg; } to { --gescrollt: 164deg; } }
 
   .strahl {
-    animation: strahlan linear both;
-    animation-timeline: --prolog;
-    animation-range: contain 0% contain 78%;
+    animation: strahlauf 1700ms ease-out both, strahlaus linear both;
+    animation-timeline: auto, --prolog;
+    animation-range: normal, contain 46% contain 64%;
   }
-  @keyframes strahlan { 0% { opacity: 0; } 8% { opacity: 1; } 88% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes strahlaus { from { opacity: .55; } to { opacity: 0; } }
 
-  .prolog-text {
+  .mitte {
     animation: titelweicht linear both;
     animation-timeline: --prolog;
-    animation-range: contain 0% contain 42%;
+    animation-range: contain 68% contain 100%;
   }
-  @keyframes titelweicht { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(42px); } }
+  @keyframes titelweicht { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(54px) scale(.94); } }
 
-  .runter { animation: titelweicht linear both; animation-timeline: --prolog; animation-range: contain 0% contain 18%; }
+  .runter { animation: ausblenden linear both; animation-timeline: --prolog; animation-range: contain 0% contain 14%; }
+  @keyframes ausblenden { to { opacity: 0; } }
 
   .spur { animation: ziehen linear both; animation-timeline: view(); animation-range: entry 0% exit 100%; }
   @keyframes ziehen { from { transform: translate3d(var(--von), 0, 0); } to { transform: translate3d(var(--bis), 0, 0); } }
@@ -301,16 +317,18 @@ footer a { color: var(--nebel); }
 <section class="prolog" aria-label="FREQ">
   <div class="buehne">
     <div class="glut" aria-hidden="true"></div>
-    <div class="logobuehne" id="logobuehne">
+    <div class="mitte">
+      <div class="logobuehne" id="logobuehne">
       <picture>
         <source srcset="bild/freq-logo.webp" type="image/webp">
         <img class="logo" id="logo" src="bild/freq-logo.png" alt="FREQ" width="900" height="893" fetchpriority="high">
       </picture>
-      <div class="strahl" id="strahl" aria-hidden="true"></div>
-    </div>
-    <div class="prolog-text" id="prologtext">
-      <h1>Gemeinsam fahren.<br>Gemeinsam funken.</h1>
-      <p>Die Convoy-App für dich und deine Freunde.</p>
+        <div class="strahl" id="strahl" aria-hidden="true"></div>
+      </div>
+      <div class="prolog-text" id="prologtext">
+        <h1>Gemeinsam fahren.<br>Gemeinsam funken.</h1>
+        <p>Die Convoy-App für dich und deine Freunde.</p>
+      </div>
     </div>
     <div class="runter" id="runter" aria-hidden="true">Scrollen</div>
   </div>
@@ -424,7 +442,7 @@ footer a { color: var(--nebel); }
   var buehne = document.querySelector('.buehne');
   var logobuehne = document.getElementById('logobuehne');
   var strahl = document.getElementById('strahl');
-  var text = document.getElementById('prologtext');
+  var mitte = document.querySelector('.mitte');
   var runter = document.getElementById('runter');
   var kopf = document.getElementById('kopf');
   var spuren = Array.prototype.slice.call(document.querySelectorAll('.spur'));
@@ -441,14 +459,12 @@ footer a { color: var(--nebel); }
   }
 
   function zeichnen(p) {
-    var bogen = klemm(p / 0.72) * 312;
-    logobuehne.style.setProperty('--bogen', bogen + 'deg');
-    logobuehne.style.setProperty('--kante', bogen + 'deg');
-    strahl.style.opacity = p < 0.02 ? 0 : (p > 0.78 ? 0 : 1);
-    var weg = klemm(p / 0.42);
-    text.style.opacity = 1 - weg;
-    text.style.transform = 'translate3d(0,' + (weg * 42) + 'px,0)';
-    runter.style.opacity = 1 - klemm(p / 0.18);
+    logobuehne.style.setProperty('--gescrollt', (klemm(p / 0.52) * 164) + 'deg');
+    strahl.style.opacity = 0.55 * (1 - klemm((p - 0.46) / 0.18));
+    var weg = klemm((p - 0.68) / 0.32);
+    mitte.style.opacity = 1 - weg;
+    mitte.style.transform = 'translate3d(0,' + (weg * 54) + 'px,0) scale(' + (1 - weg * 0.06) + ')';
+    runter.style.opacity = 1 - klemm(p / 0.14);
     kopf.style.borderBottomColor = window.scrollY > 60 ? 'rgba(255,255,255,0.10)' : 'transparent';
 
     var r = spurenBox.getBoundingClientRect();
