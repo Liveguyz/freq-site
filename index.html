@@ -81,17 +81,13 @@ nav.sprachen a.aktiv { color: var(--cyan); }
   transform: translateZ(0);
   /* Wie bei Apple (Luka 21.10.2026: „ich möchte durch die Animation
      scrollen, von Anfang bis Ende"): der Strahl hängt ganz am Scroll. Oben
-     steht das Logo nur als Schatten, der Scroll fährt den Strahl von 6 Uhr
+     ist vom Logo noch nichts zu sehen (der leise Schatten vom 21.10. wirkte
+     wie ein kaputtes Logo, Luka), der Scroll fährt den Strahl von 6 Uhr
      einmal ganz herum (372°: die weiche Kante muss auch durch), rückwärts
      scrollen dreht ihn zurück. Ohne Auftakt beim Laden — der lief vorher,
      während das Bild noch lud, und man sah ihn erst in der Mitte. */
 }
-/* Der Schatten: das ganze Logo, ganz leise — die Bühne ist oben nicht leer. */
-.logo-geist {
-  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain;
-  opacity: .13; pointer-events: none;
-}
-.logo { position: relative; }
+
 /* Der Strahl deckt auf: conic-Maske in der Zeichenrichtung des Tachos.
    Der Bogen beginnt unten (180° = 6 Uhr), läuft über links und oben zum
    roten Ausschlag — genau wie das Logo gezeichnet ist. */
@@ -99,9 +95,9 @@ nav.sprachen a.aktiv { color: var(--cyan); }
   width: 100%; height: 100%; object-fit: contain;
   --bogen: calc(var(--auftakt) + var(--gescrollt));
   -webkit-mask-image: conic-gradient(from 180deg at var(--mx) var(--my),
-      #000 var(--bogen), rgba(0,0,0,0) calc(var(--bogen) + 9deg));
+      #000 calc(var(--bogen) - 9deg), rgba(0,0,0,0) var(--bogen));
   mask-image: conic-gradient(from 180deg at var(--mx) var(--my),
-      #000 var(--bogen), rgba(0,0,0,0) calc(var(--bogen) + 9deg));
+      #000 calc(var(--bogen) - 9deg), rgba(0,0,0,0) var(--bogen));
 }
 /* Die leuchtende Kante, die mitläuft — begrenzt auf den Ring, nicht bis in die Mitte. */
 .strahl {
@@ -285,7 +281,6 @@ footer a { color: var(--nebel); }
   .prolog { height: auto; }
   .buehne { position: static; height: auto; padding: 110px 0 40px; }
   .logo { -webkit-mask-image: none; mask-image: none; }
-  .logo-geist { display: none; }
   .strahl { display: none; }
   .prolog-text, .kapitel .text, .satz, .caption, .routen .ziel, .schild {
     opacity: 1 !important; transform: none !important; animation: none !important; transition: none !important;
@@ -297,7 +292,7 @@ footer a { color: var(--nebel); }
   .runter { display: none; }
 }
 </style>
-<noscript><style>.logobuehne, .strahl { animation: none !important; } .logo { -webkit-mask-image: none !important; mask-image: none !important; } .logo-geist { display: none; }</style></noscript>
+<noscript><style>.logobuehne, .strahl { animation: none !important; } .logo { -webkit-mask-image: none !important; mask-image: none !important; }</style></noscript>
 </head>
 <body>
 
@@ -317,10 +312,6 @@ footer a { color: var(--nebel); }
     <div class="glut" aria-hidden="true"></div>
     <div class="mitte">
       <div class="logobuehne" id="logobuehne">
-      <picture aria-hidden="true">
-        <source srcset="bild/freq-logo.webp" type="image/webp">
-        <img class="logo-geist" src="bild/freq-logo.png" alt="" width="900" height="893">
-      </picture>
       <picture>
         <source srcset="bild/freq-logo.webp" type="image/webp">
         <img class="logo" id="logo" src="bild/freq-logo.png" alt="FREQ" width="900" height="893" fetchpriority="high">
