@@ -62,7 +62,7 @@ nav.sprachen a { color: var(--nebel); text-decoration: none; margin-left: 12px; 
 nav.sprachen a.aktiv { color: var(--cyan); }
 
 /* ── Prolog: 300svh Scrollstrecke, die Bühne klebt. ── */
-.prolog { height: 250svh; position: relative; }
+.prolog { height: 300svh; position: relative; }
 .buehne {
   position: sticky; top: 0; height: 100svh; overflow: hidden;
   display: grid; place-items: center;
@@ -79,19 +79,19 @@ nav.sprachen a.aktiv { color: var(--cyan); }
   width: min(56vmin, 420px);
   aspect-ratio: 1420 / 1409;
   transform: translateZ(0);
-  /* Der Strahl läuft EINMAL ganz herum, von 6 Uhr bis das ganze Logo steht
-     (21.10.2026, Luka: „die Animation beginnt irgendwo in der Mitte und endet
-     bevor das Logo voll da ist"). Er wartet auf das Bild: das Skript setzt
-     .geladen erst, wenn freq-logo.png dekodiert ist — vorher lief der Strahl
-     schon, während das Bild noch lud, und man sah nur die zweite Hälfte.
-     372° statt 360°: die weiche Kante (9°) muss auch ganz durch sein. */
-  animation: auftakt 2400ms cubic-bezier(.45,.05,.2,1) both;
-  animation-play-state: paused;
+  /* Wie bei Apple (Luka 21.10.2026: „ich möchte durch die Animation
+     scrollen, von Anfang bis Ende"): der Strahl hängt ganz am Scroll. Oben
+     steht das Logo nur als Schatten, der Scroll fährt den Strahl von 6 Uhr
+     einmal ganz herum (372°: die weiche Kante muss auch durch), rückwärts
+     scrollen dreht ihn zurück. Ohne Auftakt beim Laden — der lief vorher,
+     während das Bild noch lud, und man sah ihn erst in der Mitte. */
 }
-@keyframes auftakt { from { --auftakt: 0deg; } to { --auftakt: 372deg; } }
-.strahl { animation: strahlauf 2400ms linear both; animation-play-state: paused; }
-.logobuehne.geladen, .logobuehne.geladen .strahl { animation-play-state: running; }
-@keyframes strahlauf { 0% { opacity: 0; } 8% { opacity: 1; } 85% { opacity: 1; } 100% { opacity: 0; } }
+/* Der Schatten: das ganze Logo, ganz leise — die Bühne ist oben nicht leer. */
+.logo-geist {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain;
+  opacity: .13; pointer-events: none;
+}
+.logo { position: relative; }
 /* Der Strahl deckt auf: conic-Maske in der Zeichenrichtung des Tachos.
    Der Bogen beginnt unten (180° = 6 Uhr), läuft über links und oben zum
    roten Ausschlag — genau wie das Logo gezeichnet ist. */
@@ -257,19 +257,21 @@ footer a { color: var(--nebel); }
      contain genau die Strecke, auf der die Bühne klebt. */
   .prolog { view-timeline: --prolog block; }
 
-  /* Das Logo deckt der Strahl beim Laden ganz auf (oben, .logobuehne); der
-     Scroll blendet nur noch den Titel aus. Bis zum 21.10.2026 holte der
-     Scroll die zweite Hälfte des Bogens — wer nicht weit genug scrollte,
-     sah das Logo nie ganz. */
+  /* Der Strahl: auf den ersten 70 % der klebenden Strecke einmal ganz herum. */
+  .logobuehne { animation: radar linear both; animation-timeline: --prolog; animation-range: contain 0% contain 70%; }
+  @keyframes radar { from { --gescrollt: 0deg; } to { --gescrollt: 372deg; } }
+  /* Die leuchtende Kante ist nur da, solange der Strahl läuft. */
+  .strahl { animation: strahlkante linear both; animation-timeline: --prolog; animation-range: contain 0% contain 70%; }
+  @keyframes strahlkante { 0% { opacity: 0; } 3% { opacity: 1; } 90% { opacity: 1; } 100% { opacity: 0; } }
 
   .mitte {
     animation: titelweicht linear both;
     animation-timeline: --prolog;
-    animation-range: contain 66% contain 94%;
+    animation-range: contain 76% contain 97%;
   }
   @keyframes titelweicht { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(54px) scale(.94); } }
 
-  .runter { animation: ausblenden linear both; animation-timeline: --prolog; animation-range: contain 0% contain 14%; }
+  .runter { animation: ausblenden linear both; animation-timeline: --prolog; animation-range: contain 0% contain 8%; }
   @keyframes ausblenden { to { opacity: 0; } }
 
   .spur { animation: ziehen linear both; animation-timeline: view(); animation-range: entry 0% exit 100%; }
@@ -283,6 +285,7 @@ footer a { color: var(--nebel); }
   .prolog { height: auto; }
   .buehne { position: static; height: auto; padding: 110px 0 40px; }
   .logo { -webkit-mask-image: none; mask-image: none; }
+  .logo-geist { display: none; }
   .strahl { display: none; }
   .prolog-text, .kapitel .text, .satz, .caption, .routen .ziel, .schild {
     opacity: 1 !important; transform: none !important; animation: none !important; transition: none !important;
@@ -294,7 +297,7 @@ footer a { color: var(--nebel); }
   .runter { display: none; }
 }
 </style>
-<noscript><style>.logobuehne, .strahl { animation: none !important; } .logo { -webkit-mask-image: none !important; mask-image: none !important; }</style></noscript>
+<noscript><style>.logobuehne, .strahl { animation: none !important; } .logo { -webkit-mask-image: none !important; mask-image: none !important; } .logo-geist { display: none; }</style></noscript>
 </head>
 <body>
 
@@ -314,6 +317,10 @@ footer a { color: var(--nebel); }
     <div class="glut" aria-hidden="true"></div>
     <div class="mitte">
       <div class="logobuehne" id="logobuehne">
+      <picture aria-hidden="true">
+        <source srcset="../bild/freq-logo.webp" type="image/webp">
+        <img class="logo-geist" src="../bild/freq-logo.png" alt="" width="900" height="893">
+      </picture>
       <picture>
         <source srcset="../bild/freq-logo.webp" type="image/webp">
         <img class="logo" id="logo" src="../bild/freq-logo.png" alt="FREQ" width="900" height="893" fetchpriority="high">
@@ -412,26 +419,6 @@ footer a { color: var(--nebel); }
 (function () {
   'use strict';
 
-  // Der Logo-Strahl startet erst, wenn das Bild da ist (21.10.2026): vorher
-  // lief er schon, während freq-logo.png noch lud, und man sah ihn erst in
-  // der Mitte. decode() wartet bis zum fertig dekodierten Bild; ohne decode
-  // oder bei einem Fehler startet er trotzdem, spätestens nach 6 s.
-  (function () {
-    var buehneLogo = document.getElementById('logobuehne');
-    var logoBild = document.getElementById('logo');
-    if (!buehneLogo || !logoBild) return;
-    var gestartet = false;
-    function los() { if (!gestartet) { gestartet = true; buehneLogo.classList.add('geladen'); } }
-    function fertig() {
-      if (logoBild.decode) logoBild.decode().then(los, los); else los();
-    }
-    if (logoBild.complete && logoBild.naturalWidth) fertig();
-    else {
-      logoBild.addEventListener('load', fertig);
-      logoBild.addEventListener('error', los);
-    }
-    setTimeout(los, 6000);
-  })();
 
   // Kapitel-Auftritte: einmalig, zeitbasiert — unabhängig vom Scrolltempo.
   var beobachter = new IntersectionObserver(function (liste) {
@@ -475,10 +462,14 @@ footer a { color: var(--nebel); }
   }
 
   function zeichnen(p) {
-    var weg = klemm((p - 0.68) / 0.32);
+    // Der Strahl wie in der Scroll-Timeline: 0–70 % einmal ganz herum.
+    var lauf = klemm(p / 0.70);
+    logobuehne.style.setProperty('--gescrollt', (lauf * 372) + 'deg');
+    strahl.style.opacity = lauf <= 0 ? 0 : lauf < 0.03 ? lauf / 0.03 : lauf > 0.9 ? (1 - lauf) / 0.1 : 1;
+    var weg = klemm((p - 0.76) / 0.21);
     mitte.style.opacity = 1 - weg;
     mitte.style.transform = 'translate3d(0,' + (weg * 54) + 'px,0) scale(' + (1 - weg * 0.06) + ')';
-    runter.style.opacity = 1 - klemm(p / 0.14);
+    runter.style.opacity = 1 - klemm(p / 0.08);
     kopf.style.borderBottomColor = window.scrollY > 60 ? 'rgba(255,255,255,0.10)' : 'transparent';
 
     var r = spurenBox.getBoundingClientRect();
