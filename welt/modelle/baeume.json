@@ -1,0 +1,242 @@
+[
+  {
+    "name": "fichte_1",
+    "art": "nadel",
+    "hoehe_m": 18.0,
+    "breite_m": 10.58,
+    "dateien": {
+      "lod0": "baum_fichte_1_lod0.glb",
+      "lod1": "baum_fichte_1_lod1.glb",
+      "lod2": "baum_fichte_1_lod2.glb"
+    },
+    "dreiecke": {
+      "lod0": 12969,
+      "lod1": 3268,
+      "lod2": 4
+    },
+    "bytes": {
+      "lod0": 1527444,
+      "lod1": 341596,
+      "lod2": 69336
+    },
+    "quelle": "realistic_fir_trees_pack_lods_gameready.glb",
+    "titel": "Realistic fir trees pack (LODS, gameready)",
+    "autor": "LOLIPOP (https://sketchfab.com/lolipop_1707)"
+  },
+  {
+    "name": "fichte_2",
+    "art": "nadel",
+    "hoehe_m": 17.0,
+    "breite_m": 9.53,
+    "dateien": {
+      "lod0": "baum_fichte_2_lod0.glb",
+      "lod1": "baum_fichte_2_lod1.glb",
+      "lod2": "baum_fichte_2_lod2.glb"
+    },
+    "dreiecke": {
+      "lod0": 9872,
+      "lod1": 2506,
+      "lod2": 4
+    },
+    "bytes": {
+      "lod0": 1478692,
+      "lod1": 329732,
+      "lod2": 64024
+    },
+    "quelle": "realistic_fir_trees_pack_lods_gameready.glb",
+    "titel": "Realistic fir trees pack (LODS, gameready)",
+    "autor": "LOLIPOP (https://sketchfab.com/lolipop_1707)"
+  },
+  {
+    "name": "fichte_3",
+    "art": "nadel",
+    "hoehe_m": 16.0,
+    "breite_m": 9.74,
+    "dateien": {
+      "lod0": "baum_fichte_3_lod0.glb",
+      "lod1": "baum_fichte_3_lod1.glb",
+      "lod2": "baum_fichte_3_lod2.glb"
+    },
+    "dreiecke": {
+      "lod0": 11786,
+      "lod1": 3014,
+      "lod2": 4
+    },
+    "bytes": {
+      "lod0": 1509776,
+      "lod1": 337888,
+      "lod2": 67264
+    },
+    "quelle": "realistic_fir_trees_pack_lods_gameready.glb",
+    "titel": "Realistic fir trees pack (LODS, gameready)",
+    "autor": "LOLIPOP (https://sketchfab.com/lolipop_1707)"
+  },
+  {
+    "name": "fichte_4",
+    "art": "nadel",
+    "hoehe_m": 13.0,
+    "breite_m": 9.63,
+    "dateien": {
+      "lod0": "baum_fichte_4_lod0.glb",
+      "lod1": "baum_fichte_4_lod1.glb",
+      "lod2": "baum_fichte_4_lod2.glb"
+    },
+    "dreiecke": {
+      "lod0": 7844,
+      "lod1": 1961,
+      "lod2": 4
+    },
+    "bytes": {
+      "lod0": 1451428,
+      "lod1": 322528,
+      "lod2": 70976
+    },
+    "quelle": "realistic_fir_trees_pack_lods_gameready.glb",
+    "titel": "Realistic fir trees pack (LODS, gameready)",
+    "autor": "LOLIPOP (https://sketchfab.com/lolipop_1707)"
+  },
+  {
+    "name": "fichte_6",
+    "art": "nadel",
+    "hoehe_m": 14.0,
+    "breite_m": 9.85,
+    "dateien": {
+      "lod0": "baum_fichte_6_lod0.glb",
+      "lod1": "baum_fichte_6_lod1.glb",
+      "lod2": "baum_fichte_6_lod2.glb"
+    },
+    "dreiecke": {
+      "lod0": 11581,
+      "lod1": 2476,
+      "lod2": 4
+    },
+    "bytes": {
+      "lod0": 1505360,
+      "lod1": 331700,
+      "lod2": 71632
+    },
+    "quelle": "realistic_fir_trees_pack_lods_gameready.glb",
+    "titel": "Realistic fir trees pack (LODS, gameready)",
+    "autor": "LOLIPOP (https://sketchfab.com/lolipop_1707)"
+  },
+  {
+    "name": "fichte_5",
+    "art": "nadel",
+    "hoehe_m": 12.0,
+    "breite_m": 8.43,
+    "dateien": {
+      "lod0": "baum_fichte_5_lod0.glb",
+      "lod1": "baum_fichte_5_lod1.glb",
+      "lod2": "baum_fichte_5_lod2.glb"
+    },
+    "dreiecke": {
+      "lod0": 6813,
+      "lod1": 2278,
+      "lod2": 4
+    },
+    "bytes": {
+      "lod0": 1434352,
+      "lod1": 329164,
+      "lod2": 69888
+    },
+    "quelle": "realistic_fir_trees_pack_lods_gameready.glb",
+    "titel": "Realistic fir trees pack (LODS, gameready)",
+    "autor": "LOLIPOP (https://sketchfab.com/lolipop_1707)"
+  },
+  {
+    "name": "laub_1",
+    "art": "laub",
+    "hoehe_m": 13.0,
+    "breite_m": 13.79,
+    "dateien": {
+      "lod0": "baum_laub_1_lod0.glb",
+      "lod1": "baum_laub_1_lod1.glb",
+      "lod2": "baum_laub_1_lod2.glb"
+    },
+    "dreiecke": {
+      "lod0": 22566,
+      "lod1": 7427,
+      "lod2": 4
+    },
+    "bytes": {
+      "lod0": 1224332,
+      "lod1": 431240,
+      "lod2": 57728
+    },
+    "quelle": "realistic_trees_collection.glb",
+    "titel": "Realistic Trees Collection",
+    "autor": "Jungle Jim (https://sketchfab.com/jungle_jim)"
+  },
+  {
+    "name": "laub_2",
+    "art": "laub",
+    "hoehe_m": 11.0,
+    "breite_m": 11.03,
+    "dateien": {
+      "lod0": "baum_laub_2_lod0.glb",
+      "lod1": "baum_laub_2_lod1.glb",
+      "lod2": "baum_laub_2_lod2.glb"
+    },
+    "dreiecke": {
+      "lod0": 15352,
+      "lod1": 4835,
+      "lod2": 4
+    },
+    "bytes": {
+      "lod0": 937124,
+      "lod1": 353992,
+      "lod2": 79996
+    },
+    "quelle": "realistic_trees_collection.glb",
+    "titel": "Realistic Trees Collection",
+    "autor": "Jungle Jim (https://sketchfab.com/jungle_jim)"
+  },
+  {
+    "name": "buche_1",
+    "art": "laub",
+    "hoehe_m": 14.0,
+    "breite_m": 21.77,
+    "dateien": {
+      "lod0": "baum_buche_1_lod0.glb",
+      "lod1": "baum_buche_1_lod1.glb",
+      "lod2": "baum_buche_1_lod2.glb"
+    },
+    "dreiecke": {
+      "lod0": 21048,
+      "lod1": 5459,
+      "lod2": 4
+    },
+    "bytes": {
+      "lod0": 1028532,
+      "lod1": 352316,
+      "lod2": 36924
+    },
+    "quelle": "realistic_tree_models_for_games.glb",
+    "titel": "Realistic Tree Models For Games",
+    "autor": "fadiyasotodeh (https://sketchfab.com/fadiyasotodeh)"
+  },
+  {
+    "name": "nadelbusch_1",
+    "art": "nadel",
+    "hoehe_m": 3.2,
+    "breite_m": 5.03,
+    "dateien": {
+      "lod0": "baum_nadelbusch_1_lod0.glb",
+      "lod1": "baum_nadelbusch_1_lod1.glb",
+      "lod2": "baum_nadelbusch_1_lod2.glb"
+    },
+    "dreiecke": {
+      "lod0": 15972,
+      "lod1": 5002,
+      "lod2": 4
+    },
+    "bytes": {
+      "lod0": 1250524,
+      "lod1": 426144,
+      "lod2": 50088
+    },
+    "quelle": "realistic_trees_collection.glb",
+    "titel": "Realistic Trees Collection",
+    "autor": "Jungle Jim (https://sketchfab.com/jungle_jim)"
+  }
+]
