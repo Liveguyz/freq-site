@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Delete account — FREQ</title>
+<meta name="description" content="How to delete your FREQ account and its data – in the app or by e-mail, also without the app.">
+<link rel="icon" href="../bild/freq-touch.png">
+<link rel="apple-touch-icon" href="../bild/freq-touch.png">
+<link rel="stylesheet" href="../stil.css">
+</head>
+<body>
+<div class="hülle">
+  <header class="kopf">
+    <a class="marke" href="index.html"><picture><source srcset="../bild/freq-mark.webp" type="image/webp"><img src="../bild/freq-mark.png" alt="" width="30" height="30"></picture><b>FREQ</b></a>
+    <nav class="sprachen"><a href="../konto-loeschen.html">DE</a><a class="aktiv" href="delete-account.html">EN</a></nav>
+  </header>
+
+  <main>
+    <h1>Delete your FREQ account and data</h1>
+    <p class="stand">Last updated: 3 November 2026 · applies to the app <b>FREQ</b> (Android and iOS) by <b>Luka Veselinovic</b>, Vienna (see <a href="imprint.html">Imprint</a>).</p>
+
+    <p>You can delete your FREQ account with the data that belongs to it at any time – directly in the app, or by e-mail, even if FREQ is no longer on your phone.</p>
+
+    <h2>In the app</h2>
+    <ol>
+      <li>Open FREQ and tap <b>your profile picture</b> at the top of the map. The menu opens.</li>
+      <li>Tap <b>Settings</b> (or your name at the very top of the menu).</li>
+      <li>In Settings, tap <b>your name and e-mail address</b> at the very top. <b>Account</b> opens.</li>
+      <li>At the very bottom, tap <b>"Delete account"</b> and confirm with <b>"Delete"</b>.</li>
+      <li>If your last sign-in was a while ago, FREQ asks you to sign in with Google once more. Without that sign-in nothing is deleted.</li>
+    </ol>
+    <p>The deletion happens right away: first your data on our servers and your account, then all FREQ data on this phone. Your phone needs an internet connection for this – without one, FREQ deletes nothing. At the end the app shows "Account deleted".</p>
+    <p class="hinweisbox"><b>FREQ Premium:</b> A running subscription does not end automatically when you delete your account. Please cancel it first – in the app under Settings › FREQ Premium › "Manage or cancel subscription".</p>
+
+    <h2>By e-mail – also without the app</h2>
+    <p>Write to <a href="mailto:support@freqconvoi.com"><b>support@freqconvoi.com</b></a> with the subject <b>"Delete account"</b>, ideally from the e-mail address of your FREQ account – that is the address of the Google account you sign in to FREQ with.</p>
+    <p class="hinweisbox"><a href="mailto:support@freqconvoi.com?subject=Delete%20account&amp;body=Please%20delete%20my%20FREQ%20account%20and%20all%20data%20that%20belongs%20to%20it.%0A%0AE-mail%20address%20of%20my%20FREQ%20account%3A%20%0ARadio%20name%20in%20FREQ%20%28optional%29%3A%20%0A"><b>Prepare the "Delete account" e-mail</b></a> – only opens your e-mail program; this page sends and stores nothing.</p>
+    <p>If the e-mail comes from a different address, we check back with the account's address for safety, so that nobody can have someone else's account deleted. We delete within one month and confirm the deletion to you by e-mail.</p>
+
+    <h2>What is deleted</h2>
+    <p>On our servers (Firebase database and our service at Cloudflare):</p>
+    <ul>
+      <li>your account at Firebase Authentication – name, e-mail address and profile picture of your Google account, and your identifier,</li>
+      <li>your online status, your friends list – including your entry in your friends' lists – and the names you gave your friends,</li>
+      <li>your block list and your inbox with requests and invitations,</li>
+      <li>your speed-camera and hazard reports with the answers to them, also those sent from other devices,</li>
+      <li>your reports about others, other people's reports about you, and any suspension or mute of your account,</li>
+      <li>your data for notifications (push), your map view and your entries for "friends nearby",</li>
+      <li>your planned rides (in other people's rides, your place and your answer) and your "going" entries for community meets,</li>
+      <li>your agreement to the terms of use, your age confirmation and your Premium or tester status.</li>
+    </ul>
+    <p>If you are in a convoy, FREQ leaves it first.</p>
+    <p><b>On your phone:</b> once the account is deleted, FREQ deletes all FREQ data on the phone you delete from – for example favourites, home and work, recent destinations, learned routes and your friends' pictures – and resets all settings to factory defaults. Offline maps contain no data about you and stay until you uninstall FREQ. On other phones where you were signed in, simply uninstall FREQ.</p>
+
+    <h2>What remains and for how long</h2>
+    <ul>
+      <li><b>Requests and invitations you just sent to others:</b> they expire there by themselves; our server deletes them after about a day.</li>
+      <li><b>Other people's sending records:</b> if someone sent you a notification, your identifier is in their sending record; our server deletes it after about 25 hours.</li>
+      <li><b>Other people's block lists:</b> if someone blocked you, your identifier stays in their list until they unblock you. It then no longer belongs to any account.</li>
+      <li><b>Crash reports</b> (only if you had agreed): they are not linked to your account; Firebase Crashlytics deletes them after 90 days.</li>
+      <li><b>Server logs:</b> 3 days at Cloudflare, a few weeks at Firebase Authentication (according to Google), at most 7 days on our servers at Hetzner.</li>
+      <li><b>Frequent camera spots:</b> place, day and heading of expired speed-camera reports are kept for 365 days – without an identifier and without an account, so with no link to you.</li>
+      <li><b>E-mails about reports:</b> we receive e-mails about reports. Deleting your account does not delete them.</li>
+      <li><b>Copies with others:</b> we cannot delete what friends saved on their phones (your name, for example).</li>
+      <li><b>Test data</b> (only for invited testers of the test version): it is stored at Cloudflare R2 in the EU and deleted automatically 60 days after upload. Your tester access ends with your account. On request we delete your test data right away – an e-mail or a message is enough.</li>
+    </ul>
+
+    <h2>Deleting only some data</h2>
+    <p>You want to keep your account and delete only certain data? You can:</p>
+    <ul>
+      <li><b>Learned routes:</b> Settings › Privacy &amp; legal › "Delete learned routes".</li>
+      <li><b>Friends and blocks:</b> you can remove friends and unblock people in the app at any time.</li>
+      <li><b>Crash reports:</b> Settings › Privacy &amp; legal › switch off "Send crash reports" – then no more are sent.</li>
+      <li><b>Test data of the test version:</b> send us an e-mail or a message – we delete all your test data right away, even before the 60 days are up.</li>
+      <li><b>Anything else:</b> write to <a href="mailto:support@freqconvoi.com">support@freqconvoi.com</a> and tell us what should be deleted.</li>
+    </ul>
+    <p>More in the <a href="privacy.html">Privacy Policy</a>.</p>
+  </main>
+
+  <footer>
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+    <a href="support.html">Support</a>
+    <a href="delete-account.html">Delete account</a>
+    <a href="imprint.html">Imprint</a>
+    <div>© 2026 FREQ</div>
+  </footer>
+</div>
+</body>
+</html>
