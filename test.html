@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FREQ testen — FREQ</title>
+<meta name="description" content="Die Test-Version von FREQ aus dem Play Store holen – mit Android Auto. Zwei Schritte.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="bild/freq-touch.png">
+<link rel="apple-touch-icon" href="bild/freq-touch.png">
+<link rel="stylesheet" href="stil.css">
+<style>
+  .schritte { list-style: none; padding: 0; margin: 28px 0; display: grid; gap: 14px; counter-reset: schritt; }
+  .schritt {
+    counter-increment: schritt;
+    background: var(--karte); border: 1px solid var(--rand); border-radius: 16px;
+    padding: 20px 20px 20px 72px; position: relative;
+  }
+  .schritt::before {
+    content: counter(schritt);
+    position: absolute; left: 20px; top: 20px;
+    width: 36px; height: 36px; border-radius: 18px;
+    background: var(--akzent); color: var(--akzent-tinte);
+    font-weight: 800; font-size: 18px; line-height: 36px; text-align: center;
+  }
+  .schritt h2 { margin: 4px 0 6px; font-size: 19px; }
+  .schritt p { margin: 0 0 14px; color: var(--neben); font-size: 15px; }
+  .schritt p b { color: var(--text); }
+  .knopf {
+    display: block; text-align: center; text-decoration: none;
+    background: var(--akzent); color: var(--akzent-tinte);
+    font-weight: 700; font-size: 17px; padding: 14px 18px; border-radius: 12px;
+  }
+  .knopf:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
+  @media (max-width: 420px) {
+    .schritt { padding: 64px 16px 18px; }
+    .schritt::before { left: 16px; top: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="hülle">
+  <header class="kopf">
+    <a class="marke" href="index.html"><picture><source srcset="bild/freq-mark.webp" type="image/webp"><img src="bild/freq-mark.png" alt="" width="30" height="30"></picture><b>FREQ</b></a>
+    <nav class="sprachen"><a class="aktiv" href="test.html">DE</a><a href="en/test.html">EN</a></nav>
+  </header>
+
+  <main>
+    <h1>FREQ testen</h1>
+    <p>Die Test-Version kommt direkt aus dem Play Store und läuft auch in <b>Android Auto</b>. Nur für Android. Zwei Schritte, dann bist du dabei.</p>
+
+    <ol class="schritte">
+      <li class="schritt">
+        <h2>Der Testgruppe beitreten</h2>
+        <p>Öffne die Gruppe mit dem <b>Google-Konto, mit dem du im Play Store angemeldet bist</b>, und tippe auf <b>„Gruppe beitreten“</b>.</p>
+        <a class="knopf" href="https://groups.google.com/g/freq-internal-testers">Testgruppe öffnen</a>
+      </li>
+      <li class="schritt">
+        <h2>FREQ installieren</h2>
+        <p>Tippe auf <b>„Tester werden“</b> und danach auf <b>„Bei Google Play herunterladen“</b>. Steht dort noch „nicht verfügbar“, warte ein paar Minuten nach Schritt 1 und lade die Seite neu.</p>
+        <a class="knopf" href="https://play.google.com/apps/testing/com.freq.convoi">Tester werden</a>
+      </li>
+    </ol>
+
+    <p class="hinweisbox"><b>Du hast FREQ schon über WhatsApp bekommen?</b> Deinstalliere diese App zuerst, sonst kann der Play Store FREQ nicht installieren. Dein Konto bleibt – du meldest dich danach einfach wieder an.</p>
+
+    <h2>Android Auto</h2>
+    <p>Sobald dein Handy mit dem Auto verbunden ist, erscheint FREQ in Android Auto von selbst. Die Einstellung „Unbekannte Quellen“ brauchst du dafür nicht.</p>
+
+    <h2>Was die Test-Version mitschickt</h2>
+    <p>Beim ersten Start fragt FREQ, ob es Technikdaten zur Fehlersuche senden darf – zum Beispiel Abstürze, Akku und Wärme, die gefahrene Strecke und deine Suchbegriffe. Es wird nichts mitgehört. Du kannst ablehnen, FREQ funktioniert trotzdem. Mehr dazu in der <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
+
+    <h2>Hilfe</h2>
+    <p>Etwas klappt nicht, FREQ ruckelt oder das Handy wird heiß? Schreib an <a href="mailto:freqconvoi@gmail.com">freqconvoi@gmail.com</a> – am besten mit Uhrzeit und Ort.</p>
+  </main>
+
+  <footer>
+    <a href="datenschutz.html">Datenschutz</a>
+    <a href="nutzungsbedingungen.html">Nutzungsbedingungen</a>
+    <a href="support.html">Support</a>
+    <a href="konto-loeschen.html">Konto löschen</a>
+    <a href="impressum.html">Impressum</a>
+    <div>© 2026 FREQ</div>
+  </footer>
+</div>
+</body>
+</html>
