@@ -31,7 +31,7 @@ body {
 a { color: var(--cyan); }
 img { display: block; max-width: 100%; }
 :focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 6px; }
-.springen { position: absolute; left: 12px; top: -60px; z-index: 60; background: var(--karte); color: var(--licht); padding: 8px 12px; border-radius: 8px; text-decoration: none; }
+.springen { position: absolute; left: 12px; top: -60px; z-index: 60; min-height: 44px; display: inline-flex; align-items: center; background: var(--karte); color: var(--licht); padding: 8px 12px; border-radius: 8px; text-decoration: none; }
 .springen:focus { top: 12px; }
 
 /* ── Hintergrund: Standbild und Leinwand ── */
@@ -50,6 +50,10 @@ canvas#welt {
 }
 .bereit canvas#welt { opacity: 1; }
 .bereit .poster { opacity: 0; }
+/* Mit der Welt liegt der Ladebildschirm deckend über allem: das Standbild braucht es dann nicht, und die Leinwand ist
+   schon sichtbar, damit beim Aufgehen des Vorhangs das fertige Bild darunter steht (kein zweites Einblenden) */
+html.welt .poster { display: none; }
+html.welt canvas#welt { opacity: 1; transition: none; }
 
 /* ── Kopf (immer da) ── */
 header.kopf {
@@ -59,7 +63,7 @@ header.kopf {
   pointer-events: none;
 }
 header.kopf > * { pointer-events: auto; }
-.marke { display: flex; align-items: center; gap: 9px; text-decoration: none; color: var(--licht); }
+.marke { display: flex; align-items: center; gap: 9px; min-height: 44px; text-decoration: none; color: var(--licht); }
 .marke img { width: 30px; height: 30px; }
 .marke b { font-size: 17px; letter-spacing: 3px; font-weight: 700; }
 .schalter { display: flex; align-items: center; gap: 8px; }
@@ -72,11 +76,14 @@ header.kopf > * { pointer-events: auto; }
   cursor: pointer;
 }
 .knopf svg { width: 16px; height: 16px; }
+/* Tippfläche 44 px (Handy), der sichtbare Knopf bleibt 36 px */
+.knopf { position: relative; }
+.knopf::after { content: ""; position: absolute; inset: -4px; }
 .knopf[aria-pressed="true"] { border-color: var(--cyan); color: var(--cyan); }
 .knopf[hidden] { display: none; }
 html:not(.welt) .knopf { display: none; }
-nav.sprachen { gap: 10px; cursor: default; }
-nav.sprachen a { color: var(--nebel); text-decoration: none; }
+nav.sprachen { gap: 2px; padding: 0 6px; cursor: default; }
+nav.sprachen a { color: var(--nebel); text-decoration: none; display: inline-flex; align-items: center; justify-content: center; min-width: 36px; height: 44px; margin: -4px 0; }
 nav.sprachen a.aktiv { color: var(--cyan); }
 
 /* ── Kapitelpunkte (nur in der Welt) ── */
@@ -137,6 +144,15 @@ html.welt .kapitel {
   will-change: opacity, transform;
 }
 html.welt .kapitel.da { visibility: visible; }
+/* Handy (07.11.2026): die Kapiteltexte bleiben als Ebene bestehen (nur durchsichtig), damit der Browser sie nicht bei
+   jedem Erscheinen neu zeichnen muss – gemessen waren das die letzten Hänger genau beim Eintreten eines Kapitels */
+@media (max-width: 720px), (pointer: coarse) {
+  html.welt.bereit .kapitel { visibility: visible; }
+  html.welt .kapitel:not(.da) { opacity: 0 !important; }
+  html.welt .kapitel .text { text-shadow: 0 1px 10px rgba(0, 0, 0, 0.85), 0 1px 2px rgba(0, 0, 0, 0.8); }
+  /* Entschlüsselung ohne weichen Schatten: jedes Bild davon wird neu gezeichnet, der Schatten ist dabei das Teure */
+  html.welt .kapitel h1.entschluesselt .spiel, html.welt .kapitel h2.entschluesselt .spiel { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9); }
+}
 html.welt .kapitel.da a, html.welt .kapitel.da button { pointer-events: auto; }
 html.welt .kapitel .text {
   max-width: 34rem; position: relative; padding: 30px 40px; margin: -30px -40px; border-radius: 28px;
@@ -203,11 +219,18 @@ html.welt footer.fuss span { display: none; }
   html.welt .kapitel p { font-size: 14px; line-height: 1.45; }
   html.welt .kapitel .beispiel { display: none; } /* Hochkant: der Textblock deckte die halbe Bildhöhe (Convoy von oben) */
   html.welt .finale-logo-rahmen { width: min(40vmin, 220px); margin-bottom: 12px; }
-  html.welt .kapitelnav { right: calc(2px + env(safe-area-inset-right)); gap: 2px; }
-  html.welt .kapitelnav button { width: 30px; height: 26px; }
+  html.welt .kapitelnav { right: env(safe-area-inset-right); gap: 0; }
+  html.welt .kapitelnav button { width: 44px; height: 40px; }
+  /* Text nicht unter den Kapitelpunkten: links und rechts gleich viel Rand, damit er mittig bleibt */
+  html.welt .kapitel, html.welt .kapitel.rechts, html.welt .kapitel.mitte, html.welt .kapitel.auftakt, html.welt .kapitel.finale { padding-left: calc(44px + env(safe-area-inset-left)); padding-right: calc(44px + env(safe-area-inset-right)); }
+  html.welt .kapitel .text { padding: 24px 12px; margin: -24px -12px; }
+  /* Fuß: jede Verknüpfung 44 px hoch; der Hinweis „Scrollen“ steht darüber statt auf den Links */
+  html.welt footer.fuss { row-gap: 0; padding-top: 4px; padding-bottom: calc(2px + env(safe-area-inset-bottom)); }
+  html.welt footer.fuss a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 2px; }
+  html.welt .hinweis { bottom: calc(104px + env(safe-area-inset-bottom)); }
   .knopf .wort { display: none; }
   .knopf { padding: 0 10px; }
-  footer.fuss { font-size: 12px; gap: 4px 10px; padding-left: 8px; padding-right: 8px; }
+  footer.fuss { font-size: 13px; gap: 4px 10px; padding-left: max(8px, env(safe-area-inset-left)); padding-right: max(8px, env(safe-area-inset-right)); }
 }
 @media (max-height: 460px) and (orientation: landscape) {
   html.welt .kapitel { padding-top: calc(56px + env(safe-area-inset-top)); padding-bottom: calc(40px + env(safe-area-inset-bottom)); padding-right: calc(44px + env(safe-area-inset-right)); }
@@ -218,7 +241,7 @@ html.welt footer.fuss span { display: none; }
   html.welt .finale-logo-rahmen { width: 120px; margin-bottom: 8px; }
   html.welt .hinweis { display: none; }
   html.welt .kapitelnav { gap: 0; }
-  html.welt .kapitelnav button { height: 20px; }
+  html.welt .kapitelnav button { width: 44px; height: 24px; }
 }
 
 /* ── Ruhig: Bewegung reduziert ── */
@@ -229,9 +252,14 @@ html.welt footer.fuss span { display: none; }
 
 /* ── Ladebildschirm (nur HTML/CSS): sofort da, Wort für Wort, Ring des echten Logos = echter Fortschritt ── */
 .laden {
-  position: fixed; inset: 0; z-index: 3; display: grid; place-content: center; justify-items: center; gap: 26px;
-  padding: 24px; text-align: center;
-  background: linear-gradient(180deg, rgba(8, 10, 14, 0.5), rgba(8, 10, 14, 0.3) 45%, rgba(8, 10, 14, 0.8));
+  position: fixed; inset: 0; z-index: 50; display: grid; place-content: center; justify-items: center; gap: 26px;
+  padding: calc(24px + env(safe-area-inset-top)) calc(24px + env(safe-area-inset-right)) calc(24px + env(safe-area-inset-bottom)) calc(24px + env(safe-area-inset-left));
+  text-align: center;
+  /* Deckend (Luka 07.11.2026: beim Laden nichts von der Welt oder dem Standbild sehen). opacity 0.999 ändert keinen
+     einzigen Bildpunkt (unter einer 8-Bit-Stufe), aber der Browser zeichnet darunter alles vor: als „völlig verdeckt“
+     übersprang Chrome die Kapiteltexte, und sie kosteten beim ersten echten Erscheinen je 100 ms */
+  opacity: 0.999;
+  background: radial-gradient(120% 80% at 50% 42%, #10141a 0%, var(--asphalt) 62%, #07080a 100%);
   transition: opacity 0.9s ease, visibility 0s linear 0.9s;
   --laden-bogen: 0deg; --kx: 51.9%; --ky: 95.2%;
 }
@@ -258,6 +286,13 @@ html.welt footer.fuss span { display: none; }
 .laden-stand { margin: 0; display: flex; gap: 12px; align-items: baseline; font-size: 14px; color: var(--nebel); }
 .laden-prozent { font-variant-numeric: tabular-nums; color: var(--licht); font-weight: 600; min-width: 3.2em; text-align: right; }
 html.bereit .laden { opacity: 0; visibility: hidden; pointer-events: none; }
+/* Solange geladen wird, zeigt nur der Ladebildschirm Text: Kapiteltexte, Kapitelpunkte und Fuß bleiben unsichtbar (sonst lagen sie über den Ladewörtern) */
+html.welt:not(.bereit) main, html.welt:not(.bereit) .kapitelnav, html.welt:not(.bereit) footer.fuss, html.welt:not(.bereit) .hinweis, html.welt:not(.bereit) header.kopf { visibility: hidden; }
+.laden-ohne {
+  min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--rand); background: rgba(22, 24, 28, 0.9);
+  color: var(--licht); font: 600 14px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; cursor: pointer;
+}
+.laden-ohne[hidden] { display: none; }
 html.ruhig .laden, html.ohne-webgl .laden { display: none; }
 @media (prefers-reduced-motion: reduce) {
   .laden { transition: none; }
