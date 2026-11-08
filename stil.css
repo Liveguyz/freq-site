@@ -63,3 +63,30 @@ table.daten th, table.daten td {
   vertical-align: top;
 }
 table.daten th { color: var(--neben); font-weight: 600; }
+
+/* ── Handy (07.11.2026): Tippflächen ab 44 px, nichts ragt seitlich hinaus, Notch/Home-Balken frei ── */
+.hülle { padding-left: max(20px, env(safe-area-inset-left)); padding-right: max(20px, env(safe-area-inset-right)); padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+header.kopf { padding-top: max(20px, env(safe-area-inset-top)); }
+.marke { min-height: 44px; }
+nav.sprachen { display: flex; }
+nav.sprachen a { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; margin-left: 0; }
+footer { display: flex; flex-wrap: wrap; align-items: center; column-gap: 14px; }
+footer a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; margin-right: 0; }
+main p, main li, main td, main th, main h1, main h2 { overflow-wrap: break-word; }
+main a { overflow-wrap: anywhere; }
+/* Datentabellen: auf schmalen Schirmen untereinander statt nebeneinander (sonst seitliches Scrollen) */
+@media (max-width: 620px) {
+  .held h1 { font-size: 32px; }
+  table.daten, table.daten tbody, table.daten tr, table.daten td { display: block; width: 100%; }
+  table.daten tr:first-child { display: none; }
+  table.daten tr { border: 1px solid var(--rand); border-radius: 12px; padding: 10px 14px; margin: 0 0 10px; background: var(--karte); }
+  table.daten td { padding: 4px 0; border: 0; }
+  table.daten td:first-child { font-weight: 600; }
+  table.daten td + td::before { display: block; color: var(--neben); font-size: 13px; font-weight: 600; }
+  html[lang="de"] table.daten tr:has(td:nth-child(3)) td:nth-child(2)::before { content: "Wozu"; }
+  html[lang="de"] table.daten tr:has(td:nth-child(3)) td:nth-child(3)::before { content: "Wo"; }
+  html[lang="de"] table.daten tr:not(:has(td:nth-child(3))) td:nth-child(2)::before { content: "Was genau"; }
+  html[lang="en"] table.daten tr:has(td:nth-child(3)) td:nth-child(2)::before { content: "Purpose"; }
+  html[lang="en"] table.daten tr:has(td:nth-child(3)) td:nth-child(3)::before { content: "Where"; }
+  html[lang="en"] table.daten tr:not(:has(td:nth-child(3))) td:nth-child(2)::before { content: "What exactly"; }
+}
