@@ -35,7 +35,7 @@
 ["welt/modelle/tankstelle_lod2.glb",612056],
 ["welt/modelle/tankstelle_lightmap.webp",49306],
 ["welt/modelle/innenraum_lod1.glb",1617884],
-["welt/requisiten.glb",165660]],"mittel":[["welt/texturen/asphalt_farbe.webp",268926],
+["welt/modelle/fahrzeuge.glb",100332]],"mittel":[["welt/texturen/asphalt_farbe.webp",268926],
 ["welt/texturen/asphalt_normal.webp",280144],
 ["welt/texturen/asphalt_rauheit.webp",280542],
 ["welt/texturen/nacht.hdr",428626],
@@ -71,7 +71,7 @@
 ["welt/modelle/tankstelle_lod1.glb",1854352],
 ["welt/modelle/tankstelle_lod2.glb",612056],
 ["welt/modelle/innenraum_lod1.glb",1617884],
-["welt/requisiten.glb",165660]],"niedrig":[["welt/texturen/asphalt_farbe.webp",268926],
+["welt/modelle/fahrzeuge_leicht.glb",70176]],"niedrig":[["welt/texturen/asphalt_farbe.webp",268926],
 ["welt/texturen/asphalt_normal.webp",280144],
 ["welt/texturen/asphalt_rauheit.webp",280542],
 ["welt/texturen/nacht.hdr",428626],
@@ -93,4 +93,4 @@
 ["welt/modelle/ladesaeule_lod2.glb",170292],
 ["welt/modelle/tankstelle_lod2.glb",612056],
 ["welt/modelle/innenraum_lod2.glb",734004],
-["welt/requisiten.glb",165660]]}}
+["welt/modelle/fahrzeuge_leicht.glb",70176]]}}
