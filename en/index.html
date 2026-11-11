@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="../bild/freq-touch.png">
 <link rel="preload" as="image" href="../welt/hero.webp" fetchpriority="high">
 <script>document.documentElement.classList.add('mit-js');</script>
-<link rel="stylesheet" href="../welt/welt.css?v=202611111931-5b9348f">
-<script defer src="../welt/welt.js?v=202611111931-5b9348f"></script>
+<link rel="stylesheet" href="../welt/welt.css?v=202611112125-9d5b500">
+<script defer src="../welt/welt.js?v=202611112125-9d5b500"></script>
 </head>
 <body data-basis="../">
 <a class="springen" href="#inhalt">Skip to content</a>
@@ -36,7 +36,8 @@
 <noscript><style>.laden { display: none; }</style></noscript>
 <canvas id="welt" aria-hidden="true"></canvas>
 
-<!-- Header: always there, even while the world loads – logo, one sentence, overview and the main action (on phones the two buttons sit in the dock at the bottom) -->
+<!-- Header: always there, even while the world loads – logo, one sentence, overview and the main action (on phones the two buttons sit in the dock at the bottom).
+     Main action “Notify me” (Luka, 11 Nov 2026): an e-mail from the visitor’s own mail app, the page stores nothing. The test page stays unlinked. -->
 <header class="kopf" id="kopf">
   <a class="marke" href="index.html" aria-label="FREQ — Home">
     <picture>
@@ -48,7 +49,7 @@
   <p class="nutzen">Navigation and convoy radio for you and your friends.</p>
   <div class="schalter">
     <a class="taste" href="#ueberblick" data-blick aria-haspopup="dialog">Overview</a>
-    <a class="taste haupt" href="test.html">Android test</a>
+    <a class="taste haupt" href="mailto:administration@freqconvoi.com?subject=Notify%20me%20when%20FREQ%20launches" title="Writes an e-mail to administration@freqconvoi.com">Notify me</a>
     <button class="knopf" id="neigung" type="button" aria-pressed="false" hidden title="Camera follows the tilt of your phone">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
       <span class="wort">Tilt</span>
@@ -70,7 +71,7 @@
   <button type="button" aria-label="Chapter 6: Average speed zones"></button>
   <button type="button" aria-label="Chapter 7: Stops"></button>
   <button type="button" aria-label="Chapter 8: In the car"></button>
-  <button type="button" aria-label="Chapter 9: Finale"></button>
+  <button type="button" aria-label="Chapter 9: Car meets and finale"></button>
 </nav>
 
 <main id="inhalt">
@@ -79,7 +80,7 @@
       <h1 id="t0">Drive together. Talk together.</h1>
       <p>FREQ is navigation and convoy radio in one app – for iPhone and Android.</p>
       <div class="aktion">
-        <a class="taste haupt gross" href="test.html">Join the Android test</a>
+        <a class="taste haupt gross" href="mailto:administration@freqconvoi.com?subject=Notify%20me%20when%20FREQ%20launches" title="Writes an e-mail to administration@freqconvoi.com">Notify me</a>
         <a class="taste gross" href="#ueberblick" data-blick aria-haspopup="dialog">Everything at a glance</a>
       </div>
     </div>
@@ -130,14 +131,19 @@
     </div>
   </section>
 
-  <section class="kapitel links oben" id="k7" data-gewicht="1.3" aria-labelledby="t7" data-w-abstand="350 m" data-w-strasse="Main Street" data-w-ziel="Destination" data-w-convoy="Convoy" data-w-sprechen="Talk" data-w-ruhe="Quiet" data-w-rest="12 km · 14 min" data-w-ankunft="21:56" data-w-ankunft-wort="Arrival" data-w-min-wort="min" data-w-blitzer-fest="Speed camera" data-w-apps="Phone,Music,Maps,Messages,Podcasts,FREQ,Radio,Settings" data-w-plakat="Offline maps" data-w-plakat-bald="Offline maps: coming soon" data-w-plakat-klein="One country, one file – with FREQ">
+  <section class="kapitel links oben" id="k7" data-gewicht="1.3" aria-labelledby="t7" data-w-abstand="350 m" data-w-strasse="Main Street" data-w-ziel="Destination" data-w-convoy="Convoy" data-w-sprechen="Talk" data-w-ruhe="Quiet" data-w-rest="12 km · 14 min" data-w-ankunft="21:56" data-w-ankunft-wort="Arrival" data-w-min-wort="min" data-w-blitzer-fest="Speed camera" data-w-apps="Phone,Music,Maps,Messages,Podcasts,FREQ,Radio,Settings">
     <div class="text">
       <h2 id="t7">In the car, on the big screen.</h2>
-      <p>Built for <b>CarPlay</b> and <b>Android Auto</b>: speedometer with speed limit, <b>camera panel</b> with distance, your convoy as faces, radio on screen – part of FREQ Premium. <span data-offline="fertig">And the map works offline too.</span><span data-offline="bald" hidden>Offline maps are coming soon.</span></p>
+      <p>Built for <b>CarPlay</b> and <b>Android Auto</b>: speedometer with speed limit, <b>camera panel</b> with distance, your convoy as faces, radio on screen – part of FREQ Premium.</p>
     </div>
   </section>
 
-  <section class="kapitel finale" id="k8" data-gewicht="2.2" aria-labelledby="t8">
+  <section class="kapitel finale" id="k8" data-gewicht="2.2" aria-labelledby="t8" data-w-treffen="Car meet · 12 on the way" data-w-treffen-waren="25+ FREQ drivers were there">
+    <!-- First phase of the finale: the car meet in the car park (welt/quelle/finale.js), then logo and ending -->
+    <div class="text treffen">
+      <h2 id="t8a">Car meets near you.</h2>
+      <p>Meets from <b>scene calendars</b>, right inside FREQ: one tap sets the route, and you see how many are on their way. Not everywhere yet.</p>
+    </div>
     <div class="text">
       <div class="finale-logo-rahmen">
         <picture>
@@ -146,9 +152,9 @@
         </picture>
       </div>
       <h2 id="t8">Free to start.<br>No ads.</h2>
-      <p>Navigation, warnings and reporting stay free. <b>FREQ Premium</b> adds the car display and large convoys. Not in the stores yet – built in Vienna.</p>
+      <p>Navigation, warnings and reporting stay free. <b>FREQ Premium</b> adds the car display and large convoys: €2.99 a month or €24.99 a year, with a 7-day free trial. Not in the stores yet – built in Vienna.</p>
       <div class="aktion">
-        <a class="taste haupt gross" href="test.html">Join the Android test</a>
+        <a class="taste haupt gross" href="mailto:administration@freqconvoi.com?subject=Notify%20me%20when%20FREQ%20launches" title="Writes an e-mail to administration@freqconvoi.com">Notify me</a>
         <span class="stand"><span class="puls" aria-hidden="true"></span>In development — Vienna, 2026</span>
       </div>
     </div>
@@ -178,7 +184,7 @@
       </li>
       <li>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="12" rx="2.5"/><circle cx="12" cy="13" r="3.2"/><path d="M8 7l1.3-2.5h5.4L16 7"/></svg>
-        <div><b>Speed cameras and average speed zones</b><span>Fixed cameras in more than 30 countries, official zones in Austria – only where it is legal.</span></div>
+        <div><b>Speed cameras and average speed zones</b><span>In more than 30 countries, official zones in Austria – only where it is legal.</span></div>
       </li>
       <li>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 17.5a9 9 0 1 1 15 0"/><path d="M12 13.5l4-5.5"/><circle cx="12" cy="13.5" r="1.3"/></svg>
@@ -189,6 +195,10 @@
         <div><b>Report with one tap</b><span>Traffic jam, roadworks, accident – and where it is legal, speed cameras and police too.</span></div>
       </li>
       <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M12 12.6l1.1 2.2 2.4.3-1.8 1.7.5 2.4-2.2-1.2-2.2 1.2.5-2.4-1.8-1.7 2.4-.3z"/></svg>
+        <div><b>Car meets near you</b><span>Meets from scene calendars – one tap sets the route there. Not everywhere yet.</span></div>
+      </li>
+      <li class="breit">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="12" rx="2.5"/><path d="M8.5 20.5h7M12 17v3.5"/><path d="M7 13l3-3 2.5 2 4.5-4"/></svg>
         <div><b>In the car <i>Premium</i></b><span>Built for CarPlay and Android Auto: speedometer, camera panel, convoy and radio on the big screen.</span></div>
       </li>
@@ -198,11 +208,12 @@
       <picture><source srcset="../bild/auto-abschnitt.webp" type="image/webp"><img src="../bild/auto-abschnitt.jpg" alt="FREQ on the car display (German interface): the average speed panel with average 74, limit 80 and 2.0 km left" width="710" height="480" loading="lazy" decoding="async"></picture>
       <figcaption>FREQ on the car display – captured in the CarPlay simulator (German interface).</figcaption>
     </figure>
-    <p class="ue-preis"><b>Free to start, no ads.</b> Navigation, warnings and reporting stay free, and so do small convoys. FREQ Premium adds the car display and convoys of up to 15 cars.</p>
+    <p class="ue-preis"><b>Free to start, no ads.</b> Navigation, warnings and reporting stay free, and so do small convoys. <b>FREQ Premium</b> adds the car display and convoys of up to 15 cars: €2.99 a month or €24.99 a year, with a 7-day free trial.</p>
     <div class="ue-aktion">
-      <a class="taste haupt gross" href="test.html">Join the Android test</a>
+      <a class="taste haupt gross" href="mailto:administration@freqconvoi.com?subject=Notify%20me%20when%20FREQ%20launches" title="Writes an e-mail to administration@freqconvoi.com">Notify me</a>
       <span class="stand warte"><span class="puls" aria-hidden="true"></span>Not in the stores yet</span>
     </div>
+    <p class="ue-hinweis">The button opens your mail app – an empty e-mail to <a href="mailto:administration@freqconvoi.com?subject=Notify%20me%20when%20FREQ%20launches">administration@freqconvoi.com</a> is enough, we will get in touch at launch.</p>
     <nav class="ue-links" aria-label="Legal and help">
       <a href="privacy.html">Privacy</a>
       <a href="terms.html">Terms</a>
@@ -217,7 +228,7 @@
 <!-- Dock (phones only): the two buttons from the header, always at the bottom edge -->
 <div class="dock">
   <a class="taste" href="#ueberblick" data-blick aria-haspopup="dialog">Overview</a>
-  <a class="taste haupt" href="test.html">Android test</a>
+  <a class="taste haupt" href="mailto:administration@freqconvoi.com?subject=Notify%20me%20when%20FREQ%20launches" title="Writes an e-mail to administration@freqconvoi.com">Notify me</a>
 </div>
 
 <footer class="fuss">

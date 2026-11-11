@@ -17,8 +17,8 @@
 <link rel="apple-touch-icon" href="bild/freq-touch.png">
 <link rel="preload" as="image" href="welt/hero.webp" fetchpriority="high">
 <script>document.documentElement.classList.add('mit-js');</script>
-<link rel="stylesheet" href="welt/welt.css?v=202611111931-5b9348f">
-<script defer src="welt/welt.js?v=202611111931-5b9348f"></script>
+<link rel="stylesheet" href="welt/welt.css?v=202611112125-9d5b500">
+<script defer src="welt/welt.js?v=202611112125-9d5b500"></script>
 </head>
 <body data-basis="">
 <a class="springen" href="#inhalt">Zum Inhalt</a>
@@ -36,7 +36,8 @@
 <noscript><style>.laden { display: none; }</style></noscript>
 <canvas id="welt" aria-hidden="true"></canvas>
 
-<!-- Kopf: immer da, auch während die Welt lädt – Logo, ein Satz, Überblick und die Hauptaktion (am Handy stehen die zwei Tasten unten im Dock) -->
+<!-- Kopf: immer da, auch während die Welt lädt – Logo, ein Satz, Überblick und die Hauptaktion (am Handy stehen die zwei Tasten unten im Dock).
+     Hauptaktion „Benachrichtige mich“ (Luka 11.11.2026): eine E-Mail aus dem eigenen Mail-Programm, die Seite speichert nichts. Die Test-Seite bleibt unverlinkt. -->
 <header class="kopf" id="kopf">
   <a class="marke" href="index.html" aria-label="FREQ — Start">
     <picture>
@@ -48,7 +49,7 @@
   <p class="nutzen">Navi und Convoy-Funk für dich und deine Freunde.</p>
   <div class="schalter">
     <a class="taste" href="#ueberblick" data-blick aria-haspopup="dialog">Überblick</a>
-    <a class="taste haupt" href="test.html">Android-Test</a>
+    <a class="taste haupt" href="mailto:administration@freqconvoi.com?subject=Benachrichtige%20mich%20zum%20Start%20von%20FREQ" title="Schreibt eine E-Mail an administration@freqconvoi.com">Benachrichtige mich</a>
     <button class="knopf" id="neigung" type="button" aria-pressed="false" hidden title="Kamera folgt der Neigung des Handys">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
       <span class="wort">Neigung</span>
@@ -70,7 +71,7 @@
   <button type="button" aria-label="Kapitel 6: Abschnittskontrolle"></button>
   <button type="button" aria-label="Kapitel 7: Stopps"></button>
   <button type="button" aria-label="Kapitel 8: Im Auto"></button>
-  <button type="button" aria-label="Kapitel 9: Finale"></button>
+  <button type="button" aria-label="Kapitel 9: Car-Meets und Finale"></button>
 </nav>
 
 <main id="inhalt">
@@ -79,7 +80,7 @@
       <h1 id="t0">Gemeinsam fahren. Gemeinsam funken.</h1>
       <p>FREQ ist Navi und Convoy-Funk in einer App – für iPhone und Android.</p>
       <div class="aktion">
-        <a class="taste haupt gross" href="test.html">Android-Test mitmachen</a>
+        <a class="taste haupt gross" href="mailto:administration@freqconvoi.com?subject=Benachrichtige%20mich%20zum%20Start%20von%20FREQ" title="Schreibt eine E-Mail an administration@freqconvoi.com">Benachrichtige mich</a>
         <a class="taste gross" href="#ueberblick" data-blick aria-haspopup="dialog">Alles auf einen Blick</a>
       </div>
     </div>
@@ -130,14 +131,19 @@
     </div>
   </section>
 
-  <section class="kapitel links oben" id="k7" data-gewicht="1.3" aria-labelledby="t7" data-w-abstand="350 m" data-w-strasse="Hauptstraße" data-w-ziel="Ziel" data-w-convoy="Convoy" data-w-sprechen="Sprechen" data-w-ruhe="Ruhe" data-w-rest="12 km · 14 min" data-w-ankunft="21:56" data-w-ankunft-wort="Ankunft" data-w-min-wort="Min." data-w-blitzer-fest="Fester Blitzer" data-w-apps="Telefon,Musik,Karten,Nachrichten,Podcasts,FREQ,Radio,Einstellungen" data-w-plakat="Offline-Karten" data-w-plakat-bald="Offline-Karten: kommen bald" data-w-plakat-klein="Ein Land, eine Datei – mit FREQ">
+  <section class="kapitel links oben" id="k7" data-gewicht="1.3" aria-labelledby="t7" data-w-abstand="350 m" data-w-strasse="Hauptstraße" data-w-ziel="Ziel" data-w-convoy="Convoy" data-w-sprechen="Sprechen" data-w-ruhe="Ruhe" data-w-rest="12 km · 14 min" data-w-ankunft="21:56" data-w-ankunft-wort="Ankunft" data-w-min-wort="Min." data-w-blitzer-fest="Fester Blitzer" data-w-apps="Telefon,Musik,Karten,Nachrichten,Podcasts,FREQ,Radio,Einstellungen">
     <div class="text">
       <h2 id="t7">Im Auto auf dem großen Bildschirm.</h2>
-      <p>Gebaut für <b>CarPlay</b> und <b>Android Auto</b>: Tacho mit Tempolimit, <b>Blitzer-Feld</b> mit Entfernung, dein Convoy als Gesichter, Funk am Schirm – Teil von FREQ Premium. <span data-offline="fertig">Und die Karte läuft auch offline.</span><span data-offline="bald" hidden>Offline-Karten kommen bald.</span></p>
+      <p>Gebaut für <b>CarPlay</b> und <b>Android Auto</b>: Tacho mit Tempolimit, <b>Blitzer-Feld</b> mit Entfernung, dein Convoy als Gesichter, Funk am Schirm – Teil von FREQ Premium.</p>
     </div>
   </section>
 
-  <section class="kapitel finale" id="k8" data-gewicht="2.2" aria-labelledby="t8">
+  <section class="kapitel finale" id="k8" data-gewicht="2.2" aria-labelledby="t8" data-w-treffen="Car-Meet · 12 fahren hin" data-w-treffen-waren="25+ FREQ-Fahrer waren dort">
+    <!-- Erste Phase des Finales: das Car-Meet am Parkplatz (welt/quelle/finale.js), danach Logo und Schluss -->
+    <div class="text treffen">
+      <h2 id="t8a">Car-Meets in deiner Nähe.</h2>
+      <p>Treffen aus <b>Szene-Kalendern</b> stehen direkt in FREQ: ein Tipp, und die Route steht – du siehst, wie viele hinfahren. Noch nicht überall.</p>
+    </div>
     <div class="text">
       <div class="finale-logo-rahmen">
         <picture>
@@ -146,9 +152,9 @@
         </picture>
       </div>
       <h2 id="t8">Kostenlos starten.<br>Ohne Werbung.</h2>
-      <p>Navi, Warnungen und Melden bleiben gratis. <b>FREQ Premium</b> bringt das Auto-Display und große Convoys. Noch nicht in den Stores – gebaut in Wien.</p>
+      <p>Navi, Warnungen und Melden bleiben gratis. <b>FREQ Premium</b> bringt das Auto-Display und große Convoys: 2,99 € im Monat oder 24,99 € im Jahr, 7 Tage gratis testen. Noch nicht in den Stores – gebaut in Wien.</p>
       <div class="aktion">
-        <a class="taste haupt gross" href="test.html">Android-Test mitmachen</a>
+        <a class="taste haupt gross" href="mailto:administration@freqconvoi.com?subject=Benachrichtige%20mich%20zum%20Start%20von%20FREQ" title="Schreibt eine E-Mail an administration@freqconvoi.com">Benachrichtige mich</a>
         <span class="stand"><span class="puls" aria-hidden="true"></span>In Entwicklung — Wien, 2026</span>
       </div>
     </div>
@@ -178,7 +184,7 @@
       </li>
       <li>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="12" rx="2.5"/><circle cx="12" cy="13" r="3.2"/><path d="M8 7l1.3-2.5h5.4L16 7"/></svg>
-        <div><b>Blitzer und Abschnittskontrolle</b><span>Feste Blitzer in über 30 Ländern, amtliche Messstrecken in Österreich – nur wo es erlaubt ist.</span></div>
+        <div><b>Blitzer und Abschnittskontrolle</b><span>In über 30 Ländern, amtliche Messstrecken in Österreich – nur wo es erlaubt ist.</span></div>
       </li>
       <li>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 17.5a9 9 0 1 1 15 0"/><path d="M12 13.5l4-5.5"/><circle cx="12" cy="13.5" r="1.3"/></svg>
@@ -189,6 +195,10 @@
         <div><b>Melden mit einem Tipp</b><span>Stau, Baustelle, Unfall – und wo es erlaubt ist, auch Blitzer und Polizei.</span></div>
       </li>
       <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M12 12.6l1.1 2.2 2.4.3-1.8 1.7.5 2.4-2.2-1.2-2.2 1.2.5-2.4-1.8-1.7 2.4-.3z"/></svg>
+        <div><b>Car-Meets in deiner Nähe</b><span>Treffen aus Szene-Kalendern – ein Tipp setzt die Route dorthin. Noch nicht überall.</span></div>
+      </li>
+      <li class="breit">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="12" rx="2.5"/><path d="M8.5 20.5h7M12 17v3.5"/><path d="M7 13l3-3 2.5 2 4.5-4"/></svg>
         <div><b>Im Auto <i>Premium</i></b><span>Gebaut für CarPlay und Android Auto: Tacho, Blitzer-Feld, Convoy und Funk am großen Schirm.</span></div>
       </li>
@@ -198,11 +208,12 @@
       <picture><source srcset="bild/auto-abschnitt.webp" type="image/webp"><img src="bild/auto-abschnitt.jpg" alt="FREQ am Auto-Display: das Feld „Abschnittskontrolle“ mit Schnitt 74, Tempolimit 80 und „noch 2,0 km“" width="710" height="480" loading="lazy" decoding="async"></picture>
       <figcaption>FREQ am Auto-Display – Aufnahmen aus dem CarPlay-Simulator.</figcaption>
     </figure>
-    <p class="ue-preis"><b>Kostenlos starten, ohne Werbung.</b> Navi, Warnungen und Melden bleiben gratis, kleine Convoys auch. FREQ Premium bringt das Auto-Display und Convoys bis 15 Autos.</p>
+    <p class="ue-preis"><b>Kostenlos starten, ohne Werbung.</b> Navi, Warnungen und Melden bleiben gratis, kleine Convoys auch. <b>FREQ Premium</b> bringt das Auto-Display und Convoys bis 15 Autos: 2,99 € im Monat oder 24,99 € im Jahr, 7 Tage gratis testen.</p>
     <div class="ue-aktion">
-      <a class="taste haupt gross" href="test.html">Android-Test mitmachen</a>
+      <a class="taste haupt gross" href="mailto:administration@freqconvoi.com?subject=Benachrichtige%20mich%20zum%20Start%20von%20FREQ" title="Schreibt eine E-Mail an administration@freqconvoi.com">Benachrichtige mich</a>
       <span class="stand warte"><span class="puls" aria-hidden="true"></span>Noch nicht in den Stores</span>
     </div>
+    <p class="ue-hinweis">Die Taste öffnet dein Mail-Programm – eine leere Mail an <a href="mailto:administration@freqconvoi.com?subject=Benachrichtige%20mich%20zum%20Start%20von%20FREQ">administration@freqconvoi.com</a> genügt, wir melden uns zum Start.</p>
     <nav class="ue-links" aria-label="Rechtliches und Hilfe">
       <a href="datenschutz.html">Datenschutz</a>
       <a href="nutzungsbedingungen.html">Nutzungsbedingungen</a>
@@ -217,7 +228,7 @@
 <!-- Dock (nur Handy): die zwei Tasten aus dem Kopf, immer am unteren Rand -->
 <div class="dock">
   <a class="taste" href="#ueberblick" data-blick aria-haspopup="dialog">Überblick</a>
-  <a class="taste haupt" href="test.html">Android-Test</a>
+  <a class="taste haupt" href="mailto:administration@freqconvoi.com?subject=Benachrichtige%20mich%20zum%20Start%20von%20FREQ" title="Schreibt eine E-Mail an administration@freqconvoi.com">Benachrichtige mich</a>
 </div>
 
 <footer class="fuss">
