@@ -2,7 +2,7 @@
 // Versionierte Welt-Dateien (welt/, bild/) cache-first; HTML, Unterseiten, Rechtstexte und Stil network-first mit
 // Rückfall auf den Zwischenspeicher. Neue Version = neuer Cache-Name: alte Caches werden beim Aktivieren gelöscht,
 // die Seite verweist per ?v= auf die neuen Welt-Dateien. Kein Tracking, nichts verlässt das Gerät.
-const VERSION = '202611112235-7289ff5';
+const VERSION = '202611112243-bdcab30';
 const CACHE = 'freq-welt-' + VERSION;
 const KERN = ['welt/welt.js?v=' + VERSION, 'welt/welt.css?v=' + VERSION, 'welt/hero.webp', 'bild/freq-logo.webp', 'bild/freq-mark.webp'];
 
