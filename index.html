@@ -4,13 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>FREQ — Gemeinsam fahren. Gemeinsam funken.</title>
-<meta name="description" content="FREQ ist die kostenlose Navi- und Convoy-App für dich und deine Freunde: alle auf einer Karte, Funk im Convoy, Blitzer- und Gefahrenwarnungen, Navigation mit eigener Stimme.">
+<meta name="description" content="FREQ ist Navi und Convoy-Funk in einer App: alle auf einer Karte, offener Funk ohne Taste, Blitzer- und Tempowarnung, gebaut für CarPlay und Android Auto. Kostenlos starten, ohne Werbung.">
 <meta name="theme-color" content="#0b0d0f">
+<meta property="og:type" content="website">
+<meta property="og:title" content="FREQ — Gemeinsam fahren. Gemeinsam funken.">
+<meta property="og:description" content="Navi und Convoy-Funk in einer App: alle auf einer Karte, offener Funk, Blitzer- und Tempowarnung.">
+<meta property="og:url" content="https://freqconvoi.com/">
+<meta property="og:image" content="https://freqconvoi.com/welt/hero.webp">
+<link rel="alternate" hreflang="de" href="https://freqconvoi.com/">
+<link rel="alternate" hreflang="en" href="https://freqconvoi.com/en/">
 <link rel="icon" href="bild/freq-touch.png">
 <link rel="apple-touch-icon" href="bild/freq-touch.png">
 <link rel="preload" as="image" href="welt/hero.webp" fetchpriority="high">
-<link rel="stylesheet" href="welt/welt.css?v=202611080110-a7e396b">
-<script defer src="welt/welt.js?v=202611080110-a7e396b"></script>
+<script>document.documentElement.classList.add('mit-js');</script>
+<link rel="stylesheet" href="welt/welt.css?v=202611112243-bdcab30">
+<script defer src="welt/welt.js?v=202611112243-bdcab30"></script>
 </head>
 <body data-basis="">
 <a class="springen" href="#inhalt">Zum Inhalt</a>
@@ -28,6 +36,8 @@
 <noscript><style>.laden { display: none; }</style></noscript>
 <canvas id="welt" aria-hidden="true"></canvas>
 
+<!-- Kopf: immer da, auch während die Welt lädt – Logo, ein Satz, Überblick und die Hauptaktion (am Handy stehen die zwei Tasten unten im Dock).
+     Hauptaktion „Benachrichtige mich“ (Luka 11.11.2026): eine E-Mail aus dem eigenen Mail-Programm, die Seite speichert nichts. Die Test-Seite bleibt unverlinkt. -->
 <header class="kopf" id="kopf">
   <a class="marke" href="index.html" aria-label="FREQ — Start">
     <picture>
@@ -36,7 +46,10 @@
     </picture>
     <b>FREQ</b>
   </a>
+  <p class="nutzen">Navi und Convoy-Funk für dich und deine Freunde.</p>
   <div class="schalter">
+    <a class="taste" href="#ueberblick" data-blick aria-haspopup="dialog">Überblick</a>
+    <a class="taste haupt" href="mailto:administration@freqconvoi.com?subject=Benachrichtige%20mich%20zum%20Start%20von%20FREQ" title="Schreibt eine E-Mail an administration@freqconvoi.com">Benachrichtige mich</a>
     <button class="knopf" id="neigung" type="button" aria-pressed="false" hidden title="Kamera folgt der Neigung des Handys">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
       <span class="wort">Neigung</span>
@@ -53,19 +66,23 @@
   <button type="button" aria-label="Kapitel 1: Nacht"></button>
   <button type="button" aria-label="Kapitel 2: Convoy"></button>
   <button type="button" aria-label="Kapitel 3: Funk"></button>
-  <button type="button" aria-label="Kapitel 4: Sicher unterwegs"></button>
-  <button type="button" aria-label="Kapitel 5: Route"></button>
-  <button type="button" aria-label="Kapitel 6: Berge"></button>
+  <button type="button" aria-label="Kapitel 4: Blitzer und Tempo"></button>
+  <button type="button" aria-label="Kapitel 5: Navigation"></button>
+  <button type="button" aria-label="Kapitel 6: Abschnittskontrolle"></button>
   <button type="button" aria-label="Kapitel 7: Stopps"></button>
   <button type="button" aria-label="Kapitel 8: Im Auto"></button>
-  <button type="button" aria-label="Kapitel 9: Finale"></button>
+  <button type="button" aria-label="Kapitel 9: Car-Meets und Finale"></button>
 </nav>
 
 <main id="inhalt">
   <section class="kapitel auftakt" id="k0" data-gewicht="1.7" aria-labelledby="t0">
     <div class="text">
       <h1 id="t0">Gemeinsam fahren. Gemeinsam funken.</h1>
-      <p>FREQ ist die kostenlose Navi- und Convoy-App für dich und deine Freunde – für iOS und Android.</p>
+      <p>FREQ ist Navi und Convoy-Funk in einer App – für iPhone und Android.</p>
+      <div class="aktion">
+        <a class="taste haupt gross" href="mailto:administration@freqconvoi.com?subject=Benachrichtige%20mich%20zum%20Start%20von%20FREQ" title="Schreibt eine E-Mail an administration@freqconvoi.com">Benachrichtige mich</a>
+        <a class="taste gross" href="#ueberblick" data-blick aria-haspopup="dialog">Alles auf einen Blick</a>
+      </div>
     </div>
     <div class="hinweis" aria-hidden="true">Scrollen, um loszufahren</div>
   </section>
@@ -73,7 +90,7 @@
   <section class="kapitel links" id="k1" data-gewicht="1.3" aria-labelledby="t1" data-w-namen="Anna,Ben,Mia,Tom">
     <div class="text">
       <h2 id="t1">Convoy: alle auf einer Karte.</h2>
-      <p>Der Admin setzt das Ziel, <b>jedes Handy rechnet seine eigene Route</b>. Wer zurückfällt, sieht trotzdem alle – und alle kommen am selben Punkt an.</p>
+      <p>Jeder fährt als <b>Gesicht auf deiner Karte</b> mit. Der Admin setzt das Ziel, <b>jedes Handy rechnet seine eigene Route</b> – und alle kommen am selben Punkt an.</p>
       <p class="beispiel">Zum Beispiel: Anna setzt das Ziel, Ben fährt zehn Minuten später los – seine Route beginnt dort, wo er gerade ist.</p>
     </div>
   </section>
@@ -81,52 +98,52 @@
   <section class="kapitel rechts" id="k2" data-gewicht="1.25" aria-labelledby="t2" data-w-spricht="Anna spricht">
     <div class="text">
       <h2 id="t2">Funk: reden wie im selben Auto.</h2>
-      <p>Ein offener Kanal für alle im Convoy – <b>ohne Taste drücken</b>. „Ruhe“, wenn du Musik hören willst. Nichts wird aufgezeichnet.</p>
+      <p>Ein offener Kanal für alle im Convoy – <b>ohne Taste drücken</b>. „Ruhe“, wenn du Musik hören willst, <b>„Ruf Anna“</b>, wenn du jemanden brauchst. Nichts wird aufgezeichnet.</p>
     </div>
   </section>
 
-  <section class="kapitel links" id="k3" data-gewicht="2.0" aria-labelledby="t3" data-w-einheit="km/h" data-w-vorschau="70 in 400 m" data-w-gefahr="Gefahr gemeldet" data-w-vollbremsung="Vollbremsung im Convoy" data-w-akku="15 %" data-w-blitzer="Blitzer · 800 m" data-w-blitzer-tempo="Tempo 70" data-w-radar="800 m">
+  <section class="kapitel links" id="k3" data-gewicht="2" aria-labelledby="t3" data-w-einheit="km/h" data-w-vorschau="70 in 400 m" data-w-gefahr="Gefahr gemeldet" data-w-vollbremsung="Vollbremsung im Convoy" data-w-akku="15 %" data-w-blitzer="Blitzer · 800 m" data-w-blitzer-tempo="Tempo 70" data-w-radar="800 m">
     <div class="text">
       <h2 id="t3">Gewarnt, bevor es brenzlig wird.</h2>
-      <p>Blitzer- und Gefahrenwarnungen – <b>je nach Land, nur wo das erlaubt ist</b>. Bremst jemand vor dir voll, erfährt es der Convoy sofort. Und wenn ein Akku leer wird, wissen es die anderen.</p>
-      <p class="beispiel">Zum Beispiel: „70 in 400 m“ zeigt den nächsten Wechsel, dann warnt FREQ vor dem festen Blitzer – und alle nehmen den Fuß vom Gas.</p>
+      <p><b>Zwei Warnungen statt Dauerpiepen</b> – bei festen Blitzern in über 30 Ländern, <b>nur wo es erlaubt ist</b>. Das Tempolimit steht am Tacho. Und bremst im Convoy jemand voll, sehen es alle.</p>
+      <p class="beispiel">Zum Beispiel: „70 in 400 m“ kündigt das neue Limit an, dann warnt FREQ vor dem Blitzer – und der ganze Convoy geht vom Gas.</p>
     </div>
   </section>
 
   <section class="kapitel rechts" id="k4" data-gewicht="1.4" aria-labelledby="t4" data-w-schild-oben="A1" data-w-schild-unten="Ausfahrt 12" data-w-ansage="In 300 Metern rechts abbiegen" data-w-landstrasse="Ohne Autobahn">
     <div class="text">
       <h2 id="t4">Navigation mit eigener Stimme.</h2>
-      <p>Klare Ansagen, zum Beispiel <b>„In 300 Metern rechts abbiegen“</b>. Auf Wunsch ohne Autobahn. Ausfahrten planst du vorher: Termin anlegen, Freunde einladen, zur Abfahrt ein Tipp – und alle sind im Convoy.</p>
+      <p>Klare Ansagen, zum Beispiel <b>„In 300 Metern rechts abbiegen“</b> – dazu Spurpfeile und bis zu drei Routen zur Wahl. Auf Wunsch <b>ohne Autobahn</b> oder ohne Maut.</p>
     </div>
   </section>
 
-  <section class="kapitel links" id="k5" data-gewicht="1.4" aria-labelledby="t5" data-w-wintersperre="Wintersperre" data-w-webcam="Webcam an der Bergstraße" data-w-webcam-titel="Webcam · Bergstraße">
+  <section class="kapitel links" id="k5" data-gewicht="1.4" aria-labelledby="t5" data-w-abschnitt="Abschnittskontrolle" data-w-abschnitt-rest="noch 2,4 km" data-w-abschnitt-beginn="Beginn Abschnittskontrolle" data-w-amtlich="Amtliche Daten · Österreich">
     <div class="text">
-      <h2 id="t5">Wetter und Bergstraßen im Blick.</h2>
-      <p><b>Amtliche Wetterwarnungen</b> entlang der Route – klar angezeigt, nie angesagt. Bergstraßen, die im Winter gesperrt sind (zum Beispiel der Großglockner), siehst du schon beim Planen. Webcams zeigen dir, was dich oben erwartet.</p>
-      <div class="warnstreifen" role="note" aria-label="Beispiel einer Wetterwarnung">
-        <span class="stufe" aria-hidden="true"></span>
-        <svg class="symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M4.9 6.5l14.2 11M4.9 17.5l14.2-11M8 4l4 2 4-2M8 20l4-2 4 2M3 9l3 3-3 3M21 9l-3 3 3 3"/></svg>
-        <span class="text"><b>Glatteis · Orange</b><span>ab 05:00 auf der Strecke</span></span>
-      </div>
+      <h2 id="t5">Abschnittskontrolle: dein Schnitt, live.</h2>
+      <p>In der Messstrecke zeigt FREQ deinen <b>Schnitt neben dem Limit</b> – am Auto-Display auch die Reststrecke: <b>„noch 2,4 km“</b>. Österreichs Messstrecken kommen aus den <b>amtlichen Verordnungen</b>.</p>
     </div>
   </section>
 
   <section class="kapitel rechts" id="k6" data-gewicht="1.4" aria-labelledby="t6" data-w-frei="Frei" data-w-belegt="Belegt" data-w-offen="Offen bis 22:00" data-w-pause="Pause? Rastplatz in 2 km" data-w-preise="Diesel,Super,Preise live in FREQ">
     <div class="text">
-      <h2 id="t6">Laden, tanken, Pause machen.</h2>
-      <p>Ladesäulen live: <b>frei oder belegt</b>. Tankstellen mit Öffnungszeiten. Nach zwei Stunden schlägt FREQ leise eine Pause vor – mit Rastplätzen auf der Karte.</p>
+      <h2 id="t6">Tanken, Pause, Essen – für alle.</h2>
+      <p>Im Convoy setzt der Admin den <b>Stopp für alle</b>. Tankstellen zeigen in Österreich den Spritpreis, Ladesäulen in ersten Ländern frei oder belegt. Nach zwei Stunden schlägt FREQ leise eine Pause vor.</p>
     </div>
   </section>
 
-  <section class="kapitel links oben" id="k7" data-gewicht="1.3" aria-labelledby="t7" data-w-abstand="350 m" data-w-ansage-kurz="Rechts abbiegen auf Hauptstraße" data-w-ziel="Ziel" data-w-mitfahrer="Mitfahrer" data-w-ruhe="Ruhe" data-w-funk="Funk" data-w-rest="12 km · 14 min" data-w-ankunft="21:56" data-w-apps="Telefon,Musik,Karten,Nachrichten,Podcasts,FREQ,Radio,Einstellungen" data-w-plakat="Offline-Karten" data-w-plakat-bald="Offline-Karten: kommen bald" data-w-plakat-klein="Ein Land, eine Datei – mit FREQ">
+  <section class="kapitel links oben" id="k7" data-gewicht="1.3" aria-labelledby="t7" data-w-abstand="350 m" data-w-strasse="Hauptstraße" data-w-ziel="Ziel" data-w-convoy="Convoy" data-w-sprechen="Sprechen" data-w-ruhe="Ruhe" data-w-rest="12 km · 14 min" data-w-ankunft="21:56" data-w-ankunft-wort="Ankunft" data-w-min-wort="Min." data-w-blitzer-fest="Fester Blitzer" data-w-apps="Telefon,Musik,Karten,Nachrichten,Podcasts,FREQ,Radio,Einstellungen">
     <div class="text">
       <h2 id="t7">Im Auto auf dem großen Bildschirm.</h2>
-      <p>FREQ läuft mit <b>CarPlay</b> und <b>Android Auto</b>: Karte, Abbiegekarte und Tempo wie am Handy, die Mitfahrer als Punkte. <span data-offline="fertig">Dazu Offline-Karten: Die Karte zeigt FREQ auch ohne Internet, die Route berechnet es online.</span><span data-offline="bald" hidden>Offline-Karten kommen bald.</span></p>
+      <p>Gebaut für <b>CarPlay</b> und <b>Android Auto</b>: Tacho mit Tempolimit, <b>Blitzer-Feld</b> mit Entfernung, dein Convoy als Gesichter, Funk am Schirm – Teil von FREQ Premium.</p>
     </div>
   </section>
 
-  <section class="kapitel finale" id="k8" data-gewicht="2.2" aria-labelledby="t8">
+  <section class="kapitel finale" id="k8" data-gewicht="2.2" aria-labelledby="t8" data-w-treffen="Car-Meet · 12 fahren hin" data-w-treffen-waren="25+ FREQ-Fahrer waren dort">
+    <!-- Erste Phase des Finales: das Car-Meet am Parkplatz (welt/quelle/finale.js), danach Logo und Schluss -->
+    <div class="text treffen">
+      <h2 id="t8a">Car-Meets in deiner Nähe.</h2>
+      <p>Treffen aus <b>Szene-Kalendern</b> stehen direkt in FREQ: ein Tipp, und die Route steht – du siehst, wie viele hinfahren. Noch nicht überall.</p>
+    </div>
     <div class="text">
       <div class="finale-logo-rahmen">
         <picture>
@@ -134,21 +151,116 @@
           <img class="finale-logo" src="bild/freq-logo.png" alt="FREQ" width="900" height="893" fetchpriority="low">
         </picture>
       </div>
-      <h2 id="t8">Gratis.<br>Ohne Werbung.</h2>
-      <p>FREQ kostet nichts. Wer mag, gibt ein <b>freiwilliges Trinkgeld</b>. Die App ist in Entwicklung und noch nicht in den Stores – gebaut in Wien.</p>
-      <span class="stand"><span class="puls" aria-hidden="true"></span>In Entwicklung — Wien, 2026</span>
+      <h2 id="t8">Kostenlos starten.<br>Ohne Werbung.</h2>
+      <p>Navi, Warnungen und Melden bleiben gratis. <b>FREQ Premium</b> bringt das Auto-Display und große Convoys: 2,99 € im Monat oder 24,99 € im Jahr, 7 Tage gratis testen. Noch nicht in den Stores – gebaut in Wien.</p>
+      <div class="aktion">
+        <a class="taste haupt gross" href="mailto:administration@freqconvoi.com?subject=Benachrichtige%20mich%20zum%20Start%20von%20FREQ" title="Schreibt eine E-Mail an administration@freqconvoi.com">Benachrichtige mich</a>
+        <span class="stand"><span class="puls" aria-hidden="true"></span>In Entwicklung — Wien, 2026</span>
+      </div>
     </div>
   </section>
 </main>
 
+<!-- Überblick: das Wesentliche auf einer Karte, von jeder Stelle der Fahrt mit einem Tipp erreichbar (ohne JavaScript ein normaler Abschnitt am Seitenende) -->
+<dialog class="ueberblick" id="ueberblick" aria-labelledby="ue-titel">
+  <div class="ue-kopf">
+    <picture>
+      <source srcset="bild/freq-mark.webp" type="image/webp">
+      <img src="bild/freq-mark.png" alt="" width="36" height="36">
+    </picture>
+    <h2 id="ue-titel">FREQ auf einen Blick</h2>
+    <form method="dialog"><button class="ue-zu" type="submit" aria-label="Überblick schließen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></form>
+  </div>
+  <div class="ue-inhalt">
+    <p class="ue-satz">Navi und Convoy-Funk in einer App – für iPhone und Android.</p>
+    <ul class="ue-liste">
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8.5" cy="9" r="3.5"/><circle cx="17" cy="10.5" r="2.5"/><path d="M2.5 19c.7-3 3-4.5 6-4.5s5.3 1.5 6 4.5M16 15.2c2.6-.3 4.7 1 5.5 3.8"/></svg>
+        <div><b>Convoy mit Gesichtern</b><span>Alle auf einer Karte, ein gemeinsames Ziel, Stopps zum Tanken oder für die Pause.</span></div>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2"/><path d="M7.8 7.8a6 6 0 0 0 0 8.4M16.2 7.8a6 6 0 0 1 0 8.4M4.9 4.9a10 10 0 0 0 0 14.2M19.1 4.9a10 10 0 0 1 0 14.2"/></svg>
+        <div><b>Funk ohne Taste</b><span>Ein offener Kanal im Convoy. „Ruf Anna“ genügt – nichts wird aufgezeichnet.</span></div>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="12" rx="2.5"/><circle cx="12" cy="13" r="3.2"/><path d="M8 7l1.3-2.5h5.4L16 7"/></svg>
+        <div><b>Blitzer und Abschnittskontrolle</b><span>In über 30 Ländern, amtliche Messstrecken in Österreich – nur wo es erlaubt ist.</span></div>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 17.5a9 9 0 1 1 15 0"/><path d="M12 13.5l4-5.5"/><circle cx="12" cy="13.5" r="1.3"/></svg>
+        <div><b>Tempolimit am Tacho</b><span>Mit Vorschau auf den nächsten Wechsel: „70 in 400 m“.</span></div>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10v4h3l8 4V6l-8 4H4z"/><path d="M18.5 9.5a3.5 3.5 0 0 1 0 5"/><path d="M7.5 14.5l1 4.5H11"/></svg>
+        <div><b>Melden mit einem Tipp</b><span>Stau, Baustelle, Unfall – und wo es erlaubt ist, auch Blitzer und Polizei.</span></div>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M12 12.6l1.1 2.2 2.4.3-1.8 1.7.5 2.4-2.2-1.2-2.2 1.2.5-2.4-1.8-1.7 2.4-.3z"/></svg>
+        <div><b>Car-Meets in deiner Nähe</b><span>Treffen aus Szene-Kalendern – ein Tipp setzt die Route dorthin. Noch nicht überall.</span></div>
+      </li>
+      <li class="breit">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="12" rx="2.5"/><path d="M8.5 20.5h7M12 17v3.5"/><path d="M7 13l3-3 2.5 2 4.5-4"/></svg>
+        <div><b>Im Auto <i>Premium</i></b><span>Gebaut für CarPlay und Android Auto: Tacho, Blitzer-Feld, Convoy und Funk am großen Schirm.</span></div>
+      </li>
+    </ul>
+    <figure class="ue-bilder">
+      <picture><source srcset="bild/auto-blitzer.webp" type="image/webp"><img src="bild/auto-blitzer.jpg" alt="FREQ am Auto-Display: Abbiegehinweis, Karte und das Feld „Fester Blitzer“ mit Tempolimit 80, Tempo 79 und 250 m Entfernung" width="710" height="480" loading="lazy" decoding="async"></picture>
+      <picture><source srcset="bild/auto-abschnitt.webp" type="image/webp"><img src="bild/auto-abschnitt.jpg" alt="FREQ am Auto-Display: das Feld „Abschnittskontrolle“ mit Schnitt 74, Tempolimit 80 und „noch 2,0 km“" width="710" height="480" loading="lazy" decoding="async"></picture>
+      <figcaption>FREQ am Auto-Display – Aufnahmen aus dem CarPlay-Simulator.</figcaption>
+    </figure>
+    <p class="ue-preis"><b>Kostenlos starten, ohne Werbung.</b> Navi, Warnungen und Melden bleiben gratis, kleine Convoys auch. <b>FREQ Premium</b> bringt das Auto-Display und Convoys bis 15 Autos: 2,99 € im Monat oder 24,99 € im Jahr, 7 Tage gratis testen.</p>
+    <div class="ue-aktion">
+      <a class="taste haupt gross" href="mailto:administration@freqconvoi.com?subject=Benachrichtige%20mich%20zum%20Start%20von%20FREQ" title="Schreibt eine E-Mail an administration@freqconvoi.com">Benachrichtige mich</a>
+      <span class="stand warte"><span class="puls" aria-hidden="true"></span>Noch nicht in den Stores</span>
+    </div>
+    <p class="ue-hinweis">Die Taste öffnet dein Mail-Programm – eine leere Mail an <a href="mailto:administration@freqconvoi.com?subject=Benachrichtige%20mich%20zum%20Start%20von%20FREQ">administration@freqconvoi.com</a> genügt, wir melden uns zum Start.</p>
+    <nav class="ue-links" aria-label="Rechtliches und Hilfe">
+      <a href="datenschutz.html">Datenschutz</a>
+      <a href="nutzungsbedingungen.html">Nutzungsbedingungen</a>
+      <a href="support.html">Support</a>
+      <a href="konto-loeschen.html">Konto löschen</a>
+      <a href="impressum.html">Impressum</a>
+      <a href="credits.html">Credits</a>
+    </nav>
+  </div>
+</dialog>
+
+<!-- Dock (nur Handy): die zwei Tasten aus dem Kopf, immer am unteren Rand -->
+<div class="dock">
+  <a class="taste" href="#ueberblick" data-blick aria-haspopup="dialog">Überblick</a>
+  <a class="taste haupt" href="mailto:administration@freqconvoi.com?subject=Benachrichtige%20mich%20zum%20Start%20von%20FREQ" title="Schreibt eine E-Mail an administration@freqconvoi.com">Benachrichtige mich</a>
+</div>
+
 <footer class="fuss">
   <a href="datenschutz.html">Datenschutz</a>
-  <a href="nutzungsbedingungen.html">Nutzungsbedingungen</a>
+  <a class="zweit" href="nutzungsbedingungen.html">Nutzungsbedingungen</a>
   <a href="support.html">Support</a>
-  <a href="konto-loeschen.html">Konto löschen</a>
+  <a class="zweit" href="konto-loeschen.html">Konto löschen</a>
   <a href="impressum.html">Impressum</a>
-  <a href="credits.html">Credits</a>
+  <a class="zweit" href="credits.html">Credits</a>
   <span>© 2026 FREQ · Karten © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>-Mitwirkende</span>
 </footer>
+<script>
+// Überblick: als Dialog über der Fahrt (Kopf, Dock und Auftakt öffnen ihn). Steht bewusst hier und nicht im Welt-Bündel:
+// er geht auch, solange die Welt lädt, ohne WebGL und bei „Bewegung reduzieren“.
+(() => {
+  const html = document.documentElement, d = document.getElementById('ueberblick');
+  if (!d || !d.showModal) { html.classList.remove('mit-js'); return; }
+  let zurueck = null;
+  const auf = (e) => {
+    if (e) e.preventDefault();
+    if (d.open) return;
+    zurueck = document.activeElement;
+    d.showModal(); d.scrollTop = 0; html.classList.add('blick-offen');
+  };
+  for (const t of document.querySelectorAll('[data-blick]')) t.addEventListener('click', auf);
+  d.addEventListener('close', () => { html.classList.remove('blick-offen'); if (zurueck && zurueck.focus) zurueck.focus({ preventScroll: true }); });
+  d.addEventListener('click', (e) => { if (e.target === d) d.close(); });   // Tipp neben die Karte schließt
+  // Solange der Überblick offen ist, gehören Pfeil-, Bild- und Leertaste ihm (sonst fährt die Welt dahinter weiter)
+  window.addEventListener('keydown', (e) => { if (d.open) e.stopPropagation(); }, true);
+  if (location.hash === '#ueberblick') auf();
+  window.addEventListener('hashchange', () => { if (location.hash === '#ueberblick') auf(); });
+})();
+</script>
 </body>
 </html>
