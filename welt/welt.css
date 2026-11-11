@@ -171,6 +171,10 @@ html.welt .kapitel.da { visibility: visible; }
 @media (max-width: 720px), (pointer: coarse) {
   html.welt.bereit .kapitel { visibility: visible; }
   html.welt .kapitel:not(.da) { opacity: 0 !important; }
+  /* Vorzeichnen unter dem Ladebildschirm (11.11.2026): eine ganz durchsichtige Ebene zeichnet der Browser gar nicht erst –
+     jedes Kapitel kostete deshalb beim ALLERERSTEN Erscheinen noch ein Standbild (Pixel 10: 9 Bilder über 50 ms, bis 217 ms,
+     genau bei x,1). Kurz vor dem Aufgehen des Vorhangs stehen alle Texte ein paar Bilder lang mit 2 % Deckkraft darunter. */
+  html.welt.textwarm .kapitel { visibility: visible; opacity: 0.02 !important; }
   html.welt .kapitel .text { text-shadow: 0 1px 10px rgba(0, 0, 0, 0.85), 0 1px 2px rgba(0, 0, 0, 0.8); }
   /* Entschlüsselung ohne weichen Schatten: jedes Bild davon wird neu gezeichnet, der Schatten ist dabei das Teure */
   html.welt .kapitel h1.entschluesselt .spiel, html.welt .kapitel h2.entschluesselt .spiel { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9); }
@@ -339,6 +343,15 @@ html.ruhig .laden, html.ohne-webgl .laden { display: none; }
   .laden { gap: 20px; }
   .laden-logo { width: min(44vmin, 190px); }
 }
+@media (max-height: 460px) and (orientation: landscape) {
+  /* Ladebildschirm im flachen Querformat (iPhone SE quer, 11.11.2026): Schriftzug, Logo und Stand waren zusammen höher als der
+     Schirm, der Schriftzug rutschte hinter die Tasten im Kopf. Eine Zeile, kleineres Logo, Platz für den Kopf. */
+  .laden { gap: 10px; padding-top: calc(60px + env(safe-area-inset-top)); padding-bottom: calc(10px + env(safe-area-inset-bottom)); }
+  .laden-text { font-size: clamp(20px, 3.4vw, 28px); }
+  .laden-zeile { display: inline; }
+  .laden-zeile + .laden-zeile { margin-left: 0.28em; }
+  .laden-logo { width: min(40vmin, 150px); }
+}
 
 /* ── Überblick: das Wesentliche auf einer Karte (Dialog über der Fahrt; ohne JavaScript ein Abschnitt am Seitenende) ── */
 dialog.ueberblick {
@@ -392,8 +405,17 @@ html:not(.mit-js) .ue-inhalt { overflow: visible; }
   .ue-inhalt { padding-left: 16px; padding-right: 16px; }
   .ue-liste { grid-template-columns: 1fr; gap: 14px; }
   .ue-satz { font-size: 16px; }
-  /* Die Hauptaktion bleibt im Blatt unten stehen, während man liest */
-  .ue-aktion { position: sticky; bottom: 0; z-index: 1; margin: 6px -16px 0; padding: 14px 16px 10px; background: linear-gradient(180deg, rgba(18, 20, 24, 0), #121418 30%); }
+  /* Die Hauptaktion bleibt im Blatt unten stehen, während man liest. Am Handy (Safari, 11.11.2026) schien der Text durch den
+     oberen, noch durchsichtigen Teil des Verlaufs und unter der Leiste hervor (sticky endet vor dem Innenabstand des Blatts):
+     deckende Leiste bis zur Unterkante, weicher Übergang nur darüber; Taste in voller Breite, der Stand als kleine Zeile darunter. */
+  .ue-aktion {
+    position: sticky; bottom: calc(-8px - env(safe-area-inset-bottom)); z-index: 1; flex-direction: column; flex-wrap: nowrap; align-items: stretch; gap: 6px;
+    margin: 10px -16px 0; padding: 8px 16px calc(16px + env(safe-area-inset-bottom)); background: #121418;
+  }
+  .ue-aktion::before { content: ""; position: absolute; left: 0; right: 0; bottom: 100%; height: 20px; background: linear-gradient(180deg, rgba(18, 20, 24, 0), #121418); pointer-events: none; }
+  .ue-aktion .taste { justify-content: center; }
+  .ue-aktion .stand { align-self: center; padding: 0; border: 0; background: none; font-size: 12.5px; gap: 8px; }
+  html:not(.mit-js) .ue-aktion { position: static; }
   html:not(.mit-js) dialog.ueberblick { width: auto; height: auto; margin: 16px; border: 1px solid var(--rand); border-radius: 20px; }
 }
 @media (max-width: 420px) { .ue-bilder { grid-template-columns: 1fr; } }
@@ -401,7 +423,9 @@ html:not(.mit-js) .ue-inhalt { overflow: visible; }
 
 /* ── Dock (Handy hochkant): Überblick und Hauptaktion immer am unteren Rand, über der Fußzeile ── */
 .dock { display: none; }
-@media (max-width: 720px) and (min-height: 461px) {
+/* Hochkant IMMER, auch bei wenig Höhe (11.11.2026): mit eingeblendeten Browser-Leisten bleibt einem 320er-Handy weniger als
+   461 px – dort fehlte das Dock, und die Tasten standen abgeschnitten im Kopf. Nur flaches Querformat nimmt die Tasten im Kopf. */
+@media (max-width: 720px) and (min-height: 461px), (max-width: 720px) and (orientation: portrait) {
   header.kopf .taste { display: none; }   /* stehen unten im Dock */
   .kapitel .aktion .taste { display: none; }
   .kapitel.auftakt .aktion { display: none; }
@@ -422,3 +446,33 @@ html:not(.mit-js) .ue-inhalt { overflow: visible; }
 @media (max-height: 340px) and (orientation: landscape) { html.welt .finale-logo-rahmen { width: 46px; } }
 /* Kleine Handys hochkant (bis 600 px Höhe): das Finale-Logo kleiner, damit Überschrift, Satz mit Preisen und Stand zwischen Kopf und Dock passen */
 @media (max-width: 720px) and (max-height: 600px) and (orientation: portrait) { html.welt .finale-logo-rahmen { width: 84px; margin-bottom: 6px; } }
+
+/* Sehr wenig Höhe, hochkant (kleines Handy mit Browser-Leisten, 11.11.2026): Finale noch knapper, damit es über dem Dock bleibt */
+@media (max-width: 720px) and (max-height: 540px) and (orientation: portrait) {
+  html.welt .finale-logo-rahmen { width: 36px; margin-bottom: 0; }
+  html.welt .kapitel.finale h2 { font-size: 21px; }
+  html.welt .kapitel.finale p { font-size: 13px; line-height: 1.38; }
+  html.welt .kapitel.finale .stand { display: none; }   /* der Stand steht im Überblick */
+}
+/* Sehr wenig Höhe, quer (Android quer mit Adresszeile: rund 250 px, kleines Handy: rund 200 px; 11.11.2026): die Fußzeile lag
+   auf dem Absatz – ihre Links stehen auch im Überblick; Text kleiner und dichter unter den Kopf. */
+@media (max-height: 300px) and (orientation: landscape) {
+  html.welt footer.fuss { display: none; }
+  html.welt .kapitel { padding-top: calc(66px + env(safe-area-inset-top)); padding-bottom: calc(10px + env(safe-area-inset-bottom)); }
+  html.welt .kapitel h1 { font-size: clamp(22px, 4.2vw, 30px); }
+  html.welt .kapitel h2 { font-size: clamp(18px, 3.2vw, 24px); margin-bottom: 4px; }
+  html.welt .kapitel p { font-size: 13px; line-height: 1.38; }
+  html.welt .finale-logo-rahmen { display: none; }
+}
+@media (max-height: 260px) and (orientation: landscape) {
+  .laden-text { display: none; }
+  .laden { padding-top: calc(52px + env(safe-area-inset-top)); gap: 8px; }
+  .laden-logo { width: min(34vmin, 90px); }
+}
+/* Kleinstes Querformat (altes 320er-Handy quer, Adresszeile eingeblendet: rund 520 × 200 px): Kopf ohne Schriftzug, Absatz zwei Zeilen */
+@media (max-height: 460px) and (orientation: landscape) and (max-width: 560px) { header.kopf .marke b { display: none; } }
+@media (max-height: 230px) and (orientation: landscape) {
+  /* oben anfangen: was nicht passt, läuft unten hinaus statt hinter die Tasten im Kopf */
+  html.welt .kapitel, html.welt .kapitel.rechts, html.welt .kapitel.mitte, html.welt .kapitel.auftakt, html.welt .kapitel.finale, html.welt .kapitel.finale.phase-treffen { align-content: start; }
+  html.welt .kapitel p { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+}
