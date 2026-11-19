@@ -1,0 +1,509 @@
+/* FREQ — Kacheln im Ladebildschirm (Luka 19.11.2026): solange die 3D-Welt lädt, zeigt ein Raster, was FREQ kann.
+   Nur HTML, CSS und Inline-SVG; alles bewegt sich über transform/opacity (läuft auch, während die Welt den Hauptfaden
+   belegt). Die Mittelkachel ist das echte Logo, dessen Ring der echte Lade-Fortschritt ist (wie bisher, --laden-bogen
+   aus welt.js). Liegt bewusst NICHT in welt/: der Service Worker holt diese Datei erst aus dem Netz, nie veraltet.
+   Bühne jeder Mini-Szene: 15 em × 7 em, die Schriftgröße folgt der Kachel (Container-Einheiten). */
+
+.laden.raster {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: left;
+  padding: calc(78px + env(safe-area-inset-top)) calc(20px + env(safe-area-inset-right)) calc(22px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left));
+}
+.kacheln {
+  flex: 1 1 auto; min-height: 0; width: 100%; max-width: 1120px; max-height: 760px;
+  display: grid; gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: repeat(4, minmax(0, 1fr));
+  grid-template-areas: "a a b c" "d m m c" "e m m f" "g h h f";
+  transition: transform 1s cubic-bezier(0.3, 0, 0.2, 1);
+}
+/* Welt bereit: das Raster kommt beim Ausblenden ein Stück auf einen zu */
+html.bereit .kacheln { transform: scale(1.035); }
+/* Sehr schnelles Laden: der Aufbau spielt kurz zu Ende, erst dann blendet der Vorhang aus (Klasse setzt das Skript in der Seite) */
+html.bereit.laden-halten .laden { opacity: 0.999; visibility: visible; pointer-events: auto; }
+html.bereit.laden-halten .kacheln { transform: none; }
+.laden.aus { display: none; }
+
+.kachel {
+  --rund: 22px;
+  position: relative; overflow: hidden; min-width: 0; min-height: 0; border-radius: var(--rund);
+  clip-path: inset(0 round var(--rund));   /* Safari schneidet bewegte Kinder sonst nicht an den runden Ecken ab */
+  container-type: size;
+  background: linear-gradient(158deg, #1a1d22 0%, #131519 58%, #0f1114 100%);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --n: 0; --dx: 0px; --dy: 18px;
+  animation: k-auf 0.72s cubic-bezier(0.16, 0.84, 0.24, 1) both; animation-delay: calc(80ms + var(--n) * 65ms);
+}
+@keyframes k-auf { from { opacity: 0; transform: translate3d(var(--dx), var(--dy), 0) scale(0.9); } to { opacity: 1; transform: none; } }
+.k-mitte { grid-area: m; --dy: 0px; }
+.k-a { grid-area: a; --n: 1; --dx: -26px; --dy: -18px; }
+.k-b { grid-area: b; --n: 2; --dy: -26px; }
+.k-c { grid-area: c; --n: 3; --dx: 26px; --dy: -14px; }
+.k-d { grid-area: d; --n: 4; --dx: -28px; --dy: 0px; }
+.k-e { grid-area: e; --n: 6; --dx: -28px; --dy: 10px; }
+.k-f { grid-area: f; --n: 5; --dx: 28px; --dy: 12px; }
+.k-g { grid-area: g; --n: 8; --dx: -22px; --dy: 22px; }
+.k-h { grid-area: h; --n: 7; --dy: 28px; }
+/* Schimmer am Rand: einmal nach dem Aufbau, dann bei jedem Wechsel des Inhalts (das Skript schaltet b1/b2 um) */
+.kachel::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
+  border: 1px solid var(--cyan); box-shadow: inset 0 0 26px rgba(39, 196, 232, 0.22);
+  animation: k-glanz 1.1s ease-out both; animation-delay: calc(620ms + var(--n) * 65ms);
+}
+.kachel.b1::after { animation: k-glanz-a 0.95s ease-out both; }
+.kachel.b2::after { animation: k-glanz-b 0.95s ease-out both; }
+@keyframes k-glanz { 0% { opacity: 0; } 25% { opacity: 0.85; } 100% { opacity: 0; } }
+@keyframes k-glanz-a { 0% { opacity: 0; } 25% { opacity: 0.85; } 100% { opacity: 0; } }
+@keyframes k-glanz-b { 0% { opacity: 0; } 25% { opacity: 0.85; } 100% { opacity: 0; } }
+
+/* ── Mittelkachel: das echte Logo, sein Ring ist der Fortschritt; um den Rand laufen die zwei Logo-Farben ── */
+.k-mitte { border-color: transparent; background: #0d0f12; text-align: center; }
+.k-mitte::before {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 220%; aspect-ratio: 1; margin: -110% 0 0 -110%;
+  width: 150cqmax; margin: -75cqmax 0 0 -75cqmax;
+  background: conic-gradient(from 0deg, rgba(255, 255, 255, 0.1) 0 58%, rgba(39, 196, 232, 0.95) 76%, rgba(255, 255, 255, 0.1) 78% 88%, rgba(232, 64, 42, 0.8) 97%, rgba(255, 255, 255, 0.1) 100%);
+  animation: k-dreh 8s linear infinite;
+}
+.k-mitte::after {
+  inset: 1.5px; border: 0; border-radius: calc(var(--rund) - 1.5px); opacity: 1; animation: none; box-shadow: none;
+  background: radial-gradient(95% 75% at 50% 36%, #161b22 0%, #0f1215 62%, #0c0e10 100%);
+}
+@keyframes k-dreh { to { transform: rotate(360deg); } }
+.mitte {
+  position: absolute; inset: 0; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: clamp(6px, 3cqh, 16px); padding: 14px;
+}
+.kacheln .laden-logo { width: 120px; width: min(72cqw, calc(100cqh - 140px)); flex: none; }
+.kacheln .laden-logo::before {
+  content: ""; position: absolute; inset: -22%; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(39, 196, 232, 0.2), rgba(39, 196, 232, 0.05) 60%, transparent);
+  animation: k-atem 3.6s ease-in-out infinite alternate;
+}
+@keyframes k-atem { from { opacity: 0.45; transform: scale(0.94); } to { opacity: 1; transform: scale(1.04); } }
+.kacheln .laden-logo picture { position: relative; display: block; width: 100%; height: 100%; }
+.kacheln .laden-logo .laden-geist { position: absolute; inset: 0; opacity: 0.17; }
+.kacheln .laden-geist img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.kacheln .laden-text { margin: 0; font-size: 15px; font-size: clamp(14px, 4cqw, 23px); line-height: 1.16; letter-spacing: -0.02em; text-shadow: none; }
+.kacheln .laden-zeile { display: block; margin: 0; }
+.kacheln .laden-stand { font-size: 13px; gap: 4px 8px; flex-wrap: wrap; justify-content: center; }
+.kacheln .laden-prozent { min-width: 2.7em; }
+
+/* ── Inhalt einer Kachel: mehrere Seiten liegen übereinander, eine ist an (.an) ── */
+.seite {
+  position: absolute; inset: 0; display: flex; flex-direction: column; gap: 4px; padding: 14px 16px 14px;
+  opacity: 0; transform: translate3d(0, 12px, 0); pointer-events: none;
+  transition: opacity 0.42s ease, transform 0.52s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.seite.an { opacity: 1; transform: none; transition-delay: 0.14s; }
+.seite.weg { transform: translate3d(0, -12px, 0); }
+.wort { margin: 0; flex: none; min-width: 0; }
+.wort b { display: block; font-size: 17px; font-weight: 650; line-height: 1.2; letter-spacing: -0.012em; color: var(--licht); overflow-wrap: break-word; }
+.wort span { display: block; margin-top: 3px; font-size: 13.5px; line-height: 1.32; color: var(--nebel); }
+.wort i {
+  position: absolute; top: 12px; right: 12px; font-style: normal; font-size: 11px; font-weight: 600; line-height: 1; letter-spacing: 0;
+  color: var(--cyan); border: 1px solid rgba(39, 196, 232, 0.5); border-radius: 999px; padding: 4px 8px; background: rgba(13, 15, 18, 0.6);
+}
+/* Seite mit „Premium“-Marke oben rechts: die Szene rückt darunter */
+.seite.pr .szene { margin-top: 18px; }
+.szene {
+  flex: 1 1 0; min-height: 0; min-width: 0; display: flex; align-items: center; justify-content: center; color: var(--licht);
+  container-type: size;   /* die Bühne füllt genau den Platz, den der Text übrig lässt */
+}
+/* Hohe Kachel: größere Schrift */
+@container (min-height: 250px) {
+  .wort b { font-size: 20px; }
+  .wort span { font-size: 14.5px; }
+  .seite { padding: 18px 18px 18px; }
+}
+/* Schmale Kachel (Tablet hochkant): kleinere Schrift, damit der Titel in zwei Zeilen passt */
+@container (max-width: 199px) and (min-height: 160px) {
+  .wort b { font-size: 15px; }
+  .wort span { font-size: 12.5px; }
+}
+/* Breite Kachel: Text links, Szene rechts */
+@container (min-aspect-ratio: 2/1) and (min-width: 330px) {
+  .seite { flex-direction: row-reverse; align-items: center; gap: 14px; padding: 14px 18px; }
+  .wort { flex: 1 1 0; }
+  .wort b { font-size: 19px; }
+  .szene { align-self: stretch; }
+}
+/* Niedrige Kachel (nicht breit): nur der Titel steht da, die Unterzeile bleibt für Screenreader; „Premium“ rückt in die Titelzeile */
+@container (max-height: 159px) and ((max-aspect-ratio: 2/1) or (max-width: 329px)) {
+  .wort span { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .wort i { position: static; display: inline-block; margin-left: 3px; padding: 2px 6px; font-size: 10px; vertical-align: 2px; background: none; }
+  .seite.pr .szene { margin-top: 0; }
+}
+/* Schmale Kachel (Tablet hochkant): ebenfalls nur der Titel, etwas kleiner */
+@container (max-width: 199px) and (min-height: 160px) and (max-height: 259px) {
+  .wort span { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+}
+
+/* ── Mini-Szenen (Bühne 15 em × 7 em) ── */
+.b { position: relative; flex: none; width: 15em; height: 7em; font-size: 9px; font-size: clamp(4px, min(calc(100cqh / 7.3), calc(100cqw / 15.3)), 19px); }
+.b i { position: absolute; display: block; font-style: normal; }
+.b b { font-weight: 700; white-space: nowrap; }
+.b svg { position: absolute; overflow: visible; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.b .p { width: 1.1em; height: 1.1em; border-radius: 50%; background: #dfe3e8; }
+.b .c { background: var(--cyan); box-shadow: 0 0 0.8em rgba(39, 196, 232, 0.55); }
+@keyframes k-ring { 0% { transform: scale(1); opacity: 0.9; } 100% { transform: scale(2.8); opacity: 0; } }
+@keyframes k-balken { from { transform: scaleY(0.4); } to { transform: scaleY(1); } }
+@keyframes k-wipp { from { transform: translateY(-0.14em); } to { transform: translateY(0.2em); } }
+@keyframes k-wisch-a { 0%, 8% { transform: translateX(-100%); } 60%, 100% { transform: translateX(0); } }
+@keyframes k-wisch-b { 0%, 8% { transform: translateX(100%); } 60%, 100% { transform: translateX(0); } }
+@keyframes k-weg { 0%, 88% { opacity: 1; } 97%, 100% { opacity: 0; } }
+
+/* Convoy mit Funk: Punkte fahren die Route entlang (x gleichmäßig, y mit derselben Kurve wie der Pfad), einer funkt */
+.s-co .w { inset: 0; width: 100%; height: 100%; stroke: rgba(39, 196, 232, 0.36); stroke-width: 3; }
+.s-co .z { left: 0.4em; top: 5.6em; width: 14.2em; height: 0; }
+.s-co .p { left: -0.55em; top: -0.55em; }
+.s-co .z1 { transform: translateX(70%); } .s-co .z1 .p { transform: translateY(-3.25em); }
+.s-co .z2 { transform: translateX(58%); } .s-co .z2 .p { transform: translateY(-2.5em); }
+.s-co .z3 { transform: translateX(46%); } .s-co .z3 .p { transform: translateY(-1.73em); }
+.s-co .z4 { transform: translateX(34%); } .s-co .z4 .p { transform: translateY(-0.96em); }
+.s-co .c::after { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 0.14em solid var(--cyan); opacity: 0; }
+.an .s-co .z { animation: co-x 6.4s linear infinite; }
+.an .s-co .p { animation: co-y 6.4s cubic-bezier(0.42, 0, 0.58, 1) infinite; }
+.an .s-co .z1, .an .s-co .z1 .p { animation-delay: -1.95s; }
+.an .s-co .z2, .an .s-co .z2 .p { animation-delay: -1.3s; }
+.an .s-co .z3, .an .s-co .z3 .p { animation-delay: -0.65s; }
+.an .s-co .c::after { animation: k-ring 1.7s ease-out infinite; }
+@keyframes co-x { 0% { transform: translateX(0); opacity: 0; } 7% { opacity: 1; } 91% { opacity: 1; } 100% { transform: translateX(100%); opacity: 0; } }
+@keyframes co-y { from { transform: translateY(0); } to { transform: translateY(-4em); } }
+
+/* Funk-Wellen (auch in Stereo und Rufen): Bögen leuchten von innen nach außen auf */
+.b .r { left: 50%; top: 50%; border-radius: 50%; border: 0.16em solid transparent; border-left-color: var(--cyan); border-right-color: var(--cyan); }
+.b .r1 { width: 4.4em; height: 4.4em; margin: -2.2em 0 0 -2.2em; }
+.b .r2 { width: 5.8em; height: 5.8em; margin: -2.9em 0 0 -2.9em; opacity: 0.6; }
+.b .r3 { width: 7.2em; height: 7.2em; margin: -3.6em 0 0 -3.6em; opacity: 0.3; }
+.an .r { animation: fu 1.8s ease-in-out infinite; }
+.an .r2 { animation-delay: 0.22s; } .an .r3 { animation-delay: 0.44s; }
+@keyframes fu { 0%, 100% { opacity: 0.14; transform: scale(0.94); } 30% { opacity: 1; transform: scale(1); } 62% { opacity: 0.14; transform: scale(1); } }
+.s-fu .m { left: 6em; top: 2em; width: 3em; height: 3em; }
+
+/* Stereo-Musik und Funk: Balken links und rechts, kommt eine Funk-Welle, ducken sie sich */
+.s-st .g { bottom: 1.6em; width: 4.6em; height: 4.7em; transform-origin: 50% 100%; }
+.s-st .gl { left: 0.3em; } .s-st .gr { right: 0.3em; }
+.s-st .g i { bottom: 0; width: 0.64em; border-radius: 0.32em; background: #e9ecf0; transform-origin: 50% 100%; }
+.s-st .g i:nth-child(1) { left: 0; height: 2.5em; } .s-st .g i:nth-child(2) { left: 1.3em; height: 4.3em; }
+.s-st .g i:nth-child(3) { left: 2.6em; height: 3.3em; } .s-st .g i:nth-child(4) { left: 3.9em; height: 4.7em; }
+.s-st .gr i:nth-child(1) { height: 4.5em; } .s-st .gr i:nth-child(2) { height: 3em; }
+.s-st .gr i:nth-child(3) { height: 4.7em; } .s-st .gr i:nth-child(4) { height: 2.7em; }
+.s-st .lr { bottom: 0; width: 4.6em; text-align: center; color: var(--nebel); }
+.s-st .lr b { font-size: 1em; font-weight: 600; }
+.s-st .fk { left: 5.5em; top: 0.9em; width: 4em; height: 4em; opacity: 0.25; }
+.s-st .fk .p { left: 1.5em; top: 1.5em; width: 1em; height: 1em; }
+.s-st .r1 { width: 2.6em; height: 2.6em; margin: -1.3em 0 0 -1.3em; }
+.s-st .r2 { width: 4em; height: 4em; margin: -2em 0 0 -2em; }
+.an .s-st .g { animation: st-duck 6s ease-in-out infinite; }
+.an .s-st .g i { animation: k-balken 0.62s ease-in-out infinite alternate; }
+.an .s-st .g i:nth-child(2) { animation-duration: 0.78s; animation-delay: -0.2s; }
+.an .s-st .g i:nth-child(3) { animation-duration: 0.54s; animation-delay: -0.35s; }
+.an .s-st .g i:nth-child(4) { animation-duration: 0.7s; animation-delay: -0.1s; }
+.an .s-st .gr i { animation-direction: alternate-reverse; }
+.an .s-st .fk { animation: st-fk 6s ease-in-out infinite; }
+@keyframes st-duck { 0%, 44% { transform: scaleY(1); opacity: 1; } 52%, 82% { transform: scaleY(0.34); opacity: 0.5; } 90%, 100% { transform: scaleY(1); opacity: 1; } }
+@keyframes st-fk { 0%, 44% { opacity: 0.22; } 52%, 82% { opacity: 1; } 90%, 100% { opacity: 0.22; } }
+
+/* Blitzer: du fährst darauf zu, die Kamera meldet sich zweimal */
+.s-bl .k { left: 0.9em; top: 1.3em; width: 4.4em; height: 4.4em; }
+.s-bl .wr { left: 0.2em; top: 0.6em; width: 5.8em; height: 5.8em; border-radius: 50%; border: 0.17em solid var(--rot); opacity: 0.85; }
+.s-bl .ln { left: 6.6em; top: 3.43em; width: 8em; height: 0.14em; background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.3) 0 0.5em, transparent 0.5em 1em); }
+.s-bl .p { left: 13.4em; top: 2.95em; transform: translateX(-3em); }
+.an .s-bl .p { animation: bl-p 4.2s linear infinite; }
+.an .s-bl .wr { animation: bl-w 4.2s ease-out infinite; }
+@keyframes bl-p { 0% { transform: translateX(0); opacity: 0; } 8% { opacity: 1; } 80% { opacity: 1; } 92%, 100% { transform: translateX(-6.6em); opacity: 0; } }
+@keyframes bl-w { 0%, 26% { opacity: 0; transform: scale(0.82); } 32% { opacity: 1; transform: scale(1); } 45% { opacity: 0; transform: scale(1.2); } 52% { opacity: 0; transform: scale(0.82); } 58% { opacity: 1; transform: scale(1); } 71%, 100% { opacity: 0; transform: scale(1.2); } }
+
+/* Auto-Display: Tacho, Limit, Route und Convoy am Schirm */
+.s-au .sc { left: 2.3em; top: 0.3em; width: 10.4em; height: 5.7em; border: 0.15em solid rgba(242, 243, 245, 0.8); border-radius: 0.9em; }
+.s-au .sc::before { content: ""; position: absolute; left: 3.1em; top: 0; bottom: 0; width: 0.08em; background: rgba(255, 255, 255, 0.2); }
+.s-au .ta { left: 0.55em; top: 0.6em; width: 2em; height: 2em; border: 0.16em solid var(--licht); border-bottom-color: transparent; border-radius: 50%; }
+.s-au .li { left: 0.8em; top: 3.2em; width: 1.5em; height: 1.5em; border: 0.27em solid var(--rot); border-radius: 50%; background: #f2f3f5; }
+.s-au .rt { left: 3.6em; top: 0.5em; width: 6em; height: 4.4em; stroke: var(--cyan); stroke-width: 2.2; }
+.s-au .p { width: 0.62em; height: 0.62em; }
+.s-au .c { left: 6.55em; top: 2.05em; width: 0.9em; height: 0.9em; }
+.s-au .p2 { left: 5.2em; top: 3.5em; } .s-au .p3 { left: 8.1em; top: 1.35em; }
+.s-au .c::after { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 0.12em solid var(--cyan); opacity: 0; }
+.s-au .fs { left: 6.5em; top: 6.2em; width: 2em; height: 0.16em; border-radius: 0.1em; background: rgba(242, 243, 245, 0.55); }
+.an .s-au .c::after { animation: k-ring 1.9s ease-out infinite; }
+.an .s-au .p2, .an .s-au .p3 { animation: au-p 1.9s ease-in-out infinite alternate; }
+.an .s-au .p3 { animation-delay: -0.8s; }
+@keyframes au-p { from { transform: translate(-0.22em, 0.16em); } to { transform: translate(0.26em, -0.2em); } }
+
+/* Tanken, Parken, Essen: drei Knöpfe, der Spritpreis zählt herunter */
+.s-pr .ch { top: 2.1em; width: 2.8em; height: 2.8em; border-radius: 50%; border: 0.13em solid rgba(255, 255, 255, 0.28); }
+.s-pr .ch svg { left: 0.5em; top: 0.5em; width: 1.54em; height: 1.54em; }
+.s-pr .on { left: 0.1em; border-color: var(--cyan); color: var(--cyan); background: rgba(39, 196, 232, 0.12); }
+.s-pr .c2 { left: 3.2em; } .s-pr .c3 { left: 6.3em; }
+.s-pr .lb { left: 9.7em; top: 0.75em; color: var(--nebel); } .s-pr .lb b { font-size: 1em; font-weight: 600; }
+.s-pr .fe { left: 9.6em; top: 2.3em; width: 4.5em; height: 2.4em; overflow: hidden; }
+.s-pr .st, .s-na .st { left: 0; top: 0; font-size: 2em; line-height: 1.2em; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; white-space: nowrap; transform: translateY(-75%); }
+.s-pr .pf { left: 14.2em; top: 3.3em; width: 0; height: 0; border-left: 0.38em solid transparent; border-right: 0.38em solid transparent; border-top: 0.56em solid var(--gruen); }
+.an .s-pr .st { animation: pr 6.4s ease-in-out infinite; }
+.an .s-pr .pf { animation: k-wipp 0.8s ease-in-out infinite alternate; }
+@keyframes pr { 0%, 16% { transform: translateY(0); } 24%, 40% { transform: translateY(-25%); } 48%, 64% { transform: translateY(-50%); } 72%, 94% { transform: translateY(-75%); } 100% { transform: translateY(0); } }
+
+/* Grenze, Vignette, Umweltzone: Vignette passt, die Schranke geht auf */
+.s-gr .bo, .s-an .bo { left: 0.5em; top: 6.4em; width: 14em; height: 0.14em; background: rgba(255, 255, 255, 0.22); }
+.s-gr .po { left: 6.4em; top: 3.7em; width: 0.6em; height: 2.7em; border-radius: 0.2em; background: #dfe3e8; }
+.s-gr .ar { left: 6.7em; top: 3.95em; width: 5.4em; height: 0.52em; border-radius: 0.26em; background: repeating-linear-gradient(90deg, var(--rot) 0 0.9em, #f2f3f5 0.9em 1.8em); transform-origin: 0.15em 50%; transform: rotate(-52deg); }
+.s-gr .p { left: 0.8em; top: 5.25em; transform: translateX(9em); }
+.s-gr .vi { left: 1.1em; top: 0.9em; width: 2.5em; height: 2.5em; border-radius: 0.6em; border: 0.14em solid var(--cyan); color: var(--cyan); background: rgba(39, 196, 232, 0.1); }
+.s-gr .vi svg { left: 0.42em; top: 0.42em; width: 1.4em; height: 1.4em; stroke-width: 2.4; }
+.an .s-gr .p { animation: gr-p 5.4s ease-in-out infinite; }
+.an .s-gr .ar { animation: gr-a 5.4s ease-in-out infinite; }
+.an .s-gr .vi { animation: gr-v 5.4s ease-out infinite; }
+@keyframes gr-p { 0% { transform: translateX(0); opacity: 0; } 6% { opacity: 1; } 28%, 46% { transform: translateX(4.2em); opacity: 1; } 84% { transform: translateX(12.4em); opacity: 1; } 94%, 100% { transform: translateX(12.4em); opacity: 0; } }
+@keyframes gr-a { 0%, 30% { transform: rotate(0deg); } 44%, 86% { transform: rotate(-52deg); } 98%, 100% { transform: rotate(0deg); } }
+@keyframes gr-v { 0%, 22% { opacity: 0; transform: scale(0.6); } 30% { opacity: 1; transform: scale(1.1); } 35%, 86% { opacity: 1; transform: scale(1); } 96%, 100% { opacity: 0; transform: scale(0.9); } }
+
+/* Offline-Karten: die Karten-Kacheln eines Landes laden Spalte für Spalte */
+.s-of .dl { left: 0.5em; top: 1.8em; width: 3.4em; height: 3.4em; }
+.s-of .kg { width: 9.2em; height: 5.6em; background: repeating-linear-gradient(90deg, currentColor 0 2em, transparent 2em 2.4em); -webkit-mask: repeating-linear-gradient(180deg, #000 0 1.6em, transparent 1.6em 2em); mask: repeating-linear-gradient(180deg, #000 0 1.6em, transparent 1.6em 2em); }
+.s-of .kd { left: 5.3em; top: 0.7em; color: rgba(255, 255, 255, 0.13); }
+.s-of .wo { left: 5.3em; top: 0.7em; width: 9.2em; height: 5.6em; overflow: hidden; }
+.b .wi { inset: 0; overflow: hidden; }
+.s-of .kh { left: 0; top: 0; color: var(--cyan); }
+.an .s-of .dl { animation: k-wipp 1.1s ease-in-out infinite alternate; }
+.an .s-of .wi { animation: k-wisch-a 5.2s steps(4) infinite; }
+.an .s-of .kh { animation: k-wisch-b 5.2s steps(4) infinite; }
+.an .s-of .wo { animation: k-weg 5.2s linear infinite; }
+
+/* Car-Meets: Punkte kommen am Treffpunkt zusammen */
+.s-me .pn { left: 5.5em; top: 0.3em; width: 4em; height: 4em; color: var(--cyan); }
+.s-me .el { left: 6em; top: 3.5em; width: 3em; height: 1em; border-radius: 50%; border: 0.13em solid var(--cyan); opacity: 0.5; }
+.s-me .p { width: 0.9em; height: 0.9em; }
+.s-me .p1 { left: 4.2em; top: 5.2em; --x: -3.8em; --y: 0.3em; }
+.s-me .p2 { left: 7.1em; top: 5.7em; --x: 0em; --y: 1.5em; }
+.s-me .p3 { left: 10em; top: 5.1em; --x: 4.2em; --y: -0.6em; }
+.an .s-me .el { animation: k-ring 2s ease-out infinite; }
+.an .s-me .p { animation: me-p 5s ease-out infinite; }
+.an .s-me .p2 { animation-delay: 0.25s; } .an .s-me .p3 { animation-delay: 0.5s; }
+@keyframes me-p { 0% { opacity: 0; transform: translate(var(--x), var(--y)); } 12% { opacity: 1; } 55%, 84% { opacity: 1; transform: none; } 96%, 100% { opacity: 0; transform: none; } }
+
+/* Rufen per Stimme: du sagst den Namen */
+.s-ru .m { left: 0.5em; top: 2em; width: 3em; height: 3em; }
+.s-ru .v { top: 2.4em; width: 0.36em; height: 2.2em; border-radius: 0.2em; background: var(--cyan); }
+.s-ru .v1 { left: 4.2em; } .s-ru .v2 { left: 5em; } .s-ru .v3 { left: 5.8em; }
+.s-ru .bb { left: 7.2em; top: 1.7em; width: 7.5em; height: 3.5em; border-radius: 1.2em 1.2em 1.2em 0.25em; border: 0.14em solid var(--cyan); background: rgba(39, 196, 232, 0.1); display: flex; align-items: center; justify-content: center; transform-origin: 0 100%; }
+.s-ru .bb b { font-size: 1.55em; }
+.an .s-ru .v { animation: k-balken 0.5s ease-in-out infinite alternate; }
+.an .s-ru .v2 { animation-duration: 0.66s; } .an .s-ru .v3 { animation-duration: 0.42s; }
+.an .s-ru .bb { animation: ru 3.8s ease-out infinite; }
+@keyframes ru { 0%, 10% { opacity: 0; transform: scale(0.6); } 20% { opacity: 1; transform: scale(1.06); } 26%, 78% { opacity: 1; transform: scale(1); } 90%, 100% { opacity: 0; transform: scale(0.92); } }
+
+/* Navi mit Stimme: der Pfeil und die Entfernung bis zum Abbiegen */
+.s-na .pf { left: 0.9em; top: 1em; width: 5em; height: 5em; color: var(--cyan); }
+.s-na .fe { left: 7.2em; top: 2.3em; width: 7.7em; height: 2.4em; overflow: hidden; }
+.s-na .st { transform: translateY(-66.667%); }
+.an .s-na .pf { animation: na-p 0.9s ease-in-out infinite alternate; }
+.an .s-na .st { animation: na 5.4s ease-in-out infinite; }
+@keyframes na-p { from { transform: translateX(-0.1em); } to { transform: translateX(0.32em); } }
+@keyframes na { 0%, 22% { transform: translateY(0); } 33%, 55% { transform: translateY(-33.333%); } 66%, 92% { transform: translateY(-66.667%); } 100% { transform: translateY(0); } }
+
+/* Tempolimit am Tacho: das nächste Limit löst das alte ab */
+.s-te .ga { left: 1em; top: 0.9em; width: 5.2em; height: 5.2em; }
+.s-te .sg { left: 8.6em; top: 1.2em; width: 4.6em; height: 4.6em; border-radius: 50%; background: #f2f3f5; border: 0.56em solid var(--rot); display: flex; align-items: center; justify-content: center; }
+.s-te .sg b { font-size: 1.45em; font-weight: 800; color: #0b0d0f; letter-spacing: -0.05em; }
+.s-te .s2 b { font-size: 1.9em; }
+.s-te .s1 { opacity: 0; }
+.an .s-te .s1 { animation: te1 4.6s ease-in-out infinite; }
+.an .s-te .s2 { animation: te2 4.6s ease-in-out infinite; }
+@keyframes te1 { 0%, 34% { opacity: 1; transform: scale(1); } 44%, 90% { opacity: 0; transform: scale(0.7); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes te2 { 0%, 34% { opacity: 0; transform: scale(1.3); } 44%, 90% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.3); } }
+
+/* Abschnittskontrolle: zwischen zwei Messpunkten fährt dein Schnitt mit */
+.s-ab .ln { left: 1.6em; top: 5em; width: 11.8em; height: 0.14em; background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.3) 0 0.5em, transparent 0.5em 1em); }
+.s-ab .ps { top: 2.5em; width: 0.5em; height: 3em; border-radius: 0.2em; background: #dfe3e8; }
+.s-ab .ps::before { content: ""; position: absolute; left: -0.45em; top: -0.3em; width: 1.4em; height: 0.8em; border-radius: 0.25em; background: #dfe3e8; }
+.s-ab .a1 { left: 0.9em; } .s-ab .a2 { left: 13.6em; }
+.s-ab .mv { left: 2.4em; top: 0; width: 0; height: 0; transform: translateX(5em); }
+.s-ab .mv .p { left: 0; top: 4.45em; }
+.s-ab .pl { left: -1.65em; top: 1.6em; width: 4.4em; height: 1.9em; border-radius: 1em; border: 0.13em solid var(--cyan); background: rgba(39, 196, 232, 0.12); display: flex; align-items: center; justify-content: center; }
+.s-ab .pl b { font-size: 1.05em; }
+.an .s-ab .mv { animation: ab 4.8s linear infinite; }
+@keyframes ab { 0% { transform: translateX(0); opacity: 0; } 8% { opacity: 1; } 88% { opacity: 1; } 100% { transform: translateX(9.2em); opacity: 0; } }
+
+/* Ladesäulen: belegt wird frei */
+.s-la .zp { left: 1.2em; top: 1.3em; width: 4.4em; height: 4.4em; color: var(--cyan); }
+.s-la .pl { left: 6.5em; top: 2.3em; width: 8.3em; height: 2.4em; border-radius: 1.2em; border: 0.13em solid rgba(255, 255, 255, 0.3); display: flex; align-items: center; gap: 0.55em; padding-left: 0.8em; box-sizing: border-box; }
+.s-la .pl::before { content: ""; flex: none; width: 0.72em; height: 0.72em; border-radius: 50%; background: #7d848c; }
+.s-la .pl b { font-size: 1.05em; font-weight: 650; }
+.s-la .fr { border-color: rgba(48, 209, 88, 0.65); } .s-la .fr::before { background: var(--gruen); }
+.s-la .be { opacity: 0; }
+.an .s-la .be { animation: la1 4.4s ease-in-out infinite; }
+.an .s-la .fr { animation: la2 4.4s ease-in-out infinite; }
+.an .s-la .zp { animation: la-z 1.1s ease-in-out infinite alternate; }
+@keyframes la1 { 0%, 40% { opacity: 1; transform: none; } 50%, 90% { opacity: 0; transform: translateY(-0.5em); } 100% { opacity: 1; transform: none; } }
+@keyframes la2 { 0%, 40% { opacity: 0; transform: translateY(0.5em); } 50%, 90% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateY(0.5em); } }
+@keyframes la-z { from { opacity: 0.55; } to { opacity: 1; } }
+
+/* Pause-Vorschlag: Dampf über der Tasse */
+.s-pa .cu { left: 5.2em; top: 1.7em; width: 5em; height: 5em; }
+.s-pa .d { top: 2em; width: 0.17em; height: 1.1em; border-radius: 0.1em; background: var(--cyan); opacity: 0.7; }
+.s-pa .d1 { left: 6.35em; } .s-pa .d2 { left: 7.2em; } .s-pa .d3 { left: 8.05em; }
+.an .s-pa .d { animation: pa 2.2s ease-out infinite; }
+.an .s-pa .d2 { animation-delay: 0.55s; } .an .s-pa .d3 { animation-delay: 1.1s; }
+@keyframes pa { 0% { opacity: 0; transform: translateY(0.5em); } 30% { opacity: 0.9; } 100% { opacity: 0; transform: translateY(-1.2em); } }
+
+/* Stau und Sperren: ein Stück der Route färbt sich */
+.s-sa .ro { left: 0.6em; top: 4.2em; width: 13.8em; height: 0.56em; border-radius: 0.3em; background: rgba(39, 196, 232, 0.55); }
+.s-sa .rs { left: 6em; top: 4.2em; width: 5.2em; height: 0.56em; border-radius: 0.3em; background: var(--rot); transform-origin: 0 50%; }
+.s-sa .wa { left: 7.2em; top: 0.6em; width: 2.8em; height: 2.8em; }
+.s-sa .p { left: 1.4em; top: 3.93em; transform: translateX(2.6em); }
+.an .s-sa .rs { animation: sa 5s ease-in-out infinite; }
+.an .s-sa .wa { animation: sa-w 5s ease-out infinite; }
+.an .s-sa .p { animation: sa-p 5s linear infinite; }
+@keyframes sa { 0%, 12% { transform: scaleX(0); opacity: 1; } 40%, 84% { transform: scaleX(1); opacity: 1; } 96%, 100% { transform: scaleX(1); opacity: 0; } }
+@keyframes sa-w { 0%, 34% { opacity: 0; transform: translateY(0.4em) scale(0.7); } 44%, 84% { opacity: 1; transform: none; } 96%, 100% { opacity: 0; transform: none; } }
+@keyframes sa-p { 0% { transform: translateX(0); opacity: 0; } 8% { opacity: 1; } 84% { transform: translateX(3em); opacity: 1; } 96%, 100% { transform: translateX(3em); opacity: 0; } }
+
+/* Melden mit einem Tipp */
+.s-ml .bt, .s-ml .rp { left: 5.4em; top: 2.4em; width: 4.2em; height: 4.2em; border-radius: 50%; border: 0.14em solid var(--cyan); box-sizing: border-box; }
+.s-ml .bt { background: rgba(39, 196, 232, 0.14); color: var(--cyan); }
+.s-ml .bt svg { left: 0.85em; top: 0.85em; width: 2.2em; height: 2.2em; }
+.s-ml .rp { opacity: 0; }
+.s-ml .mk { left: 9.5em; top: 0.3em; width: 2.3em; height: 2.3em; border-radius: 50% 50% 50% 0.3em; background: var(--rot); display: flex; align-items: center; justify-content: center; }
+.s-ml .mk b { font-size: 1.5em; font-weight: 800; color: #fff; }
+.an .s-ml .bt { animation: ml-b 3.6s ease-out infinite; }
+.an .s-ml .rp { animation: ml-r 3.6s ease-out infinite; }
+.an .s-ml .mk { animation: ml-m 3.6s ease-out infinite; }
+@keyframes ml-b { 0%, 8% { transform: scale(1); } 13% { transform: scale(0.9); } 20%, 100% { transform: scale(1); } }
+@keyframes ml-r { 0%, 12% { opacity: 0; transform: scale(1); } 16% { opacity: 0.9; transform: scale(1); } 46%, 100% { opacity: 0; transform: scale(1.9); } }
+@keyframes ml-m { 0%, 30% { opacity: 0; transform: translateY(0.8em) scale(0.5); } 42% { opacity: 1; transform: translateY(0) scale(1.1); } 48%, 84% { opacity: 1; transform: none; } 96%, 100% { opacity: 0; transform: none; } }
+
+/* Am Sperrbildschirm: die Abbiegung kommt als Karte herein */
+.s-sp .ph { left: 5.4em; top: 0.1em; width: 4.2em; height: 6.8em; border: 0.15em solid rgba(242, 243, 245, 0.8); border-radius: 0.9em; overflow: hidden; box-sizing: border-box; }
+.s-sp .is { left: 1.35em; top: 0.35em; width: 1.2em; height: 0.36em; border-radius: 0.2em; background: #f2f3f5; }
+.s-sp .nc { left: 0.3em; top: 1.2em; width: 3.3em; height: 1.7em; border-radius: 0.45em; background: rgba(39, 196, 232, 0.2); border: 0.1em solid var(--cyan); box-sizing: border-box; }
+.s-sp .nc::before { content: ""; position: absolute; left: 0.3em; top: 0.5em; width: 0.5em; height: 0.5em; border-top: 0.17em solid var(--cyan); border-right: 0.17em solid var(--cyan); }
+.s-sp .nc::after { content: ""; position: absolute; left: 1.35em; top: 0.45em; width: 1.4em; height: 0.17em; border-radius: 0.1em; background: #f2f3f5; box-shadow: 0 0.42em 0 rgba(242, 243, 245, 0.5); }
+.s-sp .n2 { left: 0.3em; top: 3.2em; width: 3.3em; height: 1.2em; border-radius: 0.4em; background: rgba(255, 255, 255, 0.1); }
+.an .s-sp .nc { animation: sp 4.4s ease-out infinite; }
+@keyframes sp { 0%, 12% { opacity: 0; transform: translateY(-1em); } 24%, 80% { opacity: 1; transform: none; } 92%, 100% { opacity: 0; transform: none; } }
+
+/* Karte in 3D: drei Ebenen */
+.s-3d .l { left: 4.9em; width: 5.2em; height: 5.2em; }
+.s-3d .l i { inset: 0; border: 0.15em solid rgba(242, 243, 245, 0.45); border-radius: 0.5em; background: rgba(255, 255, 255, 0.05); transform: scaleY(0.5) rotate(45deg); }
+.s-3d .l1 { top: -0.5em; } .s-3d .l2 { top: 0.6em; } .s-3d .l3 { top: 1.7em; }
+.s-3d .l1 i { border-color: var(--cyan); background: rgba(39, 196, 232, 0.16); }
+.an .s-3d .l1 { animation: d3-a 1.9s ease-in-out infinite alternate; }
+.an .s-3d .l3 { animation: d3-b 1.9s ease-in-out infinite alternate; }
+@keyframes d3-a { from { transform: translateY(0.1em); } to { transform: translateY(-0.55em); } }
+@keyframes d3-b { from { transform: translateY(-0.1em); } to { transform: translateY(0.55em); } }
+
+/* Ohne Werbung */
+.s-we .sh, .s-we .ck { left: 5em; top: 0.9em; width: 5em; height: 5em; }
+.s-we .ck { color: var(--cyan); stroke-width: 2.3; }
+.s-we .rg { left: 4.6em; top: 0.5em; width: 5.8em; height: 5.8em; border-radius: 50%; border: 0.13em solid var(--cyan); opacity: 0; box-sizing: border-box; }
+.an .s-we .ck { animation: we 3.8s ease-out infinite; }
+.an .s-we .rg { animation: we-r 3.8s ease-out infinite; }
+@keyframes we { 0%, 12% { opacity: 0; transform: scale(0.4); } 24% { opacity: 1; transform: scale(1.16); } 30%, 88% { opacity: 1; transform: scale(1); } 98%, 100% { opacity: 0; transform: scale(1); } }
+@keyframes we-r { 0%, 20% { opacity: 0; transform: scale(0.9); } 28% { opacity: 0.7; transform: scale(1); } 56%, 100% { opacity: 0; transform: scale(1.3); } }
+
+/* Zuhause-Zone: in der Zone verschwindet der Punkt */
+.s-zu .zn { left: 1.9em; top: 0.4em; width: 6.2em; height: 6.2em; border-radius: 50%; border: 0.13em dashed rgba(39, 196, 232, 0.75); box-sizing: border-box; }
+.s-zu .hs { left: 3.6em; top: 2em; width: 2.8em; height: 2.8em; }
+.s-zu .p { left: 13.2em; top: 2.95em; transform: translateX(-3em); }
+.an .s-zu .zn { animation: k-dreh 26s linear infinite; }
+.an .s-zu .p { animation: zu 4.6s ease-in-out infinite; }
+@keyframes zu { 0% { transform: translateX(0); opacity: 0; } 8% { opacity: 1; } 50% { transform: translateX(-4.6em); opacity: 1; } 64%, 100% { transform: translateX(-6.4em); opacity: 0; } }
+
+/* Große Convoys: bis 15 Autos, eins nach dem anderen */
+.s-gs .dt { width: 15em; height: 0.8em; background: radial-gradient(circle, currentColor 0 0.35em, transparent 0.39em) 0 0 / 1em 0.8em; }
+.s-gs .dd { left: 0; top: 3.6em; color: rgba(255, 255, 255, 0.15); }
+.s-gs .wo { left: 0; top: 3.6em; width: 15em; height: 0.8em; overflow: hidden; }
+.s-gs .dh { left: 0; top: 0; color: #e9ecf0; }
+.s-gs .p { left: 0.12em; top: 3.62em; width: 0.76em; height: 0.76em; }
+.s-gs .kr { left: -0.3em; top: 1.7em; width: 1.6em; height: 1.6em; color: var(--cyan); }
+.an .s-gs .wi { animation: k-wisch-a 6s steps(15) infinite; }
+.an .s-gs .dh { animation: k-wisch-b 6s steps(15) infinite; }
+.an .s-gs .wo { animation: k-weg 6s linear infinite; }
+
+/* Gemeinsam ankommen */
+.s-an .bo { top: 5.9em; }
+.s-an .fl { left: 11.2em; top: 2.7em; width: 3.6em; height: 3.6em; color: var(--cyan); }
+.s-an .p { top: 4.75em; }
+.s-an .p1 { left: 9.6em; --x: -8.6em; } .s-an .p2 { left: 8.2em; --x: -7.6em; } .s-an .p3 { left: 6.8em; --x: -6.4em; }
+.s-an .pl { left: 0.4em; top: 0.5em; width: 5.8em; height: 2em; border-radius: 1em; border: 0.13em solid var(--cyan); background: rgba(39, 196, 232, 0.12); display: flex; align-items: center; justify-content: center; box-sizing: border-box; transform-origin: 0 50%; }
+.s-an .pl b { font-size: 1.1em; font-variant-numeric: tabular-nums; }
+.an .s-an .p { animation: an-p 5s ease-out infinite; }
+.an .s-an .pl { animation: an-l 5s ease-out infinite; }
+@keyframes an-p { 0% { opacity: 0; transform: translateX(var(--x)); } 10% { opacity: 1; } 58%, 86% { opacity: 1; transform: none; } 96%, 100% { opacity: 0; transform: none; } }
+@keyframes an-l { 0%, 54% { opacity: 0; transform: scale(0.7); } 62%, 86% { opacity: 1; transform: scale(1); } 96%, 100% { opacity: 0; transform: scale(1); } }
+
+/* Einladen: Handys nebeneinanderhalten */
+.s-ei .ph { top: 1.7em; width: 2.8em; height: 4.9em; border: 0.15em solid rgba(242, 243, 245, 0.8); border-radius: 0.6em; box-sizing: border-box; }
+.s-ei .h1 { left: 2.6em; transform: translateX(1.9em); } .s-ei .h2 { left: 9.6em; transform: translateX(-1.9em); }
+.s-ei .rg { left: 6em; top: 2.65em; width: 3em; height: 3em; border-radius: 50%; border: 0.14em solid var(--cyan); box-sizing: border-box; opacity: 0; }
+.s-ei .lk { left: 6.7em; top: -0.1em; width: 1.6em; height: 1.6em; color: var(--cyan); }
+.an .s-ei .h1 { animation: ei1 4.4s ease-in-out infinite; }
+.an .s-ei .h2 { animation: ei2 4.4s ease-in-out infinite; }
+.an .s-ei .rg { animation: ei-r 4.4s ease-out infinite; }
+.an .s-ei .lk { animation: ei-l 4.4s ease-out infinite; }
+@keyframes ei1 { 0%, 10% { transform: translateX(0); } 38%, 82% { transform: translateX(1.9em); } 96%, 100% { transform: translateX(0); } }
+@keyframes ei2 { 0%, 10% { transform: translateX(0); } 38%, 82% { transform: translateX(-1.9em); } 96%, 100% { transform: translateX(0); } }
+@keyframes ei-r { 0%, 36% { opacity: 0; transform: scale(0.4); } 44% { opacity: 1; transform: scale(0.8); } 72%, 100% { opacity: 0; transform: scale(2); } }
+@keyframes ei-l { 0%, 38% { opacity: 0; transform: scale(0.5); } 48%, 82% { opacity: 1; transform: scale(1); } 94%, 100% { opacity: 0; transform: scale(1); } }
+
+/* ── Handy hochkant: zwei Spalten, weniger und größere Kacheln (unten bleibt Platz für das Dock) ── */
+@media (max-width: 720px) {
+  .laden.raster { gap: 8px; padding: calc(72px + env(safe-area-inset-top)) calc(12px + env(safe-area-inset-right)) calc(104px + env(safe-area-inset-bottom)) calc(12px + env(safe-area-inset-left)); }
+  .kacheln { gap: 8px; max-height: none; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: "a a" "m b" "m c" "d e"; }
+  .k-f, .k-g, .k-h { display: none; }
+  .kachel { --rund: 18px; }
+  .seite { padding: 11px 12px 10px; gap: 4px; }
+  .wort b { font-size: 14.5px; }
+  .wort span { font-size: 12px; margin-top: 2px; }
+  .wort i { top: 9px; right: 9px; font-size: 10px; padding: 3px 7px; }
+  .mitte { padding: 10px; }
+  .kacheln .laden-logo { width: min(74cqw, calc(100cqh - 96px)); }
+  .kacheln .laden-stand { font-size: 12px; flex-direction: column; align-items: center; gap: 0; }
+  .kacheln .laden-prozent { min-width: 0; text-align: center; }
+}
+@media (max-width: 720px) {
+  @container (min-height: 250px) { .wort b { font-size: 16px; } .wort span { font-size: 12.5px; } .seite { padding: 12px 12px 12px; } }
+  @container (min-aspect-ratio: 2/1) and (min-width: 330px) {
+    .seite { padding: 10px 12px; gap: 10px; }
+    .wort b { font-size: 15px; }
+  }
+}
+@media (max-width: 720px) { @container (max-width: 169px) { .wort b { font-size: 13.5px; } } }
+@media (max-width: 340px) { .wort b { font-size: 13px; } }
+/* Hohes Handy: eine breite Kachel mehr */
+@media (max-width: 720px) and (min-height: 780px) {
+  .kacheln { grid-template-rows: repeat(5, minmax(0, 1fr)); grid-template-areas: "a a" "m b" "m c" "d e" "h h"; }
+  .k-h { display: block; }
+}
+/* Niedriges Handy hochkant (kleines Gerät mit Browser-Leisten): drei Reihen */
+@media (max-width: 720px) and (max-height: 599px) and (orientation: portrait) {
+  .kacheln { grid-template-rows: repeat(3, minmax(0, 1fr)); grid-template-areas: "a a" "m b" "m c"; }
+  .k-d, .k-e { display: none; }
+}
+/* Flaches Querformat (Handy quer): das Logo in der Mitte, je zwei Kacheln links und rechts; die Tasten stehen im Kopf, kein Dock */
+@media (max-height: 460px) and (orientation: landscape) {
+  .laden.raster { gap: 6px; padding: calc(68px + env(safe-area-inset-top)) calc(14px + env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) calc(14px + env(safe-area-inset-left)); }
+  .kacheln { gap: 8px; max-height: none; grid-template-columns: minmax(0, 1fr) minmax(0, 0.86fr) minmax(0, 1fr); grid-template-rows: repeat(2, minmax(0, 1fr)); grid-template-areas: "a m b" "c m d"; }
+  .k-a, .k-b, .k-c, .k-d { display: block; }
+  .k-e, .k-f, .k-g, .k-h { display: none; }
+  .kachel { --rund: 18px; }
+  .seite { padding: 10px 12px 9px; gap: 3px; }
+  .wort b { font-size: 14.5px; }
+  .wort span { font-size: 12px; margin-top: 2px; }
+  .wort i { top: 9px; right: 9px; font-size: 10px; padding: 3px 7px; }
+  .mitte { padding: 8px; gap: 5px; }
+  .kacheln .laden-logo { width: min(64cqw, calc(100cqh - 92px)); }
+  .kacheln .laden-text { font-size: clamp(13px, 7.6cqw, 17px); }
+  .kacheln .laden-stand { font-size: 12px; flex-direction: column; align-items: center; gap: 0; }
+  .kacheln .laden-prozent { min-width: 0; text-align: center; }
+}
+@media (max-height: 300px) and (orientation: landscape) {
+  .laden.raster { padding-top: calc(62px + env(safe-area-inset-top)); padding-bottom: calc(6px + env(safe-area-inset-bottom)); }
+  .kacheln .laden-logo { width: min(50cqw, calc(100cqh - 46px)); }
+}
+
+/* ── Bewegung reduzieren: kein Aufbau-Flug, keine Dauerschleifen, nur ein ruhiger Wechsel (Überblenden) ── */
+@media (prefers-reduced-motion: reduce) {
+  .kachel, .kachel::after, .k-mitte::before, .kacheln .laden-logo::before, .kacheln .b *, .kacheln .b *::before, .kacheln .b *::after { animation: none !important; }
+  .kacheln, html.bereit .kacheln { transition: none; transform: none; }
+  .seite, .seite.an, .seite.weg { transform: none; transition: opacity 0.9s ease; transition-delay: 0s; }
+}
