@@ -21,6 +21,14 @@ html.bereit .kacheln { transform: scale(1.035); }
 html.bereit.laden-halten .laden { opacity: 0.999; visibility: visible; pointer-events: auto; }
 html.bereit.laden-halten .kacheln { transform: none; }
 .laden.aus { display: none; }
+/* Ruhe vor dem Aufgehen: sobald alles geladen ist, misst welt.js in einer Probefahrt die Bildzeiten des Geräts und wählt danach die
+   Qualitätsstufe. Kacheln und ihre Schleifen kosten den Hauptfaden je Bild ein wenig – auf einem zehnfach gebremsten Rechner genug,
+   um die Messung zu verfälschen (gemessen 19.11.2026). Darum treten die Kacheln dann ab (.ruhe: ausblenden, .ruhe2: ganz weg),
+   das Logo rückt in die Mitte und füllt seinen Ring zu Ende. Die Klassen und den Weg des Logos setzt das Skript in der Seite. */
+.laden.ruhe .kachel:not(.k-mitte) { opacity: 0; transition: opacity 0.45s ease; }
+.laden.ruhe2 .kachel:not(.k-mitte) { display: none; }
+.laden.ruhe .k-mitte { transition: transform 0.6s cubic-bezier(0.3, 0, 0.2, 1); }
+.laden.ruhe2 .k-mitte::before, .laden.ruhe2 .laden-logo::before { animation-play-state: paused; }
 
 .kachel {
   --rund: 22px;
@@ -31,7 +39,7 @@ html.bereit.laden-halten .kacheln { transform: none; }
   border: 1px solid rgba(255, 255, 255, 0.09);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
   --n: 0; --dx: 0px; --dy: 18px;
-  animation: k-auf 0.72s cubic-bezier(0.16, 0.84, 0.24, 1) both; animation-delay: calc(80ms + var(--n) * 65ms);
+  animation: k-auf 0.72s cubic-bezier(0.16, 0.84, 0.24, 1) backwards; animation-delay: calc(80ms + var(--n) * 65ms);
 }
 @keyframes k-auf { from { opacity: 0; transform: translate3d(var(--dx), var(--dy), 0) scale(0.9); } to { opacity: 1; transform: none; } }
 .k-mitte { grid-area: m; --dy: 0px; }
@@ -43,17 +51,13 @@ html.bereit.laden-halten .kacheln { transform: none; }
 .k-f { grid-area: f; --n: 5; --dx: 28px; --dy: 12px; }
 .k-g { grid-area: g; --n: 8; --dx: -22px; --dy: 22px; }
 .k-h { grid-area: h; --n: 7; --dy: 28px; }
-/* Schimmer am Rand: einmal nach dem Aufbau, dann bei jedem Wechsel des Inhalts (das Skript schaltet b1/b2 um) */
+/* Schimmer am Rand: einmal nach dem Aufbau (hier), dann bei jedem Wechsel des Inhalts (an der neuen Seite, siehe .seite) */
 .kachel::after {
   content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
   border: 1px solid var(--cyan); box-shadow: inset 0 0 26px rgba(39, 196, 232, 0.22);
   animation: k-glanz 1.1s ease-out both; animation-delay: calc(620ms + var(--n) * 65ms);
 }
-.kachel.b1::after { animation: k-glanz-a 0.95s ease-out both; }
-.kachel.b2::after { animation: k-glanz-b 0.95s ease-out both; }
 @keyframes k-glanz { 0% { opacity: 0; } 25% { opacity: 0.85; } 100% { opacity: 0; } }
-@keyframes k-glanz-a { 0% { opacity: 0; } 25% { opacity: 0.85; } 100% { opacity: 0; } }
-@keyframes k-glanz-b { 0% { opacity: 0; } 25% { opacity: 0.85; } 100% { opacity: 0; } }
 
 /* ── Mittelkachel: das echte Logo, sein Ring ist der Fortschritt; um den Rand laufen die zwei Logo-Farben ── */
 .k-mitte { border-color: transparent; background: #0d0f12; text-align: center; }
@@ -88,13 +92,23 @@ html.bereit.laden-halten .kacheln { transform: none; }
 .kacheln .laden-prozent { min-width: 2.7em; }
 
 /* ── Inhalt einer Kachel: mehrere Seiten liegen übereinander, eine ist an (.an) ── */
-.seite {
-  position: absolute; inset: 0; display: flex; flex-direction: column; gap: 4px; padding: 14px 16px 14px;
-  opacity: 0; transform: translate3d(0, 12px, 0); pointer-events: none;
-  transition: opacity 0.42s ease, transform 0.52s cubic-bezier(0.2, 0.7, 0.2, 1);
+.seite { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 4px; padding: 14px 16px 14px; opacity: 0; pointer-events: none; }
+.seite.an { opacity: 1; }
+/* Wechsel als Animation ohne Verzögerung (eine transition-delay hielte den Hauptfaden wach): die alte Seite geht zuerst, dann kommt
+   die neue, mit einem Schimmer am Kachelrand. Die erste Seite (.erst im HTML) steht einfach da. Das Skript ändert nur Klassen
+   an den Seiten, nie an der Kachel – so rechnet der Browser beim Wechsel nur diese zwei Seiten neu. */
+.seite.an:not(.erst) { animation: s-ein 0.74s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.seite.weg { animation: s-aus 0.3s ease both; }
+.seite.an:not(.erst)::after {
+  content: ""; position: absolute; inset: -1px; border-radius: var(--rund); pointer-events: none; opacity: 0;
+  border: 1px solid var(--cyan); box-shadow: inset 0 0 26px rgba(39, 196, 232, 0.22);
+  animation: s-glanz 1.3s ease-out both;
 }
-.seite.an { opacity: 1; transform: none; transition-delay: 0.14s; }
-.seite.weg { transform: translate3d(0, -12px, 0); }
+@keyframes s-glanz { 0%, 20% { opacity: 0; } 45% { opacity: 0.9; } 100% { opacity: 0; } }
+@keyframes s-ein { 0%, 32% { opacity: 0; transform: translate3d(0, 12px, 0); } 100% { opacity: 1; transform: none; } }
+@keyframes s-aus { from { opacity: 1; transform: none; } to { opacity: 0; transform: translate3d(0, -12px, 0); } }
+@keyframes s-ein-ruhig { 0%, 42% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes s-aus-ruhig { from { opacity: 1; } to { opacity: 0; } }
 .wort { margin: 0; flex: none; min-width: 0; }
 .wort b { display: block; font-size: 17px; font-weight: 650; line-height: 1.2; letter-spacing: -0.012em; color: var(--licht); overflow-wrap: break-word; }
 .wort span { display: block; margin-top: 3px; font-size: 13.5px; line-height: 1.32; color: var(--nebel); }
@@ -175,7 +189,7 @@ html.bereit.laden-halten .kacheln { transform: none; }
 .b .r2 { width: 5.8em; height: 5.8em; margin: -2.9em 0 0 -2.9em; opacity: 0.6; }
 .b .r3 { width: 7.2em; height: 7.2em; margin: -3.6em 0 0 -3.6em; opacity: 0.3; }
 .an .r { animation: fu 1.8s ease-in-out infinite; }
-.an .r2 { animation-delay: 0.22s; } .an .r3 { animation-delay: 0.44s; }
+.an .r2 { animation-delay: -1.58s; } .an .r3 { animation-delay: -1.36s; }
 @keyframes fu { 0%, 100% { opacity: 0.14; transform: scale(0.94); } 30% { opacity: 1; transform: scale(1); } 62% { opacity: 0.14; transform: scale(1); } }
 .s-fu .m { left: 6em; top: 2em; width: 3em; height: 3em; }
 
@@ -277,7 +291,7 @@ html.bereit.laden-halten .kacheln { transform: none; }
 .s-me .p3 { left: 10em; top: 5.1em; --x: 4.2em; --y: -0.6em; }
 .an .s-me .el { animation: k-ring 2s ease-out infinite; }
 .an .s-me .p { animation: me-p 5s ease-out infinite; }
-.an .s-me .p2 { animation-delay: 0.25s; } .an .s-me .p3 { animation-delay: 0.5s; }
+.an .s-me .p2 { animation-delay: -4.75s; } .an .s-me .p3 { animation-delay: -4.5s; }
 @keyframes me-p { 0% { opacity: 0; transform: translate(var(--x), var(--y)); } 12% { opacity: 1; } 55%, 84% { opacity: 1; transform: none; } 96%, 100% { opacity: 0; transform: none; } }
 
 /* Rufen per Stimme: du sagst den Namen */
@@ -342,7 +356,7 @@ html.bereit.laden-halten .kacheln { transform: none; }
 .s-pa .d { top: 2em; width: 0.17em; height: 1.1em; border-radius: 0.1em; background: var(--cyan); opacity: 0.7; }
 .s-pa .d1 { left: 6.35em; } .s-pa .d2 { left: 7.2em; } .s-pa .d3 { left: 8.05em; }
 .an .s-pa .d { animation: pa 2.2s ease-out infinite; }
-.an .s-pa .d2 { animation-delay: 0.55s; } .an .s-pa .d3 { animation-delay: 1.1s; }
+.an .s-pa .d2 { animation-delay: -1.65s; } .an .s-pa .d3 { animation-delay: -1.1s; }
 @keyframes pa { 0% { opacity: 0; transform: translateY(0.5em); } 30% { opacity: 0.9; } 100% { opacity: 0; transform: translateY(-1.2em); } }
 
 /* Stau und Sperren: ein Stück der Route färbt sich */
@@ -505,5 +519,7 @@ html.bereit.laden-halten .kacheln { transform: none; }
 @media (prefers-reduced-motion: reduce) {
   .kachel, .kachel::after, .k-mitte::before, .kacheln .laden-logo::before, .kacheln .b *, .kacheln .b *::before, .kacheln .b *::after { animation: none !important; }
   .kacheln, html.bereit .kacheln { transition: none; transform: none; }
-  .seite, .seite.an, .seite.weg { transform: none; transition: opacity 0.9s ease; transition-delay: 0s; }
+  .seite.an:not(.erst) { animation: s-ein-ruhig 1.2s ease both; }
+  .seite.an:not(.erst)::after { animation: none; }
+  .seite.weg { animation: s-aus-ruhig 0.5s ease both; }
 }

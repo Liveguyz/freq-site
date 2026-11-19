@@ -27,11 +27,13 @@
 <!-- Ladebildschirm (nur HTML/CSS, kein WebGL, Stil in lade-kacheln.css): ein Raster aus Kacheln zeigt, was FREQ kann, solange die Welt lädt
      (Luka 19.11.2026). In der Mitte das echte Logo, dessen Ring sich als echter Fortschritt füllt. Jede Kachel hat mehrere Seiten (.seite),
      das kleine Skript darunter wechselt sie reihum. Nur Funktionen, die gebaut sind – Wortlaut wie Store-Text und Kapitel. -->
-<div class="laden raster" id="laden">
+<div class="laden raster" id="ladeschirm">
   <div class="kacheln" id="kacheln" role="group" aria-label="Das kann FREQ">
     <div class="kachel k-mitte">
       <div class="mitte">
-        <div class="laden-logo" aria-hidden="true">
+        <!-- id="laden" sitzt am Logo, nicht am ganzen Schirm: welt.js schreibt dorthin bei jedem Prozent den Fortschritt (--laden-bogen),
+             und der Browser rechnet dann nur das Logo neu statt aller Kacheln -->
+        <div class="laden-logo" id="laden" aria-hidden="true">
           <picture class="laden-geist"><source srcset="bild/freq-logo.webp" type="image/webp"><img src="bild/freq-logo.png" alt="" width="900" height="893"></picture>
           <picture><source srcset="bild/freq-logo.webp" type="image/webp"><img class="laden-bild" src="bild/freq-logo.png" alt="" width="900" height="893" fetchpriority="high"></picture>
           <span class="laden-komet"></span>
@@ -41,42 +43,42 @@
       </div>
     </div>
     <div class="kachel k-a">
-      <div class="seite an"><div class="szene" aria-hidden="true"><div class="b s-co"><svg class="w" viewBox="0 0 150 70"><path d="M4 56C64 56 86 16 146 16"/></svg><i class="z z1"><i class="p"></i></i><i class="z z2"><i class="p c"></i></i><i class="z z3"><i class="p"></i></i><i class="z z4"><i class="p"></i></i></div></div><p class="wort"><b>Convoy mit Funk</b><span>Alle auf einer Karte, ein offener Kanal.</span></p></div>
+      <div class="seite an erst"><div class="szene" aria-hidden="true"><div class="b s-co"><svg class="w" viewBox="0 0 150 70"><path d="M4 56C64 56 86 16 146 16"/></svg><i class="z z1"><i class="p"></i></i><i class="z z2"><i class="p c"></i></i><i class="z z3"><i class="p"></i></i><i class="z z4"><i class="p"></i></i></div></div><p class="wort"><b>Convoy mit Funk</b><span>Alle auf einer Karte, ein offener Kanal.</span></p></div>
       <div class="seite"><div class="szene" aria-hidden="true"><div class="b s-fu"><i class="r r3"></i><i class="r r2"></i><i class="r r1"></i><svg class="m" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></svg></div></div><p class="wort"><b>Funk ohne Taste</b><span>Einfach reden. Nichts wird aufgezeichnet.</span></p></div>
       <div class="seite"><div class="szene" aria-hidden="true"><div class="b s-an"><i class="bo"></i><svg class="fl" viewBox="0 0 24 24"><path d="M5 21V4M5 5h13l-2.5 3.5L18 12H5"/></svg><i class="p p3"></i><i class="p p2"></i><i class="p c p1"></i><i class="pl"><b>~14:35</b></i></div></div><p class="wort"><b>Gemeinsam ankommen</b><span>Eine Ankunftszeit für den ganzen Convoy.</span></p></div>
     </div>
     <div class="kachel k-b">
-      <div class="seite an"><div class="szene" aria-hidden="true"><div class="b s-bl"><i class="wr"></i><svg class="k" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="12" rx="2.5"/><circle cx="12" cy="13" r="3.2"/><path d="M8 7l1.3-2.5h5.4L16 7"/></svg><i class="ln"></i><i class="p c"></i></div></div><p class="wort"><b>Blitzer, wo erlaubt</b><span>Warnungen in vielen Ländern Europas.</span></p></div>
+      <div class="seite an erst"><div class="szene" aria-hidden="true"><div class="b s-bl"><i class="wr"></i><svg class="k" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="12" rx="2.5"/><circle cx="12" cy="13" r="3.2"/><path d="M8 7l1.3-2.5h5.4L16 7"/></svg><i class="ln"></i><i class="p c"></i></div></div><p class="wort"><b>Blitzer, wo erlaubt</b><span>Warnungen in vielen Ländern Europas.</span></p></div>
       <div class="seite"><div class="szene" aria-hidden="true"><div class="b s-te"><svg class="ga" viewBox="0 0 24 24"><path d="M4.5 17.5a9 9 0 1 1 15 0"/><path d="M12 13.5l4-5.5"/><circle cx="12" cy="13.5" r="1.3"/></svg><i class="sg s1"><b>100</b></i><i class="sg s2"><b>70</b></i></div></div><p class="wort"><b>Tempolimit am Tacho</b><span>Mit Vorschau: „70 in 400 m“.</span></p></div>
       <div class="seite"><div class="szene" aria-hidden="true"><div class="b s-ab"><i class="ln"></i><i class="ps a1"></i><i class="ps a2"></i><i class="mv"><i class="p c"></i><i class="pl"><b>Ø 74</b></i></i></div></div><p class="wort"><b>Abschnitts&shy;kontrolle</b><span>Dein Schnitt, live. Amtliche Daten in Österreich.</span></p></div>
     </div>
     <div class="kachel k-c">
-      <div class="seite an"><div class="szene" aria-hidden="true"><div class="b s-st"><i class="g gl"><i></i><i></i><i></i><i></i></i><i class="g gr"><i></i><i></i><i></i><i></i></i><i class="lr gl"><b>L</b></i><i class="lr gr"><b>R</b></i><i class="fk"><i class="r r2"></i><i class="r r1"></i><i class="p c"></i></i></div></div><p class="wort"><b>Stereo-Musik und Funk</b><span>Über Bluetooth. Spricht jemand, wird sie kurz leiser.</span></p></div>
+      <div class="seite an erst"><div class="szene" aria-hidden="true"><div class="b s-st"><i class="g gl"><i></i><i></i><i></i><i></i></i><i class="g gr"><i></i><i></i><i></i><i></i></i><i class="lr gl"><b>L</b></i><i class="lr gr"><b>R</b></i><i class="fk"><i class="r r2"></i><i class="r r1"></i><i class="p c"></i></i></div></div><p class="wort"><b>Stereo-Musik und Funk</b><span>Über Bluetooth. Spricht jemand, wird sie kurz leiser.</span></p></div>
       <div class="seite"><div class="szene" aria-hidden="true"><div class="b s-na"><svg class="pf" viewBox="0 0 24 24"><path d="m15 14 5-5-5-5"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg><i class="fe"><i class="st">300 m<br>200 m<br>100 m</i></i></div></div><p class="wort"><b>Navi mit Stimme</b><span>Klare Ansagen, Spurpfeile, bis zu drei Routen.</span></p></div>
       <div class="seite"><div class="szene" aria-hidden="true"><div class="b s-ru"><svg class="m" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></svg><i class="v v1"></i><i class="v v2"></i><i class="v v3"></i><i class="bb"><b>„Anna!“</b></i></div></div><p class="wort"><b>Rufen per Stimme</b><span>„Anna!“ – erkannt nur auf deinem Handy.</span></p></div>
     </div>
     <div class="kachel k-d">
-      <div class="seite an"><div class="szene" aria-hidden="true"><div class="b s-pr"><i class="ch on"><svg class="" viewBox="0 0 24 24"><path d="M4 20V6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v14M3 20h12M6.5 8h5M14 11h1.5a1.5 1.5 0 0 1 1.5 1.5V16a1.5 1.5 0 0 0 3 0V9l-2.5-2.5"/></svg></i><i class="ch c2"><svg class="" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 17V7h4a3 3 0 0 1 0 6H9"/></svg></i><i class="ch c3"><svg class="" viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2M7 2v20M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg></i><i class="lb"><b>Diesel</b></i><i class="fe"><i class="st">1,62<br>1,59<br>1,57<br>1,54</i></i><i class="pf"></i></div></div><p class="wort"><b>Tanken, Parken, Essen</b><span>Stopps für alle. Spritpreise in Österreich.</span></p></div>
+      <div class="seite an erst"><div class="szene" aria-hidden="true"><div class="b s-pr"><i class="ch on"><svg class="" viewBox="0 0 24 24"><path d="M4 20V6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v14M3 20h12M6.5 8h5M14 11h1.5a1.5 1.5 0 0 1 1.5 1.5V16a1.5 1.5 0 0 0 3 0V9l-2.5-2.5"/></svg></i><i class="ch c2"><svg class="" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 17V7h4a3 3 0 0 1 0 6H9"/></svg></i><i class="ch c3"><svg class="" viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2M7 2v20M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg></i><i class="lb"><b>Diesel</b></i><i class="fe"><i class="st">1,62<br>1,59<br>1,57<br>1,54</i></i><i class="pf"></i></div></div><p class="wort"><b>Tanken, Parken, Essen</b><span>Stopps für alle. Spritpreise in Österreich.</span></p></div>
       <div class="seite"><div class="szene" aria-hidden="true"><div class="b s-la"><svg class="zp" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg><i class="pl be"><b>Belegt</b></i><i class="pl fr"><b>Frei</b></i></div></div><p class="wort"><b>Ladesäulen</b><span>In ersten Ländern mit „frei“ oder „belegt“.</span></p></div>
       <div class="seite"><div class="szene" aria-hidden="true"><div class="b s-pa"><svg class="cu" viewBox="0 0 24 24"><path d="M17 8h1a4 4 0 1 1 0 8h-1M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/></svg><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i></div></div><p class="wort"><b>Pause-Vorschlag</b><span>Nach zwei Stunden, ganz leise.</span></p></div>
     </div>
     <div class="kachel k-e">
-      <div class="seite pr an"><div class="szene" aria-hidden="true"><div class="b s-au"><i class="sc"><i class="ta"></i><i class="li"></i><svg class="rt" viewBox="0 0 60 44"><path d="M6 40C20 34 22 22 34 20S50 12 56 4"/></svg><i class="p p2"></i><i class="p p3"></i><i class="p c"></i></i><i class="fs"></i></div></div><p class="wort"><b>CarPlay und Android Auto <i>Premium</i></b><span>Gebaut fürs Auto-Display: Karte, Convoy, Funk.</span></p></div>
+      <div class="seite pr an erst"><div class="szene" aria-hidden="true"><div class="b s-au"><i class="sc"><i class="ta"></i><i class="li"></i><svg class="rt" viewBox="0 0 60 44"><path d="M6 40C20 34 22 22 34 20S50 12 56 4"/></svg><i class="p p2"></i><i class="p p3"></i><i class="p c"></i></i><i class="fs"></i></div></div><p class="wort"><b>CarPlay und Android Auto <i>Premium</i></b><span>Gebaut fürs Auto-Display: Karte, Convoy, Funk.</span></p></div>
       <div class="seite"><div class="szene" aria-hidden="true"><div class="b s-sp"><i class="ph"><i class="is"></i><i class="nc"></i><i class="n2"></i></i></div></div><p class="wort"><b>Am Sperrbildschirm</b><span>Abbiegung und Ankunft auf einen Blick.</span></p></div>
       <div class="seite"><div class="szene" aria-hidden="true"><div class="b s-3d"><i class="l l3"><i></i></i><i class="l l2"><i></i></i><i class="l l1"><i></i></i></div></div><p class="wort"><b>Karte in 3D</b><span>Hell oder dunkel, wie du magst.</span></p></div>
     </div>
     <div class="kachel k-f">
-      <div class="seite an"><div class="szene" aria-hidden="true"><div class="b s-gr"><i class="bo"></i><i class="p c"></i><i class="po"></i><i class="ar"></i><i class="vi"><svg class="" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></i></div></div><p class="wort"><b>Grenze, Vignette, Umweltzone</b><span>Hinweise unterwegs – auch ZTL in Italien.</span></p></div>
+      <div class="seite an erst"><div class="szene" aria-hidden="true"><div class="b s-gr"><i class="bo"></i><i class="p c"></i><i class="po"></i><i class="ar"></i><i class="vi"><svg class="" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></i></div></div><p class="wort"><b>Grenze, Vignette, Umweltzone</b><span>Hinweise unterwegs – auch ZTL in Italien.</span></p></div>
       <div class="seite"><div class="szene" aria-hidden="true"><div class="b s-sa"><i class="ro"></i><i class="rs"></i><svg class="wa" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3M12 9v4M12 17h.01"/></svg><i class="p c"></i></div></div><p class="wort"><b>Stau und Sperren</b><span>In Österreich farbig auf deiner Route.</span></p></div>
       <div class="seite"><div class="szene" aria-hidden="true"><div class="b s-ml"><i class="rp"></i><i class="bt"><svg class="" viewBox="0 0 24 24"><path d="M4 10v4h3l8 4V6l-8 4H4z"/><path d="M18.5 9.5a3.5 3.5 0 0 1 0 5"/><path d="M7.5 14.5l1 4.5H11"/></svg></i><i class="mk"><b>!</b></i></div></div><p class="wort"><b>Melden mit einem Tipp</b><span>Stau, Baustelle, Unfall – auch per Stimme.</span></p></div>
     </div>
     <div class="kachel k-g">
-      <div class="seite an"><div class="szene" aria-hidden="true"><div class="b s-of"><svg class="dl" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg><i class="kg kd"></i><i class="wo"><i class="wi"><i class="kg kh"></i></i></i></div></div><p class="wort"><b>Offline-Karten</b><span>Je Land laden. Eins ist kostenlos.</span></p></div>
+      <div class="seite an erst"><div class="szene" aria-hidden="true"><div class="b s-of"><svg class="dl" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg><i class="kg kd"></i><i class="wo"><i class="wi"><i class="kg kh"></i></i></i></div></div><p class="wort"><b>Offline-Karten</b><span>Je Land laden. Eins ist kostenlos.</span></p></div>
       <div class="seite"><div class="szene" aria-hidden="true"><div class="b s-we"><i class="rg"></i><svg class="sh" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><svg class="ck" viewBox="0 0 24 24"><path d="m9 12 2 2 4-4"/></svg></div></div><p class="wort"><b>Ohne Werbung</b><span>Kein Tracking, kein Datenverkauf.</span></p></div>
       <div class="seite"><div class="szene" aria-hidden="true"><div class="b s-zu"><i class="zn"></i><svg class="hs" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg><i class="p c"></i></div></div><p class="wort"><b>Zuhause-Zone</b><span>Dort sehen Freunde deine Position nicht.</span></p></div>
     </div>
     <div class="kachel k-h">
-      <div class="seite an"><div class="szene" aria-hidden="true"><div class="b s-me"><i class="el"></i><svg class="pn" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><i class="p p1"></i><i class="p p2"></i><i class="p p3"></i></div></div><p class="wort"><b>Car-Meets in deiner Nähe</b><span>Treffen aus Szene-Kalendern. Noch nicht überall.</span></p></div>
+      <div class="seite an erst"><div class="szene" aria-hidden="true"><div class="b s-me"><i class="el"></i><svg class="pn" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><i class="p p1"></i><i class="p p2"></i><i class="p p3"></i></div></div><p class="wort"><b>Car-Meets in deiner Nähe</b><span>Treffen aus Szene-Kalendern. Noch nicht überall.</span></p></div>
       <div class="seite pr"><div class="szene" aria-hidden="true"><div class="b s-gs"><svg class="kr" viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 10H5z"/></svg><i class="dt dd"></i><i class="wo"><i class="wi"><i class="dt dh"></i></i></i><i class="p c"></i></div></div><p class="wort"><b>Große Convoys <i>Premium</i></b><span>Bis 15 Autos. Mitfahrer brauchen kein Abo.</span></p></div>
       <div class="seite"><div class="szene" aria-hidden="true"><div class="b s-ei"><i class="ph h1"></i><i class="ph h2"></i><i class="rg"></i><svg class="lk" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div></div><p class="wort"><b>Einladen per Link</b><span>Oder Handys einfach nebeneinanderhalten.</span></p></div>
     </div>
@@ -87,7 +89,7 @@
 // Kacheln im Ladebildschirm: Seiten reihum wechseln (nie zwei Kacheln zugleich), bei sehr schnellem Laden den Aufbau zu Ende
 // spielen lassen, am Ende alles anhalten. Steht bewusst hier und nicht im Welt-Bündel: es läuft, bevor die Welt geladen ist.
 (() => {
-  const html = document.documentElement, laden = document.getElementById('laden'), raster = document.getElementById('kacheln');
+  const html = document.documentElement, laden = document.getElementById('ladeschirm'), raster = document.getElementById('kacheln');
   if (!laden || !raster) return;
   const start = performance.now();
   const ruhig = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -101,8 +103,8 @@
     const neu = kacheln.filter((k) => getComputedStyle(k).display !== 'none');
     if (!neu.length || (neu.length === sichtbar.length && neu.every((k, i) => k === sichtbar[i]))) return;
     sichtbar = neu;
-    seiten.forEach((s, i) => { s.classList.remove('an', 'weg'); sichtbar[i % sichtbar.length].appendChild(s); });
-    for (const k of sichtbar) k.firstElementChild.classList.add('an');
+    seiten.forEach((s, i) => { s.classList.remove('an', 'weg', 'erst'); sichtbar[i % sichtbar.length].appendChild(s); });
+    for (const k of sichtbar) k.firstElementChild.classList.add('an', 'erst');
   };
   verteilen();
   window.addEventListener('resize', verteilen);
@@ -115,15 +117,27 @@
       const k = sichtbar[(zug++ * (n % 3 ? 3 : n % 2 ? 2 : 5)) % n];
       const alt = k.querySelector('.seite.an'), neu = (alt && alt.nextElementSibling) || k.firstElementChild;
       if (alt && neu && neu !== alt) {
-        alt.classList.remove('an'); alt.classList.add('weg'); neu.classList.add('an');
+        alt.classList.remove('an', 'erst'); alt.classList.add('weg'); neu.classList.add('an');   // nur Klassen an den zwei Seiten
         setTimeout(() => alt.classList.remove('weg'), 700);
-        k.blink = !k.blink; k.classList.toggle('b1', k.blink); k.classList.toggle('b2', !k.blink);
       }
     }
     takt = setTimeout(wechsel, Math.max(1100, (ruhig ? 9000 : 5700) / (n || 1)));
   };
   takt = setTimeout(wechsel, 4500);
-  const halt = () => { aus = true; clearTimeout(takt); window.removeEventListener('resize', verteilen); beobachter.disconnect(); };
+  // Ruhe vor dem Aufgehen: ist alles geladen, misst welt.js in einer Probefahrt die Bildzeiten (danach wählt es die Qualitätsstufe).
+  // Damit die Kacheln diese Messung nicht verfälschen, treten sie dann ab; das Logo rückt in die Mitte und füllt seinen Ring zu Ende.
+  const wache = setInterval(() => {
+    const w = window.FREQ && window.FREQ.welt;
+    if (!w || !w.allesGeladen) return;
+    clearInterval(wache); aus = true; clearTimeout(takt);
+    laden.classList.add('ruhe');
+    setTimeout(() => {
+      const m = raster.querySelector('.k-mitte'), a = raster.getBoundingClientRect(), b = m.getBoundingClientRect();
+      laden.classList.add('ruhe2');
+      m.style.transform = 'translate(' + Math.round(a.left + a.width / 2 - b.left - b.width / 2) + 'px,' + Math.round(a.top + a.height / 2 - b.top - b.height / 2) + 'px)';
+    }, 480);
+  }, 100);
+  const halt = () => { aus = true; clearTimeout(takt); clearInterval(wache); window.removeEventListener('resize', verteilen); beobachter.disconnect(); };
   // Ende: welt.js setzt html.bereit (Vorhang blendet aus) – oder ruhig/ohne-webgl (kein Ladebildschirm)
   const ende = () => {
     const c = html.classList;
