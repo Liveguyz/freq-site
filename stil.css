@@ -90,3 +90,127 @@ main a { overflow-wrap: anywhere; }
   html[lang="en"] table.daten tr:has(td:nth-child(3)) td:nth-child(3)::before { content: "Where"; }
   html[lang="en"] table.daten tr:not(:has(td:nth-child(3))) td:nth-child(2)::before { content: "What exactly"; }
 }
+
+/* ── Lesbarkeit (19.11.2026): nur Optik, kein Wort geändert ─────────────────────────────────────────────────
+   Die Datenschutzerklärung ist am Handy über 30 000 px lang. Darum: ein Kopf, der oben stehen bleibt; ein
+   Inhaltsverzeichnis (seite.js baut es aus den Überschriften); „Das Wichtigste in Kürze“ als Karte; ruhigere
+   Absätze (Fließtext eine Stufe leiser als Überschriften und Hervorhebungen), klare Abschnitte, Tabellen mit
+   fester Kopfzeile; ein Knopf zurück zum Inhalt. */
+:root { --fliess: #cfd3d9; --karte-2: #1b1e23; --kopf-h: 64px; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--kopf-h) + 14px); -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background:
+    radial-gradient(900px 420px at 50% -160px, rgba(39, 196, 232, 0.10), transparent 70%),
+    var(--bg);
+  background-repeat: no-repeat;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: rgba(39, 196, 232, 0.35); }
+:focus-visible { outline: 2px solid var(--akzent); outline-offset: 3px; border-radius: 6px; }
+
+/* Kopf bleibt stehen (Logo = Startseite, Sprache), über die ganze Breite mit Milchglas */
+header.kopf {
+  position: sticky; top: 0; z-index: 20;
+  margin: 0 calc(-1 * max(20px, env(safe-area-inset-right))) 0 calc(-1 * max(20px, env(safe-area-inset-left)));
+  padding: max(10px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) 10px max(20px, env(safe-area-inset-left));
+  background: rgba(11, 13, 15, 0.78);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px); backdrop-filter: saturate(1.4) blur(14px);
+  border-bottom: 1px solid transparent; transition: border-color 0.2s;
+}
+html.gerollt header.kopf { border-bottom-color: var(--rand); }
+nav.sprachen { border: 1px solid var(--rand); border-radius: 999px; padding: 0 4px; background: rgba(255, 255, 255, 0.04); }
+nav.sprachen a { font-weight: 600; font-size: 13px; letter-spacing: 0.04em; }
+
+/* Überschriften und Fließtext */
+main h1 { font-size: clamp(30px, 6.2vw, 42px); line-height: 1.12; letter-spacing: -0.015em; margin: 36px 0 12px; text-wrap: balance; }
+main h2 { font-size: clamp(20px, 3.4vw, 23px); line-height: 1.25; letter-spacing: -0.005em; margin: 52px 0 12px; padding-top: 26px; border-top: 1px solid var(--rand); text-wrap: balance; }
+main h3 { font-size: 17px; margin: 26px 0 6px; }
+main p, main li, main td { color: var(--fliess); }
+main p, main li { font-size: 16.5px; line-height: 1.68; text-wrap: pretty; }
+/* Silbentrennung nur am schmalen Handy und nur bei langen Wörtern („Geschwindigkeitsbegrenzung“ riss sonst Löcher in den Satz) */
+@media (max-width: 620px) { main p, main li, main td { hyphens: auto; -webkit-hyphens: auto; hyphenate-limit-chars: 12 5 5; } }
+main b, main strong, main th { color: var(--text); }
+main p { margin: 0 0 14px; }
+main ul, main ol { padding-left: 22px; margin: 0 0 16px; }
+main li { margin: 0 0 9px; padding-left: 2px; }
+main li::marker { color: var(--akzent); }
+main a { text-decoration-thickness: 1px; text-underline-offset: 3px; text-decoration-color: rgba(39, 196, 232, 0.5); }
+main a:hover { text-decoration-color: currentColor; }
+main .stand {
+  display: inline-block; margin: 0 0 8px; padding: 6px 12px; border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05); border: 1px solid var(--rand); color: var(--neben); font-size: 13.5px; line-height: 1.45;
+}
+main .stand a { color: inherit; }
+@media (min-width: 900px) { main p, main li { font-size: 17px; } }
+
+/* „Das Wichtigste in Kürze“ (seite.js setzt .kurz auf Überschrift und Liste): eine Karte mit Akzentkante */
+main h2.kurz { border-top: 0; padding-top: 0; margin-top: 40px; }
+main ul.kurz {
+  list-style: none; padding: 6px 18px; margin: 0 0 8px;
+  background: linear-gradient(180deg, rgba(39, 196, 232, 0.08), rgba(39, 196, 232, 0.02) 140px), var(--karte);
+  border: 1px solid rgba(39, 196, 232, 0.28); border-radius: 16px;
+}
+main ul.kurz li { margin: 0; padding: 13px 0 13px 22px; position: relative; border-top: 1px solid var(--rand); }
+main ul.kurz li:first-child { border-top: 0; }
+main ul.kurz li::before { content: ""; position: absolute; left: 2px; top: 1.42em; width: 8px; height: 8px; border-radius: 50%; background: var(--akzent); }
+
+/* Inhaltsverzeichnis (seite.js) */
+.inhalt { margin: 22px 0 6px; background: var(--karte); border: 1px solid var(--rand); border-radius: 16px; overflow: hidden; }
+.inhalt summary {
+  list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  min-height: 52px; padding: 0 18px; font-weight: 650; font-size: 15.5px; color: var(--text);
+}
+.inhalt summary::-webkit-details-marker { display: none; }
+.inhalt summary span { color: var(--neben); font-weight: 500; font-size: 13.5px; }
+.inhalt summary::after { content: ""; width: 9px; height: 9px; border-right: 2px solid var(--neben); border-bottom: 2px solid var(--neben); transform: rotate(45deg) translate(-2px, -2px); transition: transform 0.2s; flex: none; }
+.inhalt[open] summary::after { transform: rotate(225deg) translate(-2px, -2px); }
+.inhalt ol { list-style: none; margin: 0; padding: 4px 8px 10px; counter-reset: inhalt; display: grid; grid-template-columns: 1fr; }
+@media (min-width: 680px) { .inhalt ol { grid-template-columns: 1fr 1fr; column-gap: 8px; } }
+.inhalt li { counter-increment: inhalt; margin: 0; padding: 0; }
+.inhalt li a {
+  display: flex; gap: 10px; align-items: baseline; min-height: 44px; padding: 10px 10px; border-radius: 10px;
+  color: var(--fliess); text-decoration: none; font-size: 15px; line-height: 1.35; overflow-wrap: break-word;
+}
+.inhalt li a::before { content: counter(inhalt); flex: none; min-width: 1.5em; color: var(--akzent); font-variant-numeric: tabular-nums; font-weight: 650; font-size: 13px; }
+.inhalt li a:hover { background: rgba(255, 255, 255, 0.05); color: var(--text); }
+
+/* Zurück zum Inhalt: erscheint nach zwei Bildschirmen */
+.nach-oben {
+  position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: calc(16px + env(safe-area-inset-bottom)); z-index: 30;
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px 0 13px; border-radius: 999px;
+  background: rgba(22, 24, 28, 0.92); border: 1px solid rgba(255, 255, 255, 0.16); color: var(--text); font: inherit; font-size: 14px; font-weight: 600;
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45); cursor: pointer;
+  opacity: 0; transform: translateY(10px); pointer-events: none; transition: opacity 0.2s, transform 0.2s;
+}
+.nach-oben svg { width: 16px; height: 16px; color: var(--akzent); }
+html.weit .nach-oben { opacity: 1; transform: none; pointer-events: auto; }
+@media (prefers-reduced-motion: reduce) { .nach-oben { transition: none; } }
+
+/* Tabellen am Desktop: feste Kopfzeile, erste Spalte als Stichwort, ruhige Zeilen */
+@media (min-width: 621px) {
+  table.daten { font-size: 15px; line-height: 1.55; border: 1px solid var(--rand); border-radius: 14px; border-collapse: separate; border-spacing: 0; background: var(--karte); }
+  table.daten th { position: sticky; top: var(--kopf-h); z-index: 5; background: var(--karte-2); font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; padding: 11px 14px; }
+  table.daten tr:first-child th:first-child { border-top-left-radius: 14px; } table.daten tr:first-child th:last-child { border-top-right-radius: 14px; }
+  table.daten td { padding: 13px 14px; }
+  table.daten td:first-child { color: var(--text); font-weight: 600; width: 27%; }
+  table.daten tr:last-child td { border-bottom: 0; }
+  table.daten tr:hover td { background: rgba(255, 255, 255, 0.025); }
+}
+@media (max-width: 620px) {
+  table.daten tr { border-radius: 14px; padding: 13px 15px; }
+  table.daten td { font-size: 15.5px; line-height: 1.6; }
+  table.daten td:first-child { color: var(--text); padding-bottom: 8px; }
+  table.daten td + td { border-top: 1px solid var(--rand); padding-top: 9px; margin-top: 2px; }
+  table.daten td + td::before { text-transform: uppercase; letter-spacing: 0.07em; font-size: 12px; color: var(--akzent); margin-bottom: 2px; }
+}
+
+.hinweisbox { border-radius: 14px; padding: 14px 16px; border-color: rgba(39, 196, 232, 0.5); line-height: 1.55; }
+.karte { border-radius: 16px; }
+footer { margin-top: 64px; padding-top: 18px; }
+footer a { text-decoration: none; }
+footer a:hover { color: var(--text); }
+@media print {
+  header.kopf { position: static; background: none; } .nach-oben, .inhalt { display: none; }
+  body { background: #fff; color: #000; } main p, main li, main td, main b, main th, main h1, main h2 { color: #000; }
+}
