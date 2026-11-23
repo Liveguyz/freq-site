@@ -551,6 +551,61 @@ html.bereit.laden-halten .kacheln { transform: none; }
 .an .s-af .p2 { animation-delay: -4.05s; } .an .s-af .p3 { animation-delay: -3.6s; }
 @keyframes af-p { 0%, 12% { opacity: 0; transform: scale(0.3); } 20% { opacity: 1; transform: scale(1.18); } 26%, 82% { opacity: 1; transform: scale(1); } 94%, 100% { opacity: 0; transform: scale(1); } }
 
+/* ── Neu in der App (Stand 23./24.11.2026): Gabelungen mit „Dann …“, Vignetten-Wächter, neuer Einstieg „Was fährst du?“.
+   Die Ruhelage (ohne Animation: .ruhe und „Bewegung reduzieren“) ist jeweils das fertige Bild. ── */
+
+/* Gabelungen und „Dann …“: die Route nimmt den rechten Arm, die Karte zeigt die Entfernung, dann kommt der Schritt danach */
+.s-gb .st { left: 0.4em; top: 0.1em; width: 6.2em; height: 6.8em; stroke: rgba(255, 255, 255, 0.2); stroke-width: 7; }
+.s-gb .rt { left: 0.4em; top: 0.1em; width: 6.2em; height: 6.8em; stroke: var(--cyan); stroke-width: 3; stroke-dasharray: 100; stroke-dashoffset: 0; }
+.s-gb .nk { left: 7.1em; top: 0.5em; width: 7.6em; height: 3.1em; border-radius: 0.8em; background: rgba(255, 255, 255, 0.06); border: 0.1em solid rgba(255, 255, 255, 0.16); }
+.s-gb .nk svg { left: 0.5em; top: 0.45em; width: 2.1em; height: 2.1em; color: var(--cyan); stroke-width: 2.4; }
+.s-gb .nk b { position: absolute; left: 1.85em; top: 0.38em; font-size: 1.45em; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+.s-gb .dn { left: 7.1em; top: 4.1em; height: 2.2em; padding: 0 0.8em 0 0.6em; border-radius: 1.1em; border: 0.12em solid rgba(39, 196, 232, 0.6); background: rgba(39, 196, 232, 0.12); display: flex; align-items: center; gap: 0.35em; }
+.s-gb .dn b { font-size: 1.1em; font-weight: 650; }
+.s-gb .dn svg { position: static; width: 1.3em; height: 1.3em; color: var(--cyan); stroke-width: 2.4; }
+.an .s-gb .rt { animation: gb-r 5.6s ease-in-out infinite; }
+.an .s-gb .dn { animation: gb-d 5.6s ease-out infinite; }
+@keyframes gb-r { 0%, 6% { stroke-dashoffset: 100; } 52%, 90% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 0; opacity: 0; } }
+@keyframes gb-d { 0%, 38% { opacity: 0; transform: translateY(0.6em); } 48%, 90% { opacity: 1; transform: none; } 100% { opacity: 0; transform: none; } }
+
+/* Vignetten-Wächter: dein Punkt fährt auf die Auffahrt zu, darüber die Autobahn – der Hinweis kommt, bevor du drauf bist */
+.s-vw .ab { left: 0.3em; top: 0.7em; width: 7.6em; height: 1.1em; border-radius: 0.2em; background: rgba(255, 255, 255, 0.2); }
+.s-vw .ab::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 0.08em; background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.55) 0 0.5em, transparent 0.5em 1em); }
+.s-vw .sg { left: 0.6em; top: 2.2em; height: 1.4em; padding: 0 0.45em; border-radius: 0.3em; background: #2f6fd6; display: flex; align-items: center; }
+.s-vw .sg b { font-size: 0.95em; font-weight: 800; color: #fff; }
+.s-vw .rp { left: 0.3em; top: 0.7em; width: 7.6em; height: 6.2em; stroke: rgba(255, 255, 255, 0.2); stroke-width: 5; }
+.s-vw .p { left: 5.95em; top: 3.4em; }
+.s-vw .pl { left: 8.4em; top: 1.6em; width: 6.4em; height: 3.8em; border-radius: 0.8em; border: 0.13em solid rgba(245, 178, 27, 0.75); background: rgba(245, 178, 27, 0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.25em; }
+.s-vw .pl svg { position: static; width: 1.5em; height: 1.5em; color: #f5b21b; stroke-width: 2.2; }
+.s-vw .pl b { font-size: 1.05em; font-weight: 650; }
+.an .s-vw .p { animation: vw-p 5.2s ease-in-out infinite; }
+.an .s-vw .pl { animation: vw-w 5.2s ease-out infinite; }
+@keyframes vw-p { 0% { transform: translateY(2.4em); opacity: 0; } 8% { opacity: 1; } 55%, 88% { transform: none; opacity: 1; } 100% { transform: none; opacity: 0; } }
+@keyframes vw-w { 0%, 32% { opacity: 0; transform: scale(0.8); } 40% { opacity: 1; transform: scale(1.06); } 46%, 88% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1); } }
+
+/* Was fährst du? Auto oder Motorrad, dazu die Farbe – die Wahl springt hin und her */
+.s-ew .ch { top: 0.6em; width: 4.4em; height: 4.4em; border-radius: 0.9em; border: 0.13em solid rgba(255, 255, 255, 0.16); background: rgba(255, 255, 255, 0.04); }
+.s-ew .ch svg { left: 0.8em; top: 0.8em; width: 2.8em; height: 2.8em; }
+.s-ew .c1 { left: 0.5em; border-color: var(--cyan); background: rgba(39, 196, 232, 0.12); color: var(--cyan); }
+.s-ew .c2 { left: 5.4em; }
+.s-ew .fa { left: 10.6em; top: 0.5em; width: 3.8em; height: 4.6em; }
+.s-ew .fa i { width: 1.3em; height: 1.3em; border-radius: 50%; }
+.s-ew .f1 { left: 0; top: 0; background: var(--cyan); box-shadow: 0 0 0 0.18em #131519, 0 0 0 0.32em var(--cyan); }
+.s-ew .f2 { left: 2.2em; top: 0; background: var(--rot); }
+.s-ew .f3 { left: 0; top: 2.4em; background: #f2f3f5; }
+.s-ew .f4 { left: 2.2em; top: 2.4em; background: #f5b21b; }
+.s-ew .lt { left: 0.5em; top: 5.7em; width: 9.3em; height: 0.16em; border-radius: 0.1em; background: linear-gradient(90deg, transparent, var(--cyan) 30%, var(--rot) 75%, transparent); opacity: 0.7; }
+.an .s-ew .c1 { animation: ew-a 4.8s steps(1, end) infinite; }
+.an .s-ew .c2 { animation: ew-b 4.8s steps(1, end) infinite; }
+.an .s-ew .lt { animation: ew-l 2.4s ease-in-out infinite alternate; }
+.an .s-ew .f1 { animation: ew-f1 4.8s steps(1, end) infinite; }
+.an .s-ew .f2 { animation: ew-f2 4.8s steps(1, end) infinite; }
+@keyframes ew-a { 0%, 49.9% { border-color: var(--cyan); background: rgba(39, 196, 232, 0.12); color: var(--cyan); } 50%, 100% { border-color: rgba(255, 255, 255, 0.16); background: rgba(255, 255, 255, 0.04); color: var(--licht); } }
+@keyframes ew-b { 0%, 49.9% { border-color: rgba(255, 255, 255, 0.16); background: rgba(255, 255, 255, 0.04); color: var(--licht); } 50%, 100% { border-color: var(--rot); background: rgba(232, 64, 42, 0.12); color: var(--rot); } }
+@keyframes ew-f1 { 0%, 49.9% { box-shadow: 0 0 0 0.18em #131519, 0 0 0 0.32em var(--cyan); } 50%, 100% { box-shadow: none; } }
+@keyframes ew-f2 { 0%, 49.9% { box-shadow: none; } 50%, 100% { box-shadow: 0 0 0 0.18em #131519, 0 0 0 0.32em var(--rot); } }
+@keyframes ew-l { from { transform: scaleX(0.55); opacity: 0.35; } to { transform: scaleX(1); opacity: 0.85; } }
+
 /* ── Großer Bildschirm (Vollbild, Luka 20.11.2026): genug Platz, die Kacheln auszupacken – 13 Plätze rund ums Logo, mehr Luft ── */
 @media (min-width: 1200px) and (min-height: 700px) {
   .laden.raster { padding: calc(84px + env(safe-area-inset-top)) calc(32px + env(safe-area-inset-right)) calc(32px + env(safe-area-inset-bottom)) calc(32px + env(safe-area-inset-left)); }

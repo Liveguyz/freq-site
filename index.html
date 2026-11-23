@@ -18,7 +18,8 @@
 <link rel="preload" as="image" href="welt/hero.webp" fetchpriority="high">
 <script>document.documentElement.classList.add('mit-js');</script>
 <link rel="stylesheet" href="welt/welt.css?v=202611191651-4f6d221">
-<link rel="stylesheet" href="lade-kacheln.css?v=3">
+<link rel="stylesheet" href="lade-kacheln.css?v=4">
+<link rel="stylesheet" href="neu.css?v=1">
 <script defer src="welt/welt.js?v=202611191651-4f6d221"></script>
 </head>
 <body data-basis="">
@@ -73,6 +74,9 @@
     <div class="kachel k-l"></div>
     <div class="kachel k-n"></div>
     <div class="lager" id="kachel-lager" hidden>
+      <div class="seite an pr"><div class="szene" aria-hidden="true"><div class="b s-gb"><svg class="st" viewBox="0 0 62 68"><path d="M31 68V40"/><path d="M31 40C31 26 18 20 12 2"/><path d="M31 40C31 26 44 20 50 2"/></svg><svg class="rt" viewBox="0 0 62 68"><path pathLength="100" d="M31 68V40C31 26 44 20 50 2"/></svg><i class="nk"><svg viewBox="0 0 24 24"><path d="M8 21v-7c0-2 1-3 2.5-4.5L17 3"/><path d="M11 3h6v6"/><path d="M8 14c0-2-1-3-2.5-4.5L3 7" opacity=".35"/></svg><b>300 m</b></i><i class="dn"><svg viewBox="0 0 24 24"><path d="M20 20v-7a4 4 0 0 0-4-4H4"/><path d="m9 14-5-5 5-5"/></svg><b>Dann</b></i></div></div><p class="wort"><b>Gabelungen und „Dann …“ <i>Neu</i></b><span>„Leicht rechts halten“ – und was danach kommt.</span></p></div>
+      <div class="seite an pr"><div class="szene" aria-hidden="true"><div class="b s-vw"><i class="ab"></i><i class="sg"><b>A4</b></i><svg class="rp" viewBox="0 0 76 62"><path d="M65 62V-2"/><path d="M65 44C65 26 52 14 36 6"/></svg><i class="p c"></i><i class="pl"><svg viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3M12 9v4M12 17h.01"/></svg><b>Vignette</b></i></div></div><p class="wort"><b>Vignetten-Wächter <i>Neu</i></b><span>Ohne Vignette: Warnung vor der Auffahrt.</span></p></div>
+      <div class="seite an pr"><div class="szene" aria-hidden="true"><div class="b s-ew"><i class="ch c1"><svg viewBox="0 0 24 24"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></i><i class="ch c2"><svg viewBox="0 0 24 24"><circle cx="5.5" cy="16.5" r="3.5"/><circle cx="18.5" cy="16.5" r="3.5"/><path d="M5.5 16.5 9 10h5l4.5 6.5M9 10 7.5 7H5M14 10l1.5-3H19"/></svg></i><i class="fa"><i class="f1"></i><i class="f2"></i><i class="f3"></i><i class="f4"></i></i><i class="lt"></i></div></div><p class="wort"><b>Was fährst du? <i>Neu</i></b><span>Neuer Einstieg: dein Zeichen auf der Karte.</span></p></div>
       <div class="seite an"><div class="szene" aria-hidden="true"><div class="b s-fu"><i class="r r3"></i><i class="r r2"></i><i class="r r1"></i><svg class="m" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></svg></div></div><p class="wort"><b>Funk ohne Taste</b><span>Einfach reden. Nichts wird aufgezeichnet.</span></p></div>
       <div class="seite an"><div class="szene" aria-hidden="true"><div class="b s-te"><svg class="ga" viewBox="0 0 24 24"><path d="M4.5 17.5a9 9 0 1 1 15 0"/><path d="M12 13.5l4-5.5"/><circle cx="12" cy="13.5" r="1.3"/></svg><i class="sg s1"><b>100</b></i><i class="sg s2"><b>70</b></i></div></div><p class="wort"><b>Tempolimit am Tacho</b><span>Mit Vorschau: „70 in 400 m“.</span></p></div>
       <div class="seite an"><div class="szene" aria-hidden="true"><div class="b s-na"><svg class="pf" viewBox="0 0 24 24"><path d="m15 14 5-5-5-5"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg><i class="fe"><i class="st">300 m<br>200 m<br>100 m</i></i></div></div><p class="wort"><b>Navi mit Stimme</b><span>Klare Ansagen, Spurpfeile, bis zu drei Routen.</span></p></div>
@@ -150,7 +154,7 @@
         neu.classList.add('rein'); k.appendChild(neu);
       }
     }
-    takt = setTimeout(wechsel, ruhig ? 3600 : n >= 10 ? 1300 : 1700);   // großes Raster: etwas schneller, damit mehr der 31 drankommen
+    takt = setTimeout(wechsel, ruhig ? 3600 : n >= 10 ? 1300 : 1700);   // großes Raster: etwas schneller, damit mehr der 34 drankommen
   };
   takt = setTimeout(wechsel, 2800);
   // k1 (Luka 20.11.2026): die Kacheln bleiben bis zum Schluss stehen. Ist alles geladen, misst welt.js in einer Probefahrt die
@@ -254,7 +258,8 @@
   <section class="kapitel rechts" id="k4" data-gewicht="1.4" aria-labelledby="t4" data-w-schild-oben="A1" data-w-schild-unten="Ausfahrt 12" data-w-ansage="In 300 Metern rechts abbiegen" data-w-ansage-jetzt="Ausfahrt nehmen" data-w-landstrasse="Ohne Autobahn">
     <div class="text">
       <h2 id="t4">Navigation mit eigener Stimme.</h2>
-      <p>Klare Ansagen, zum Beispiel <b>„In 300 Metern rechts abbiegen“</b> – dazu Spurpfeile und bis zu drei Routen zur Wahl. Auf Wunsch <b>ohne Autobahn</b> oder ohne Maut.</p>
+      <p>Klare Ansagen wie <b>„In 300 Metern rechts abbiegen“</b> – neu auch an Gabelungen (<b>„leicht rechts halten“</b>) und mit <b>„Dann …“</b> für den Schritt danach. Dazu Spurpfeile, bis zu drei Routen und auf Wunsch <b>ohne Autobahn</b> oder ohne Maut.</p>
+      <p class="beispiel">Neu: Ohne Vignette warnt FREQ vor der Auffahrt – „Achtung, links ist die Autobahn-Auffahrt.“</p>
     </div>
   </section>
 
@@ -276,6 +281,7 @@
     <div class="text">
       <h2 id="t7">Im Auto auf dem großen Bildschirm.</h2>
       <p>Gebaut für <b>CarPlay</b> und <b>Android Auto</b>: Tacho mit Tempolimit, <b>Blitzer-Feld</b> mit Entfernung, dein Convoy als Gesichter, Funk am Schirm – Teil von FREQ Premium.</p>
+      <p class="beispiel">Neu in Android Auto: Gabelungen, der Schritt „Danach“, der Vignetten-Hinweis und Karte verschieben mit „Zentrieren“.</p>
     </div>
   </section>
 
@@ -314,6 +320,39 @@
   </div>
   <div class="ue-inhalt">
     <p class="ue-satz">Navi und Convoy-Funk in einer App – für iPhone und Android.</p>
+    <section class="ue-neu" aria-labelledby="ue-neu-titel">
+    <h3 id="ue-neu-titel">Neu im November</h3>
+    <ul class="ue-liste">
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22v-8.3a4 4 0 0 0-1.17-2.87L3 3"/><path d="m15 9 6-6"/></svg>
+        <div><b>Gabelungen und „Dann …“</b><span>„Leicht rechts halten“ an der Gabelung, „Dann …“ für den Schritt danach – dazu eine zuschaltbare Kreuzungs-Skizze mit Spuren.</span></div>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2M13 17v2M13 11v2"/></svg>
+        <div><b>Vignetten-Wächter</b><span>Ohne Vignette warnt FREQ vor vignettenpflichtigen Auffahrten: „Achtung, links ist die Autobahn-Auffahrt.“</span></div>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+        <div><b>„Ohne Maut“ bleibt</b><span>Einmal gewählt, gilt es auch nach einem Neustart.</span></div>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.94 15.5A2 2 0 0 0 8.5 14.06l-6.14-1.58a.5.5 0 0 1 0-.96L8.5 9.94A2 2 0 0 0 9.94 8.5l1.58-6.14a.5.5 0 0 1 .96 0L14.06 8.5a2 2 0 0 0 1.44 1.44l6.14 1.58a.5.5 0 0 1 0 .96L15.5 14.06a2 2 0 0 0-1.44 1.44l-1.58 6.14a.5.5 0 0 1-.96 0z"/></svg>
+        <div><b>Neuer Einstieg</b><span>Drei Karten zeigen, was FREQ kann. Dann „Was fährst du?“ – dein Zeichen auf der Karte, jederzeit änderbar.</span></div>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        <div><b>Dunkle Karte lebendiger</b><span>Wasser, Grün und Straßen heben sich nachts besser ab. „Norden oben“ zeigt die Karte flach.</span></div>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/></svg>
+        <div><b>Sparsamer im Hintergrund</b><span>Ist FREQ nicht vorne, schläft die Karte. Navi, Ansagen und Funk laufen weiter.</span></div>
+      </li>
+      <li class="breit">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="12" rx="2.5"/><path d="M8.5 20.5h7M12 17v3.5"/><path d="M7 13l3-3 2.5 2 4.5-4"/></svg>
+        <div><b>Android Auto <i>Premium</i></b><span>Startet ruhig auf dunkler Fläche mit Logo. Neu: Gabelungen, der Schritt „Danach“, der Vignetten-Hinweis unter dem Tacho und Karte verschieben mit „Zentrieren“.</span></div>
+      </li>
+    </ul>
+    </section>
     <ul class="ue-liste">
       <li>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8.5" cy="9" r="3.5"/><circle cx="17" cy="10.5" r="2.5"/><path d="M2.5 19c.7-3 3-4.5 6-4.5s5.3 1.5 6 4.5M16 15.2c2.6-.3 4.7 1 5.5 3.8"/></svg>

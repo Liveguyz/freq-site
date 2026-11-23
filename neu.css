@@ -1,0 +1,21 @@
+/* FREQ — „Neu“ im Überblick (24.11.2026): was die App seit dem letzten Stand der Seite dazugelernt hat.
+   Liegt bewusst NICHT in welt/ (dort cache-first mit Version): der Service Worker holt diese Datei zuerst aus dem Netz.
+   Nutzt die Liste des Überblicks (.ue-liste aus welt.css), nur der Rahmen und die Überschrift kommen dazu. */
+.ue-neu {
+  margin: 0 0 20px; padding: 14px 16px 16px; border-radius: 16px;
+  border: 1px solid rgba(39, 196, 232, 0.38);
+  background: linear-gradient(158deg, rgba(39, 196, 232, 0.09) 0%, rgba(39, 196, 232, 0.025) 70%);
+}
+.ue-neu h3 {
+  display: flex; align-items: center; gap: 8px; margin: 0 0 12px;
+  font-size: 13px; font-weight: 650; letter-spacing: 0.06em; text-transform: uppercase; color: var(--cyan);
+}
+.ue-neu h3::before {
+  content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 10px rgba(39, 196, 232, 0.8);
+}
+.ue-neu .ue-liste { gap: 10px 24px; }
+.ue-neu .ue-liste svg { width: 34px; height: 34px; padding: 8px; border-radius: 10px; }
+.ue-neu .ue-liste li { grid-template-columns: 34px 1fr; }
+.ue-neu .ue-liste b { font-size: 14.5px; }
+.ue-neu .ue-liste span { font-size: 13.5px; }
+@media (max-width: 420px) { .ue-neu { padding: 12px 12px 14px; } }
