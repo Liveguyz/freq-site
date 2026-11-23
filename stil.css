@@ -214,3 +214,8 @@ footer a:hover { color: var(--text); }
   header.kopf { position: static; background: none; } .nach-oben, .inhalt { display: none; }
   body { background: #fff; color: #000; } main p, main li, main td, main b, main th, main h1, main h2 { color: #000; }
 }
+
+/* Credits: Quellen der App (24.11.2026) – je Zeile Quelle und Lizenz als Links, etwas leiser als die Nennung selbst */
+main ul.quellen li { margin-bottom: 11px; }
+main ul.quellen .nenn { color: var(--neben); font-size: 0.9em; white-space: normal; }
+main .fuss-hinweis { color: var(--neben); font-size: 14px; margin-top: -6px; }
