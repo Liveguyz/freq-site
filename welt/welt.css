@@ -280,9 +280,12 @@ html.welt footer.fuss span { display: none; }
      Textes bis zur Unterkante, der mit dem Text ein- und ausblendet. Die Kamera neigt sich hochkant passend dazu (kamera.js
      NEIGUNG_HOCH): das Motiv steht darüber, unter dem Text liegt nur die nahe Fahrbahn. */
   html.welt .kapitel .text { background: none; }
+  html.welt .kapitel { overflow: hidden; }
   html.welt .kapitel .text::before {
     content: ""; position: absolute; z-index: -1; pointer-events: none;
-    left: calc(-32px - env(safe-area-inset-left)); right: calc(-32px - env(safe-area-inset-right));
+    /* weit über beide Ränder hinaus (24.11.2026): der Textkasten ist nur so breit wie sein Inhalt und steht nicht immer mittig –
+       mit festen −32 px blieb am iPhone rechts ein 24 px breiter Streifen ohne Verlauf. Das Kapitel schneidet am Bildrand ab. */
+    left: -100vw; right: -100vw;
     top: -76px; bottom: calc(-88px - env(safe-area-inset-bottom));
     background: linear-gradient(180deg, rgba(6, 9, 14, 0) 0, rgba(6, 9, 14, 0.14) 22px, rgba(6, 9, 14, 0.42) 52px, rgba(6, 9, 14, 0.7) 88px, rgba(6, 9, 14, 0.84) 132px, rgba(6, 9, 14, 0.9) 100%);
   }
@@ -482,7 +485,7 @@ html:not(.mit-js) .ue-inhalt { overflow: visible; }
 /* Sehr schmale Handys: der Stand darf umbrechen; sehr niedrige quer: das Finale-Logo noch kleiner */
 @media (max-width: 360px) { .stand { white-space: normal; } }
 @media (max-width: 340px) { html.welt .kapitel p { font-size: 13px !important; } html.welt .kapitel h1 { font-size: 20px; } }
-@media (max-width: 374px) { html.welt .kapitel p { font-size: 13.5px; } html.welt .kapitel, html.welt .kapitel.rechts, html.welt .kapitel.mitte, html.welt .kapitel.auftakt, html.welt .kapitel.finale { padding-left: calc(36px + env(safe-area-inset-left)); padding-right: calc(36px + env(safe-area-inset-right)); } html.welt .kapitel .text::before { left: calc(-24px - env(safe-area-inset-left)); right: calc(-24px - env(safe-area-inset-right)); } }
+@media (max-width: 374px) { html.welt .kapitel p { font-size: 13.5px; } html.welt .kapitel, html.welt .kapitel.rechts, html.welt .kapitel.mitte, html.welt .kapitel.auftakt, html.welt .kapitel.finale { padding-left: calc(36px + env(safe-area-inset-left)); padding-right: calc(36px + env(safe-area-inset-right)); } }
 @media (max-height: 340px) and (orientation: landscape) { html.welt .finale-logo-rahmen { width: 46px; } }
 /* Kleine Handys hochkant (bis 600 px Höhe): das Finale-Logo kleiner, damit Überschrift, Satz mit Preisen und Stand zwischen Kopf und Dock passen */
 @media (max-width: 720px) and (max-height: 600px) and (orientation: portrait) { html.welt .finale-logo-rahmen { width: 84px; margin-bottom: 6px; } }
