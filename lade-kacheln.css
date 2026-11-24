@@ -86,7 +86,7 @@ html.bereit.laden-halten .kacheln { transform: none; }
 .kacheln .laden-logo picture { position: relative; display: block; width: 100%; height: 100%; }
 .kacheln .laden-logo .laden-geist { position: absolute; inset: 0; opacity: 0.17; }
 .kacheln .laden-geist img { width: 100%; height: 100%; object-fit: contain; display: block; }
-.kacheln .laden-text { margin: 0; font-size: 15px; font-size: clamp(14px, 4cqw, 23px); line-height: 1.16; letter-spacing: -0.02em; text-shadow: none; }
+.kacheln .laden-text { margin: 0; font-size: 13px; font-size: clamp(12px, 3.4cqw, 20px); line-height: 1.18; letter-spacing: -0.01em; text-shadow: none; }
 .kacheln .laden-zeile { display: block; margin: 0; }
 .kacheln .laden-stand { font-size: 13px; gap: 4px 8px; flex-wrap: wrap; justify-content: center; }
 .kacheln .laden-prozent { min-width: 2.7em; }
@@ -315,6 +315,8 @@ html.bereit.laden-halten .kacheln { transform: none; }
 .s-of .bk { position: relative; width: 3.4em; height: 0.3em; overflow: hidden; border-radius: 1em; background: rgba(255, 255, 255, 0.14); }
 .s-of .bk::after { content: ""; position: absolute; inset: 0; border-radius: 1em; background: var(--a); transform-origin: 0 50%; animation: of-b 7s linear infinite; }
 @keyframes of-b { 0% { transform: scaleX(0.04); } 40%, 100% { transform: scaleX(1); } }
+/* Handy (24.11.2026): „Laden“ als runder Knopf nur mit Zeichen – mit Wort blieb für „Deutschland“ und „Leicht · 412 MB“ zu wenig Platz („Deutschl…“) */
+.s-of .cp { padding: 0.45em; }
 .s-of .ok { color: #30d158; width: 1.4em; height: 1.4em; stroke-width: 2.6; }
 .s-of .x { place-items: center end; }
 
@@ -624,7 +626,7 @@ html.bereit.laden-halten .kacheln { transform: none; }
   .wort i { font-size: 10px; padding: 1px 6px; }
   .mitte { padding: 8px; gap: 5px; }
   .kacheln .laden-logo { width: min(64cqw, calc(100cqh - 92px)); }
-  .kacheln .laden-text { font-size: clamp(13px, 7.6cqw, 17px); }
+  .kacheln .laden-text { font-size: clamp(11.5px, 6.5cqw, 15px); }
   .kacheln .laden-stand { font-size: 12px; flex-direction: column; align-items: center; gap: 0; }
   .kacheln .laden-prozent { min-width: 0; text-align: center; }
 }

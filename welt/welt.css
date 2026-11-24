@@ -17,6 +17,15 @@
   --bogen: 372deg;
   color-scheme: dark;
 }
+/* Titelschrift nur auf der Website (Luka 24.11.2026; die App bleibt bei der Systemschrift): Saira, breiter fetter Schnitt
+   (Expanded Bold) – ihre eckig-runden, breiten Formen sind die des FREQ-Schriftzugs im Logo. SIL Open Font License 1.1,
+   selbst gehostet (kein Schrift-Dienst, nichts verlässt die Seite), Latin mit Umlauten, ein Schnitt, 11 KB.
+   Nur Überschriften und große Zahlen; Fließtext bleibt Systemschrift. */
+@font-face {
+  font-family: "FREQ Titel"; font-style: normal; font-weight: 700; font-display: swap;
+  src: url("../schrift/saira-expanded-bold.woff2") format("woff2");
+}
+:root { --titel: "FREQ Titel", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
 * { box-sizing: border-box; }
 html { background: var(--asphalt); }
 body {
@@ -65,7 +74,7 @@ header.kopf {
 header.kopf > * { pointer-events: auto; }
 .marke { display: flex; align-items: center; gap: 9px; min-height: 44px; text-decoration: none; color: var(--licht); }
 .marke img { width: 30px; height: 30px; }
-.marke b { font-size: 17px; letter-spacing: 3px; font-weight: 700; }
+.marke b { font-family: var(--titel); font-size: 16px; letter-spacing: 1.5px; font-weight: 700; }
 /* Der eine Satz neben dem Logo (nur wo Platz ist) */
 .nutzen {
   flex: 1 1 auto; min-width: 0; margin: 0 8px 0 10px; color: #c9ced6; font-size: 14px; line-height: 1.2;
@@ -129,10 +138,11 @@ footer.fuss span { opacity: 0.7; }
 main { position: relative; z-index: 2; }
 .kapitel { max-width: 760px; margin: 0 auto; padding: 14vh 24px; }
 .kapitel .text { max-width: 36rem; }
-.kapitel h1 { margin: 0 0 14px; font-size: clamp(34px, 6.4vw, 80px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.03; }
-.kapitel h2 { margin: 0 0 12px; font-size: clamp(27px, 4.2vw, 50px); font-weight: 800; letter-spacing: -0.025em; line-height: 1.1; }
+.kapitel h1 { margin: 0 0 14px; font-family: var(--titel); font-size: clamp(29px, 5.5vw, 70px); font-weight: 700; letter-spacing: -0.012em; line-height: 1.06; }
+.kapitel h2 { margin: 0 0 12px; font-family: var(--titel); font-size: clamp(23px, 3.6vw, 43px); font-weight: 700; letter-spacing: -0.01em; line-height: 1.12; }
 .kapitel p { margin: 0; color: var(--nebel); font-size: clamp(16px, 1.3vw, 19px); }
 .kapitel p b { color: var(--licht); font-weight: 600; }
+.kapitel p.kurz { display: none; }   /* die kurze Fassung fürs Handy (höchstens drei Zeilen, Luka 24.11.2026) – nur in der Welt hochkant */
 .kapitel .beispiel { margin-top: 12px; font-size: 15px; color: var(--nebel); }
 /* Hauptaktion im Auftakt und im Finale */
 .kapitel .aktion { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; margin-top: 22px; text-shadow: none; }
@@ -246,12 +256,18 @@ html.welt footer.fuss span { display: none; }
 @media (max-width: 720px) {
   html.welt .kapitel, html.welt .kapitel.rechts, html.welt .kapitel.mitte { justify-content: center; align-content: end; padding-bottom: calc(112px + env(safe-area-inset-bottom)); }
   html.welt .kapitel .text, html.welt .kapitel.rechts .text { text-align: center; max-width: 100%; }
-  html.welt .kapitel.auftakt { align-content: center; padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+  /* Auftakt hochkant unten wie die anderen Kapitel (24.11.2026): mittig lag die Überschrift auf dem entgegenkommenden Convoy */
+  html.welt .kapitel.auftakt { align-content: end; padding-bottom: calc(176px + env(safe-area-inset-bottom)); }
+  html.welt .kapitel.auftakt .text::before { bottom: calc(-152px - env(safe-area-inset-bottom)); }
   html.welt .kapitel.finale { align-content: center; }
   html.welt .kapitel.finale.phase-treffen { justify-content: center; align-content: end; }
   html.welt .kapitel.finale.phase-treffen .text.treffen { text-align: center; }
-  html.welt .kapitel h2 { font-size: clamp(22px, 6vw, 30px); }
-  html.welt .kapitel p { font-size: 14px; line-height: 1.45; }
+  html.welt .kapitel h1 { font-size: clamp(21px, 6.5vw, 30px); text-wrap: balance; }
+  html.welt .kapitel h2 { font-size: clamp(19px, 5.5vw, 25px); text-wrap: balance; }
+  html.welt .kapitel p { font-size: 15px; line-height: 1.45; text-wrap: pretty; }
+  /* Handy: mittig, höchstens drei Zeilen – die kurze Fassung statt der langen (am Desktop und auf der ruhigen Seite bleibt die lange) */
+  html.welt .kapitel p.lang { display: none; }
+  html.welt .kapitel p.kurz { display: block; }
   html.welt .kapitel .beispiel { display: none; } /* Hochkant: der Textblock deckte die halbe Bildhöhe (Convoy von oben) */
   html.welt .finale-logo-rahmen { width: min(40vmin, 220px); margin-bottom: 12px; }
   html.welt .kapitelnav { right: env(safe-area-inset-right); gap: 0; }
@@ -259,6 +275,25 @@ html.welt footer.fuss span { display: none; }
   /* Text nicht unter den Kapitelpunkten: links und rechts gleich viel Rand, damit er mittig bleibt */
   html.welt .kapitel, html.welt .kapitel.rechts, html.welt .kapitel.mitte, html.welt .kapitel.auftakt, html.welt .kapitel.finale { padding-left: calc(44px + env(safe-area-inset-left)); padding-right: calc(44px + env(safe-area-inset-right)); }
   html.welt .kapitel .text { padding: 24px 12px; margin: -24px -12px; }
+  /* Hochkant (24.11.2026, Bildschirmfoto vom Android-Handy: die Fahrbahnlinie lief durch den Absatz und hinter den Tasten durch):
+     statt des runden Hofs wird das Bild unter dem Text zur Nacht – ein Verlauf über die ganze Breite, vom oberen Rand des
+     Textes bis zur Unterkante, der mit dem Text ein- und ausblendet. Die Kamera neigt sich hochkant passend dazu (kamera.js
+     NEIGUNG_HOCH): das Motiv steht darüber, unter dem Text liegt nur die nahe Fahrbahn. */
+  html.welt .kapitel .text { background: none; }
+  html.welt .kapitel .text::before {
+    content: ""; position: absolute; z-index: -1; pointer-events: none;
+    left: calc(-32px - env(safe-area-inset-left)); right: calc(-32px - env(safe-area-inset-right));
+    top: -76px; bottom: calc(-88px - env(safe-area-inset-bottom));
+    background: linear-gradient(180deg, rgba(6, 9, 14, 0) 0, rgba(6, 9, 14, 0.14) 22px, rgba(6, 9, 14, 0.42) 52px, rgba(6, 9, 14, 0.7) 88px, rgba(6, 9, 14, 0.84) 132px, rgba(6, 9, 14, 0.9) 100%);
+  }
+  /* Im Auto steht der Text oben: derselbe Verlauf von der Oberkante herab */
+  html.welt .kapitel.oben .text::before {
+    top: calc(-72px - env(safe-area-inset-top)); bottom: -70px;
+    background: linear-gradient(0deg, rgba(6, 9, 14, 0) 0, rgba(6, 9, 14, 0.14) 20px, rgba(6, 9, 14, 0.42) 48px, rgba(6, 9, 14, 0.7) 82px, rgba(6, 9, 14, 0.84) 124px, rgba(6, 9, 14, 0.9) 100%);
+  }
+  /* Finale (Logo vor dem Himmel): kein Band, der runde Hof bleibt */
+  html.welt .kapitel.finale:not(.phase-treffen) .text::before { content: none; }
+  html.welt .kapitel.finale:not(.phase-treffen) .text { background: radial-gradient(farthest-corner at 50% 60%, rgba(8, 10, 14, 0.66), rgba(8, 10, 14, 0.4) 40%, rgba(8, 10, 14, 0) 70%); }
   /* Fuß: jede Verknüpfung 44 px hoch; der Hinweis „Scrollen“ steht darüber statt auf den Links */
   html.welt footer.fuss { row-gap: 0; padding-top: 4px; padding-bottom: calc(2px + env(safe-area-inset-bottom)); }
   html.welt footer.fuss a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 2px; }
@@ -302,7 +337,7 @@ html.welt footer.fuss span { display: none; }
   transition: opacity 0.9s ease, visibility 0s linear 0.9s;
   --laden-bogen: 0deg; --kx: 51.9%; --ky: 95.2%;
 }
-.laden-text { margin: 0; font-size: clamp(30px, 5vw, 58px); font-weight: 800; letter-spacing: -0.025em; line-height: 1.1; color: var(--licht); text-shadow: 0 2px 28px rgba(0, 0, 0, 0.85), 0 1px 3px rgba(0, 0, 0, 0.8); }
+.laden-text { margin: 0; font-family: var(--titel); font-size: clamp(26px, 4.3vw, 50px); font-weight: 700; letter-spacing: -0.012em; line-height: 1.1; color: var(--licht); text-shadow: 0 2px 28px rgba(0, 0, 0, 0.85), 0 1px 3px rgba(0, 0, 0, 0.8); }
 .laden-zeile { display: block; }
 .laden-text .w { display: inline-block; opacity: 0; transform: translateY(10px); animation: laden-wort 0.6s ease-out forwards; }
 .laden-zeile:nth-child(1) .w:nth-child(1) { animation-delay: 0.1s; }
@@ -323,7 +358,7 @@ html.welt footer.fuss span { display: none; }
   transition: left 0.25s linear, top 0.25s linear;
 }
 .laden-stand { margin: 0; display: flex; gap: 12px; align-items: baseline; font-size: 14px; color: var(--nebel); }
-.laden-prozent { font-variant-numeric: tabular-nums; color: var(--licht); font-weight: 600; min-width: 3.2em; text-align: right; }
+.laden-prozent { font-family: var(--titel); font-variant-numeric: tabular-nums; color: var(--licht); font-weight: 600; min-width: 3.2em; text-align: right; }
 html.bereit .laden { opacity: 0; visibility: hidden; pointer-events: none; }
 /* Solange geladen wird, zeigt nur der Ladebildschirm Text: Kapiteltexte, Kapitelpunkte und Fuß bleiben unsichtbar (sonst lagen sie über den Ladewörtern).
    Der Kopf (Logo, Satz, Überblick, Hauptaktion) und am Handy das Dock bleiben da – Luka 11.11.2026: das Wesentliche soll immer da sein */
@@ -366,7 +401,7 @@ dialog.ueberblick::backdrop { background: rgba(6, 8, 10, 0.66); -webkit-backdrop
 html.blick-offen { overflow: hidden; }   /* die Fahrt dahinter steht, solange der Überblick offen ist */
 .ue-kopf { display: flex; align-items: center; gap: 12px; padding: 12px 14px 12px 22px; border-bottom: 1px solid var(--rand); flex: none; }
 .ue-kopf img { width: 36px; height: 36px; }
-.ue-kopf h2 { margin: 0; flex: 1; font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+.ue-kopf h2 { margin: 0; flex: 1; font-family: var(--titel); font-size: 18px; font-weight: 700; letter-spacing: 0; }
 .ue-kopf form { margin: 0; }
 .ue-zu {
   width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--rand); background: rgba(255, 255, 255, 0.06);
@@ -381,7 +416,10 @@ html.blick-offen { overflow: hidden; }   /* die Fahrt dahinter steht, solange de
 .ue-liste svg { width: 38px; height: 38px; padding: 9px; border-radius: 11px; background: rgba(39, 196, 232, 0.12); color: var(--cyan); }
 .ue-liste b { display: block; font-size: 15px; font-weight: 600; line-height: 1.3; }
 .ue-liste span { display: block; margin-top: 2px; font-size: 14px; line-height: 1.4; color: var(--nebel); }
-.ue-liste li.breit { grid-column: 1 / -1; }   /* „Im Auto“ über die ganze Breite, direkt vor den zwei Aufnahmen */
+.ue-liste li.breit { grid-column: 1 / -1; }
+/* Zeichen nur bei den vier Hauptpunkten (Luka 24.11.2026): die übrigen Einträge stehen als ruhige Liste ohne Zeichen darunter */
+.ue-liste.schlicht li { display: block; }
+.ue-liste + .ue-liste.schlicht { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--rand); }   /* „Im Auto“ über die ganze Breite, direkt vor den zwei Aufnahmen */
 .ue-liste i { font-style: normal; font-size: 11px; font-weight: 600; color: var(--cyan); border: 1px solid rgba(39, 196, 232, 0.5); border-radius: 999px; padding: 1px 7px; margin-left: 6px; vertical-align: 1px; }
 .ue-bilder { margin: 16px 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .ue-bilder img { width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--rand); background: #0b0d0f; }
@@ -443,6 +481,8 @@ html:not(.mit-js) .ue-inhalt { overflow: visible; }
 
 /* Sehr schmale Handys: der Stand darf umbrechen; sehr niedrige quer: das Finale-Logo noch kleiner */
 @media (max-width: 360px) { .stand { white-space: normal; } }
+@media (max-width: 340px) { html.welt .kapitel p { font-size: 13px !important; } html.welt .kapitel h1 { font-size: 20px; } }
+@media (max-width: 374px) { html.welt .kapitel p { font-size: 13.5px; } html.welt .kapitel, html.welt .kapitel.rechts, html.welt .kapitel.mitte, html.welt .kapitel.auftakt, html.welt .kapitel.finale { padding-left: calc(36px + env(safe-area-inset-left)); padding-right: calc(36px + env(safe-area-inset-right)); } html.welt .kapitel .text::before { left: calc(-24px - env(safe-area-inset-left)); right: calc(-24px - env(safe-area-inset-right)); } }
 @media (max-height: 340px) and (orientation: landscape) { html.welt .finale-logo-rahmen { width: 46px; } }
 /* Kleine Handys hochkant (bis 600 px Höhe): das Finale-Logo kleiner, damit Überschrift, Satz mit Preisen und Stand zwischen Kopf und Dock passen */
 @media (max-width: 720px) and (max-height: 600px) and (orientation: portrait) { html.welt .finale-logo-rahmen { width: 84px; margin-bottom: 6px; } }
