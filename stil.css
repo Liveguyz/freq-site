@@ -11,6 +11,13 @@
   --gruen: #30d158;
 }
 * { box-sizing: border-box; }
+/* Titelschrift nur auf der Website (Luka 24.11.2026; die App bleibt bei der Systemschrift): Saira Expanded Bold, SIL Open Font
+   License 1.1, selbst gehostet (kein Schrift-Dienst). Nur Überschriften; Fließtext bleibt Systemschrift. Siehe welt/welt.css. */
+@font-face {
+  font-family: "FREQ Titel"; font-style: normal; font-weight: 700; font-display: swap;
+  src: url("schrift/saira-expanded-bold.woff2") format("woff2");
+}
+:root { --titel: "FREQ Titel", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
 body {
   margin: 0;
   background: var(--bg);
@@ -25,7 +32,7 @@ header.kopf {
 }
 .marke { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
 .marke img { width: 30px; height: auto; display: block; }
-.marke b { font-size: 17px; letter-spacing: 3px; font-weight: 700; }
+.marke b { font-family: var(--titel); font-size: 16px; letter-spacing: 1.5px; font-weight: 700; }
 nav.sprachen a { color: var(--neben); text-decoration: none; margin-left: 10px; font-size: 14px; }
 nav.sprachen a.aktiv { color: var(--akzent); }
 .held { padding: 48px 0 24px; }
@@ -123,8 +130,8 @@ nav.sprachen { border: 1px solid var(--rand); border-radius: 999px; padding: 0 4
 nav.sprachen a { font-weight: 600; font-size: 13px; letter-spacing: 0.04em; }
 
 /* Überschriften und Fließtext */
-main h1 { font-size: clamp(30px, 6.2vw, 42px); line-height: 1.12; letter-spacing: -0.015em; margin: 36px 0 12px; text-wrap: balance; }
-main h2 { font-size: clamp(20px, 3.4vw, 23px); line-height: 1.25; letter-spacing: -0.005em; margin: 52px 0 12px; padding-top: 26px; border-top: 1px solid var(--rand); text-wrap: balance; }
+main h1 { font-family: var(--titel); font-weight: 700; font-size: clamp(25px, 5.2vw, 36px); line-height: 1.14; letter-spacing: -0.01em; margin: 36px 0 12px; text-wrap: balance; }
+main h2 { font-family: var(--titel); font-weight: 700; font-size: clamp(17px, 2.9vw, 20px); line-height: 1.28; letter-spacing: 0; margin: 52px 0 12px; padding-top: 26px; border-top: 1px solid var(--rand); text-wrap: balance; }
 main h3 { font-size: 17px; margin: 26px 0 6px; }
 main p, main li, main td { color: var(--fliess); }
 main p, main li { font-size: 16.5px; line-height: 1.68; text-wrap: pretty; }

@@ -21,9 +21,10 @@
 <link rel="apple-touch-icon" href="bild/freq-touch.png">
 <link rel="preload" as="image" href="welt/hero.webp" fetchpriority="high">
 <script>document.documentElement.classList.add('mit-js');</script>
+<link rel="preload" as="font" type="font/woff2" href="schrift/saira-expanded-bold.woff2" crossorigin>
 <link rel="stylesheet" href="welt/welt.css?v=202611242045-9a9c1cc">
 <link rel="stylesheet" href="lade-kacheln.css?v=6">
-<link rel="stylesheet" href="neu.css?v=1">
+<link rel="stylesheet" href="neu.css?v=2">
 <script defer src="welt/welt.js?v=202611242045-9a9c1cc"></script>
 </head>
 <body data-basis="">
@@ -240,7 +241,8 @@
   <section class="kapitel links" id="k1" data-gewicht="1.3" aria-labelledby="t1" data-w-namen="Anna,Ben,Mia,Tom">
     <div class="text">
       <h2 id="t1">Convoy: alle auf einer Karte.</h2>
-      <p>Jeder fährt als <b>Gesicht auf deiner Karte</b> mit. Der Admin setzt das Ziel, <b>jedes Handy rechnet seine eigene Route</b> – und alle kommen am selben Punkt an.</p>
+      <p class="lang">Jeder fährt als <b>Gesicht auf deiner Karte</b> mit. Der Admin setzt das Ziel, <b>jedes Handy rechnet seine eigene Route</b> – und alle kommen am selben Punkt an.</p>
+      <p class="kurz">Alle als <b>Gesichter auf deiner Karte</b>. Der Admin setzt das Ziel, jedes Handy rechnet seine Route.</p>
       <p class="beispiel">Zum Beispiel: Anna setzt das Ziel, Ben fährt zehn Minuten später los – seine Route beginnt dort, wo er gerade ist.</p>
     </div>
   </section>
@@ -248,14 +250,16 @@
   <section class="kapitel rechts" id="k2" data-gewicht="1.25" aria-labelledby="t2" data-w-spricht="Anna spricht">
     <div class="text">
       <h2 id="t2">Funk: reden wie im selben Auto.</h2>
-      <p>Ein offener Kanal für alle im Convoy – <b>ohne Taste drücken</b>. „Ruhe“, wenn du Musik hören willst, <b>„Ruf Anna“</b>, wenn du jemanden brauchst. Nichts wird aufgezeichnet.</p>
+      <p class="lang">Ein offener Kanal für alle im Convoy – <b>ohne Taste drücken</b>. „Ruhe“, wenn du Musik hören willst, <b>„Ruf Anna“</b>, wenn du jemanden brauchst. Nichts wird aufgezeichnet.</p>
+      <p class="kurz">Ein offener Kanal für alle im Convoy – <b>ohne Taste drücken</b>. Nichts wird aufgezeichnet.</p>
     </div>
   </section>
 
   <section class="kapitel links" id="k3" data-gewicht="2" aria-labelledby="t3" data-w-einheit="km/h" data-w-vorschau="70 in 400 m" data-w-gefahr="Gefahr gemeldet" data-w-vollbremsung="Vollbremsung im Convoy" data-w-akku="15 %" data-w-blitzer="Blitzer · 800 m" data-w-blitzer-tempo="Tempo 70" data-w-radar="800 m">
     <div class="text">
       <h2 id="t3">Gewarnt, bevor es brenzlig wird.</h2>
-      <p><b>Zwei Warnungen statt Dauerpiepen</b> – bei festen Blitzern in über 30 Ländern, <b>nur wo es erlaubt ist</b>. Das Tempolimit steht am Tacho. Und bremst im Convoy jemand voll, sehen es alle.</p>
+      <p class="lang"><b>Zwei Warnungen statt Dauerpiepen</b> – bei festen Blitzern in über 30 Ländern, <b>nur wo es erlaubt ist</b>. Das Tempolimit steht am Tacho. Und bremst im Convoy jemand voll, sehen es alle.</p>
+      <p class="kurz"><b>Zwei Warnungen statt Dauerpiepen</b> vor festen Blitzern – <b>nur wo es erlaubt ist</b>.</p>
       <p class="beispiel">Zum Beispiel: „70 in 400 m“ kündigt das neue Limit an, dann warnt FREQ vor dem Blitzer – und der ganze Convoy geht vom Gas.</p>
     </div>
   </section>
@@ -263,7 +267,8 @@
   <section class="kapitel rechts" id="k4" data-gewicht="1.4" aria-labelledby="t4" data-w-schild-oben="A1" data-w-schild-unten="Ausfahrt 12" data-w-ansage="In 300 Metern rechts abbiegen" data-w-ansage-jetzt="Ausfahrt nehmen" data-w-landstrasse="Ohne Autobahn">
     <div class="text">
       <h2 id="t4">Navigation mit eigener Stimme.</h2>
-      <p>Klare Ansagen wie <b>„In 300 Metern rechts abbiegen“</b> – neu auch an Gabelungen (<b>„leicht rechts halten“</b>) und mit <b>„Dann …“</b> für den Schritt danach. Dazu Spurpfeile, bis zu drei Routen und auf Wunsch <b>ohne Autobahn</b> oder ohne Maut.</p>
+      <p class="lang">Klare Ansagen wie <b>„In 300 Metern rechts abbiegen“</b> – neu auch an Gabelungen (<b>„leicht rechts halten“</b>) und mit <b>„Dann …“</b> für den Schritt danach. Dazu Spurpfeile, bis zu drei Routen und auf Wunsch <b>ohne Autobahn</b> oder ohne Maut.</p>
+      <p class="kurz">Klare Ansagen wie <b>„In 300 Metern rechts abbiegen“</b>. Dazu Spurpfeile und bis zu drei Routen.</p>
       <p class="beispiel">Neu: Ohne Vignette warnt FREQ vor der Auffahrt – „Achtung, links ist die Autobahn-Auffahrt.“</p>
     </div>
   </section>
@@ -271,21 +276,24 @@
   <section class="kapitel links" id="k5" data-gewicht="1.4" aria-labelledby="t5" data-w-abschnitt="Abschnittskontrolle" data-w-abschnitt-rest="noch 2,4 km" data-w-abschnitt-beginn="Beginn Abschnittskontrolle" data-w-amtlich="Amtliche Daten · Österreich">
     <div class="text">
       <h2 id="t5">Abschnittskontrolle: dein Schnitt, live.</h2>
-      <p>In der Messstrecke zeigt FREQ deinen <b>Schnitt neben dem Limit</b> – am Auto-Display auch die Reststrecke: <b>„noch 2,4 km“</b>. Österreichs Messstrecken kommen aus den <b>amtlichen Verordnungen</b>.</p>
+      <p class="lang">In der Messstrecke zeigt FREQ deinen <b>Schnitt neben dem Limit</b> – am Auto-Display auch die Reststrecke: <b>„noch 2,4 km“</b>. Österreichs Messstrecken kommen aus den <b>amtlichen Verordnungen</b>.</p>
+      <p class="kurz">In der Messstrecke zeigt FREQ deinen <b>Schnitt neben dem Limit</b>. Österreich: amtliche Daten.</p>
     </div>
   </section>
 
   <section class="kapitel rechts" id="k6" data-gewicht="1.4" aria-labelledby="t6" data-w-frei="Frei" data-w-belegt="Belegt" data-w-offen="Offen bis 22:00" data-w-pause="Pause? Rastplatz in 2 km" data-w-preise="Diesel,Super,Preise live in FREQ">
     <div class="text">
       <h2 id="t6">Tanken, Pause, Essen – für alle.</h2>
-      <p>Im Convoy setzt der Admin den <b>Stopp für alle</b>. Tankstellen zeigen in Österreich den Spritpreis, Ladesäulen in ersten Ländern frei oder belegt. Nach zwei Stunden schlägt FREQ leise eine Pause vor.</p>
+      <p class="lang">Im Convoy setzt der Admin den <b>Stopp für alle</b>. Tankstellen zeigen in Österreich den Spritpreis, Ladesäulen in ersten Ländern frei oder belegt. Nach zwei Stunden schlägt FREQ leise eine Pause vor.</p>
+      <p class="kurz">Der Admin setzt den <b>Stopp für alle</b>. Spritpreise in Österreich, nach zwei Stunden ein Pause-Vorschlag.</p>
     </div>
   </section>
 
   <section class="kapitel links oben" id="k7" data-gewicht="1.3" aria-labelledby="t7" data-w-abstand="350 m" data-w-strasse="Hauptstraße" data-w-ziel="Ziel" data-w-convoy="Convoy" data-w-sprechen="Sprechen" data-w-ruhe="Ruhe" data-w-rest="12 km · 14 min" data-w-ankunft="21:56" data-w-ankunft-wort="Ankunft" data-w-min-wort="Min." data-w-blitzer-fest="Fester Blitzer" data-w-apps="Telefon,Musik,Karten,Nachrichten,Podcasts,FREQ,Radio,Einstellungen">
     <div class="text">
       <h2 id="t7">Im Auto auf dem großen Bildschirm.</h2>
-      <p>Gebaut für <b>CarPlay</b> und <b>Android Auto</b>: Tacho mit Tempolimit, <b>Blitzer-Feld</b> mit Entfernung, dein Convoy als Gesichter, Funk am Schirm – Teil von FREQ Premium.</p>
+      <p class="lang">Gebaut für <b>CarPlay</b> und <b>Android Auto</b>: Tacho mit Tempolimit, <b>Blitzer-Feld</b> mit Entfernung, dein Convoy als Gesichter, Funk am Schirm – Teil von FREQ Premium.</p>
+      <p class="kurz">Für <b>CarPlay</b> und <b>Android Auto</b>: Tacho, Blitzer-Feld, Convoy und Funk – Teil von FREQ Premium.</p>
       <p class="beispiel">Neu in Android Auto: Gabelungen, der Schritt „Danach“, der Vignetten-Hinweis und Karte verschieben mit „Zentrieren“.</p>
     </div>
   </section>
@@ -294,7 +302,8 @@
     <!-- Erste Phase des Finales: das Car-Meet am Parkplatz (welt/quelle/finale.js), danach Logo und Schluss -->
     <div class="text treffen">
       <h2 id="t8a">Car-Meets in deiner Nähe.</h2>
-      <p>Treffen aus <b>Szene-Kalendern</b> stehen direkt in FREQ: ein Tipp, und die Route steht – du siehst, wie viele hinfahren. Noch nicht überall.</p>
+      <p class="lang">Treffen aus <b>Szene-Kalendern</b> stehen direkt in FREQ: ein Tipp, und die Route steht – du siehst, wie viele hinfahren. Noch nicht überall.</p>
+      <p class="kurz">Treffen aus <b>Szene-Kalendern</b> direkt in FREQ: ein Tipp, und die Route steht. Noch nicht überall.</p>
     </div>
     <div class="text">
       <div class="finale-logo-rahmen">
@@ -304,7 +313,8 @@
         </picture>
       </div>
       <h2 id="t8">Kostenlos starten.<br>Ohne Werbung.</h2>
-      <p>Navi, Warnungen und Melden bleiben gratis. <b>FREQ Premium</b> bringt das Auto-Display und große Convoys: 2,99 € im Monat oder 24,99 € im Jahr, 7 Tage gratis testen. Noch nicht in den Stores – gebaut in Wien.</p>
+      <p class="lang">Navi, Warnungen und Melden bleiben gratis. <b>FREQ Premium</b> bringt das Auto-Display und große Convoys: 2,99 € im Monat oder 24,99 € im Jahr, 7 Tage gratis testen. Noch nicht in den Stores – gebaut in Wien.</p>
+      <p class="kurz">Navi, Warnungen und Melden bleiben gratis. <b>FREQ Premium</b>: 2,99 € im Monat oder 24,99 € im Jahr.</p>
       <div class="aktion">
         <a class="taste haupt gross" href="mailto:administration@freqconvoi.com?subject=Benachrichtige%20mich%20zum%20Start%20von%20FREQ" title="Schreibt eine E-Mail an administration@freqconvoi.com">Benachrichtige mich</a>
         <span class="stand"><span class="puls" aria-hidden="true"></span>In Entwicklung — Wien, 2026</span>
@@ -327,33 +337,26 @@
     <p class="ue-satz">Navi und Convoy-Funk in einer App – für iPhone und Android.</p>
     <section class="ue-neu" aria-labelledby="ue-neu-titel">
     <h3 id="ue-neu-titel">Neu im November</h3>
-    <ul class="ue-liste">
+    <ul class="ue-liste schlicht">
       <li>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22v-8.3a4 4 0 0 0-1.17-2.87L3 3"/><path d="m15 9 6-6"/></svg>
         <div><b>Gabelungen und „Dann …“</b><span>„Leicht rechts halten“ an der Gabelung, „Dann …“ für den Schritt danach – dazu eine zuschaltbare Kreuzungs-Skizze mit Spuren.</span></div>
       </li>
       <li>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2M13 17v2M13 11v2"/></svg>
         <div><b>Vignetten-Wächter</b><span>Ohne Vignette warnt FREQ vor vignettenpflichtigen Auffahrten: „Achtung, links ist die Autobahn-Auffahrt.“</span></div>
       </li>
       <li>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
         <div><b>„Ohne Maut“ bleibt</b><span>Einmal gewählt, gilt es auch nach einem Neustart.</span></div>
       </li>
       <li>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.94 15.5A2 2 0 0 0 8.5 14.06l-6.14-1.58a.5.5 0 0 1 0-.96L8.5 9.94A2 2 0 0 0 9.94 8.5l1.58-6.14a.5.5 0 0 1 .96 0L14.06 8.5a2 2 0 0 0 1.44 1.44l6.14 1.58a.5.5 0 0 1 0 .96L15.5 14.06a2 2 0 0 0-1.44 1.44l-1.58 6.14a.5.5 0 0 1-.96 0z"/></svg>
         <div><b>Neuer Einstieg</b><span>Drei Karten zeigen, was FREQ kann. Dann „Was fährst du?“ – dein Zeichen auf der Karte, jederzeit änderbar.</span></div>
       </li>
       <li>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
         <div><b>Dunkle Karte lebendiger</b><span>Wasser, Grün und Straßen heben sich nachts besser ab. „Norden oben“ zeigt die Karte flach.</span></div>
       </li>
       <li>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/></svg>
         <div><b>Sparsamer im Hintergrund</b><span>Ist FREQ nicht vorne, schläft die Karte. Navi, Ansagen und Funk laufen weiter.</span></div>
       </li>
       <li class="breit">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="12" rx="2.5"/><path d="M8.5 20.5h7M12 17v3.5"/><path d="M7 13l3-3 2.5 2 4.5-4"/></svg>
         <div><b>Android Auto <i>Premium</i></b><span>Startet ruhig auf dunkler Fläche mit Logo. Neu: Gabelungen, der Schritt „Danach“, der Vignetten-Hinweis unter dem Tacho und Karte verschieben mit „Zentrieren“.</span></div>
       </li>
     </ul>
@@ -375,24 +378,21 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 17.5a9 9 0 1 1 15 0"/><path d="M12 13.5l4-5.5"/><circle cx="12" cy="13.5" r="1.3"/></svg>
         <div><b>Tempolimit am Tacho</b><span>Mit Vorschau auf den nächsten Wechsel: „70 in 400 m“.</span></div>
       </li>
+    </ul>
+    <ul class="ue-liste schlicht">
       <li>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10v4h3l8 4V6l-8 4H4z"/><path d="M18.5 9.5a3.5 3.5 0 0 1 0 5"/><path d="M7.5 14.5l1 4.5H11"/></svg>
         <div><b>Melden mit einem Tipp</b><span>Stau, Baustelle, Unfall – und wo es erlaubt ist, auch Blitzer und Polizei.</span></div>
       </li>
       <li>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M12 12.6l1.1 2.2 2.4.3-1.8 1.7.5 2.4-2.2-1.2-2.2 1.2.5-2.4-1.8-1.7 2.4-.3z"/></svg>
         <div><b>Car-Meets in deiner Nähe</b><span>Treffen aus Szene-Kalendern – ein Tipp setzt die Route dorthin. Noch nicht überall.</span></div>
       </li>
       <li>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4M5 5h13l-2.5 3.5L18 12H5"/></svg>
         <div><b>Grenze, Vignette, Umweltzone</b><span>Hinweise zu Vignetten, Umweltzonen (Deutschland) und ZTL-Zonen (Italien).</span></div>
       </li>
       <li>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v14M3 20h12M6.5 8h5M14 11h1.5a1.5 1.5 0 0 1 1.5 1.5V16a1.5 1.5 0 0 0 3 0V9l-2.5-2.5"/></svg>
         <div><b>Stopps für alle</b><span>Tanken, Pause, Essen: der Admin setzt den Stopp für den ganzen Convoy. Spritpreise in Österreich.</span></div>
       </li>
       <li class="breit">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="12" rx="2.5"/><path d="M8.5 20.5h7M12 17v3.5"/><path d="M7 13l3-3 2.5 2 4.5-4"/></svg>
         <div><b>Im Auto <i>Premium</i></b><span>Gebaut für CarPlay und Android Auto: Tacho, Blitzer-Feld, Convoy und Funk am großen Schirm.</span></div>
       </li>
     </ul>
