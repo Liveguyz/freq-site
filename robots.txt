@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /test.html
+Disallow: /en/test.html
+
+Sitemap: https://freqconvoi.com/sitemap.xml
