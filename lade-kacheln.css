@@ -4,7 +4,8 @@
    aus welt.js). Liegt bewusst NICHT in welt/: der Service Worker holt diese Datei erst aus dem Netz, nie veraltet.
    Aufbau: ein Platz (.kachel) hält eine Kachel (.seite) – die Karte mit Rand und Hintergrund ist die .seite, damit sie als Ganzes
    hinaus- und hereinfliegen kann (Skript in der Seite). Am Handy wenige Plätze, am großen Bildschirm (Vollbild) 13 mit mehr Luft.
-   Bühne jeder Mini-Szene: 15 em × 7 em, die Schriftgröße folgt der Kachel (Container-Einheiten). */
+   Seit 24.11.2026 ist jede Szene ein nachgebauter Ausschnitt aus der App (Abbiegekarte, Tacho, Blätter, Listen …) statt eines
+   Bildchens; die Schriftgröße der Bühne folgt der Kachel (Container-Einheiten). Zeichen: ein SVG-Vorrat im HTML (#l-…). */
 
 .laden.raster {
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: left;
@@ -31,7 +32,7 @@ html.bereit.laden-halten .kacheln { transform: none; }
    +75 % Stil-Zeit und +0,4 s Hauptfaden je Probefahrt, „none“ wie ganz ohne Kacheln). Ring, Komet, Prozent und Schriftzug des
    Logos laufen weiter – genau wie beim alten Ladebild, gegen das die Probefahrt abgestimmt ist. */
 .laden.ruhe .kachel:not(.k-mitte), .laden.ruhe .kachel:not(.k-mitte) *, .laden.ruhe .kachel:not(.k-mitte) *::before, .laden.ruhe .kachel:not(.k-mitte) *::after,
-.laden.ruhe .k-mitte::before, .laden.ruhe .kacheln .laden-logo::before { animation: none !important; }
+.laden.ruhe .k-mitte::before { animation: none !important; }
 
 .kachel {
   --rund: 22px;
@@ -45,9 +46,8 @@ html.bereit.laden-halten .kacheln { transform: none; }
 .k-mitte, .seite {
   overflow: hidden; border-radius: var(--rund);
   clip-path: inset(0 round var(--rund));   /* Safari schneidet bewegte Kinder sonst nicht an den runden Ecken ab */
-  background: linear-gradient(158deg, #1a1d22 0%, #131519 58%, #0f1114 100%);
+  background: #141518;
   border: 1px solid rgba(255, 255, 255, 0.09);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 .k-mitte { grid-area: m; --dy: 0px; }
 .k-a { grid-area: a; --n: 1; --dx: -26px; --dy: -18px; --dr: -3deg; }
@@ -65,16 +65,8 @@ html.bereit.laden-halten .kacheln { transform: none; }
 .k-n { grid-area: n; --n: 13; --dx: 20px; --dy: 26px; --dr: 2deg; }
 /* Plätze i–n gibt es nur im großen Raster */
 .k-i, .k-j, .k-k, .k-l, .k-n { display: none; }
-/* Schimmer am Rand: einmal nach dem Aufbau, dann bei jeder Kachel, die hereinfliegt (.rein) */
-.seite::after {
-  content: ""; position: absolute; inset: -1px; border-radius: var(--rund); pointer-events: none; opacity: 0;
-  border: 1px solid var(--cyan); box-shadow: inset 0 0 26px rgba(39, 196, 232, 0.22);
-  animation: k-glanz 1.1s ease-out both; animation-delay: calc(620ms + var(--n) * 65ms);
-}
-@keyframes k-glanz { 0% { opacity: 0; } 25% { opacity: 0.85; } 100% { opacity: 0; } }
-
 /* ── Mittelkachel: das echte Logo, sein Ring ist der Fortschritt; um den Rand laufen die zwei Logo-Farben ── */
-.k-mitte { border-color: transparent; background: #0d0f12; text-align: center; box-shadow: none; }
+.k-mitte { border-color: transparent; background: #0d0f12; text-align: center; }
 .k-mitte::before {
   content: ""; position: absolute; left: 50%; top: 50%; width: 220%; aspect-ratio: 1; margin: -110% 0 0 -110%;
   width: 150cqmax; margin: -75cqmax 0 0 -75cqmax;
@@ -91,12 +83,6 @@ html.bereit.laden-halten .kacheln { transform: none; }
   gap: clamp(6px, 3cqh, 16px); padding: 14px;
 }
 .kacheln .laden-logo { width: 120px; width: min(72cqw, calc(100cqh - 140px)); flex: none; }
-.kacheln .laden-logo::before {
-  content: ""; position: absolute; inset: -22%; border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(39, 196, 232, 0.2), rgba(39, 196, 232, 0.05) 60%, transparent);
-  animation: k-atem 3.6s ease-in-out infinite alternate;
-}
-@keyframes k-atem { from { opacity: 0.45; transform: scale(0.94); } to { opacity: 1; transform: scale(1.04); } }
 .kacheln .laden-logo picture { position: relative; display: block; width: 100%; height: 100%; }
 .kacheln .laden-logo .laden-geist { position: absolute; inset: 0; opacity: 0.17; }
 .kacheln .laden-geist img { width: 100%; height: 100%; object-fit: contain; display: block; }
@@ -105,506 +91,469 @@ html.bereit.laden-halten .kacheln { transform: none; }
 .kacheln .laden-stand { font-size: 13px; gap: 4px 8px; flex-wrap: wrap; justify-content: center; }
 .kacheln .laden-prozent { min-width: 2.7em; }
 
-/* ── Eine Kachel (.seite): Szene und Wort. Hinaus fliegt sie nach außen (Richtung des Platzes) und kippt leicht, die neue fliegt
-   von unten herein und landet mit einem Schimmer am Rand. Animation ohne Verzögerung (eine transition-delay hielte den Hauptfaden
-   wach): die neue wartet in ihren ersten Bildern unsichtbar. Das Skript ändert nur Klassen an diesen zwei Kacheln. ── */
-.seite { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 4px; padding: 14px 16px 14px; opacity: 0; pointer-events: none; }
+/* ── Eine Kachel (.seite): oben ein Ausschnitt aus der App (.szene, randlos), darunter das Wort – gebaut wie die App selbst: Karte
+   oben, Blatt unten. Hinaus fliegt sie nach außen (Richtung des Platzes) und kippt leicht, die neue fliegt von unten herein.
+   Animation ohne Verzögerung (eine transition-delay hielte den Hauptfaden wach): die neue wartet in ihren ersten Bildern
+   unsichtbar. Das Skript ändert nur Klassen an diesen zwei Kacheln. ── */
+.seite { position: absolute; inset: 0; display: flex; flex-direction: column; opacity: 0; pointer-events: none; }
 .seite.an { opacity: 1; }
 .seite.rein { animation: s-rein 0.95s cubic-bezier(0.2, 0.8, 0.25, 1.06) both; }
-.seite.rein::after { animation: s-glanz 1.4s ease-out both; }
 .seite.raus { animation: s-raus 0.5s cubic-bezier(0.55, 0, 0.8, 0.4) both; }
-.seite.raus::after { animation: none; }
-@keyframes s-glanz { 0%, 30% { opacity: 0; } 52% { opacity: 0.9; } 100% { opacity: 0; } }
 @keyframes s-rein { 0%, 26% { opacity: 0; transform: translate3d(0, 34px, 0) scale(0.88) rotate(calc(var(--dr) * -1)); } 70% { opacity: 1; } 100% { opacity: 1; transform: none; } }
 @keyframes s-raus { from { opacity: 1; transform: none; } 40% { opacity: 0.9; } to { opacity: 0; transform: translate3d(calc(var(--dx) * 2.2), calc(var(--dy) * 2.2 - 18px), 0) scale(0.8) rotate(calc(var(--dr) * 2)); } }
 @keyframes s-ein-ruhig { 0%, 42% { opacity: 0; } 100% { opacity: 1; } }
 @keyframes s-aus-ruhig { from { opacity: 1; } to { opacity: 0; } }
-.wort { margin: 0; flex: none; min-width: 0; }
+.wort { margin: 0; flex: none; min-width: 0; padding: 10px 14px 12px; }
 .wort b { display: block; font-size: 17px; font-weight: 650; line-height: 1.2; letter-spacing: -0.012em; color: var(--licht); overflow-wrap: break-word; }
 .wort span { display: block; margin-top: 3px; font-size: 13.5px; line-height: 1.32; color: var(--nebel); }
+/* „Premium“ und „Neu“ stehen in der Titelzeile (die Szene reicht jetzt bis an den Rand) */
 .wort i {
-  position: absolute; top: 12px; right: 12px; font-style: normal; font-size: 11px; font-weight: 600; line-height: 1; letter-spacing: 0;
-  color: var(--cyan); border: 1px solid rgba(39, 196, 232, 0.5); border-radius: 999px; padding: 4px 8px; background: rgba(13, 15, 18, 0.6);
+  display: inline-block; margin-left: 4px; padding: 2px 7px; vertical-align: 2px; font-style: normal; font-size: 10.5px; font-weight: 600; line-height: 1.2; letter-spacing: 0;
+  color: var(--cyan); border: 1px solid rgba(39, 196, 232, 0.5); border-radius: 999px;
 }
-/* Seite mit „Premium“-Marke oben rechts: die Szene rückt darunter */
-.seite.pr .szene { margin-top: 18px; }
 .szene {
-  flex: 1 1 0; min-height: 0; min-width: 0; display: flex; align-items: center; justify-content: center; color: var(--licht);
+  position: relative; flex: 1 1 0; min-height: 0; min-width: 0; overflow: hidden; color: #fff; background: #1c1c1e;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
   container-type: size;   /* die Bühne füllt genau den Platz, den der Text übrig lässt */
 }
 /* Hohe Kachel: größere Schrift */
-@container (min-height: 250px) {
+@container (min-height: 330px) {
+  .wort { padding: 13px 18px 16px; }
   .wort b { font-size: 20px; }
   .wort span { font-size: 14.5px; }
-  .seite { padding: 18px 18px 18px; }
 }
 /* Schmale Kachel (Tablet hochkant): kleinere Schrift, damit der Titel in zwei Zeilen passt */
 @container (max-width: 199px) and (min-height: 160px) {
   .wort b { font-size: 15px; }
   .wort span { font-size: 12.5px; }
 }
+/* Schmale, nicht hohe Kachel (Vollbild, einzelne Plätze): die Szene bekommt mindestens die Hälfte, die Unterzeile höchstens zwei Zeilen */
+@container (max-width: 279px) and (min-height: 160px) and (max-height: 329px) {
+  .szene { min-height: 52%; }
+  .wort span { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+}
 /* Breite Kachel: Text links, Szene rechts */
 @container (min-aspect-ratio: 2/1) and (min-width: 330px) {
-  .seite { flex-direction: row-reverse; align-items: center; gap: 14px; padding: 14px 18px; }
-  .wort { flex: 1 1 0; }
+  .seite { flex-direction: row-reverse; align-items: stretch; }
+  .wort { flex: 1 1 0; align-self: center; padding: 14px 18px; }
   .wort b { font-size: 19px; }
-  .szene { align-self: stretch; }
+  .szene { flex: 1.15 1 0; border-bottom: 0; border-left: 1px solid rgba(255, 255, 255, 0.09); }
 }
-/* Niedrige Kachel (nicht breit): nur der Titel steht da, die Unterzeile bleibt für Screenreader; „Premium“ rückt in die Titelzeile */
+/* Niedrige Kachel (nicht breit): nur der Titel steht da, die Unterzeile bleibt für Screenreader */
 @container (max-height: 159px) and ((max-aspect-ratio: 2/1) or (max-width: 329px)) {
+  .wort { padding: 7px 12px 9px; }
   .wort span { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-  .wort i { position: static; display: inline-block; margin-left: 3px; padding: 2px 6px; font-size: 10px; vertical-align: 2px; background: none; }
-  .seite.pr .szene { margin-top: 0; }
 }
 /* Schmale Kachel (Tablet hochkant): ebenfalls nur der Titel, etwas kleiner */
 @container (max-width: 199px) and (min-height: 160px) and (max-height: 259px) {
   .wort span { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 }
 
-/* ── Mini-Szenen (Bühne 15 em × 7 em) ── */
-.b { position: relative; flex: none; width: 15em; height: 7em; font-size: 9px; font-size: clamp(4px, min(calc(100cqh / 7.3), calc(100cqw / 15.3)), 19px); }
-.b i { position: absolute; display: block; font-style: normal; }
-.b b { font-weight: 700; white-space: nowrap; }
-.b svg { position: absolute; overflow: visible; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.b .p { width: 1.1em; height: 1.1em; border-radius: 50%; background: #dfe3e8; }
-.b .c { background: var(--cyan); box-shadow: 0 0 0.8em rgba(39, 196, 232, 0.55); }
-@keyframes k-ring { 0% { transform: scale(1); opacity: 0.9; } 100% { transform: scale(2.8); opacity: 0; } }
-@keyframes k-balken { from { transform: scaleY(0.4); } to { transform: scaleY(1); } }
-@keyframes k-wipp { from { transform: translateY(-0.14em); } to { transform: translateY(0.2em); } }
-@keyframes k-wisch-a { 0%, 8% { transform: translateX(-100%); } 60%, 100% { transform: translateX(0); } }
-@keyframes k-wisch-b { 0%, 8% { transform: translateX(100%); } 60%, 100% { transform: translateX(0); } }
-@keyframes k-weg { 0%, 88% { opacity: 1; } 97%, 100% { opacity: 0; } }
+/* ── Die Szenen: Ausschnitte aus der App, nachgebaut in HTML/CSS (24.11.2026, Luka: „schöner bzw. realistischer“).
+   Farben, Rundungen und Schriftrollen aus dem App-Theme (src/theme: Akzent #2CB8E3, Fläche #1C1C1E, Nebentext 75 % Weiß,
+   Warnung #FF9F0A, Kategorien Tanken/Laden/Parken/Essen/Waschen); Texte im Wortlaut der App (src/utils/i18n.ts), Orte und
+   Namen erfunden. Die Bühne (.b) füllt die Szene; 1 em = ein Fünfzehntel der Breite (mindestens 15 em × 7 em sind zu sehen,
+   hohe Kacheln zeigen mehr Karte bzw. mehr Zeilen). Bewegung nur über transform/opacity. Ohne Animation (.ruhe, „Bewegung
+   reduzieren“) steht jede Szene als fertiges Bild da. Kein Schein, keine farbigen Schatten (docs/DESIGN.md). ── */
+.laden { --a: #2cb8e3; --fl: #1c1c1e; --t2: rgba(235, 235, 245, 0.75); --t3: rgba(235, 235, 245, 0.45); --ln: rgba(255, 255, 255, 0.12); --fu: rgba(120, 120, 128, 0.24); }
+.b { position: absolute; inset: 0; font-size: 9px; font-size: clamp(4px, min(calc(100cqh / 7), calc(100cqw / 15)), 19px); line-height: 1.22; font-variant-numeric: tabular-nums; }
+:where(.b) i { position: absolute; display: block; font-style: normal; }
+:where(.b) p { margin: 0; }
+:where(.b) b { font-weight: 700; }
+:where(.b) small { display: block; font-size: 0.8em; color: var(--t2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+:where(.b) svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+.b .ic { flex: none; width: 1.2em; height: 1.2em; }
+.b .o { color: #ff9f0a; }
+.lade-zeichen { position: absolute; width: 0; height: 0; }
 
-/* Convoy mit Funk: Punkte fahren die Route entlang (x gleichmäßig, y mit derselben Kurve wie der Pfad), einer funkt */
-.s-co .w { inset: 0; width: 100%; height: 100%; stroke: rgba(39, 196, 232, 0.36); stroke-width: 3; }
-.s-co .z { left: 0.4em; top: 5.6em; width: 14.2em; height: 0; }
-.s-co .p { left: -0.55em; top: -0.55em; }
-.s-co .z1 { transform: translateX(70%); } .s-co .z1 .p { transform: translateY(-3.25em); }
-.s-co .z2 { transform: translateX(58%); } .s-co .z2 .p { transform: translateY(-2.5em); }
-.s-co .z3 { transform: translateX(46%); } .s-co .z3 .p { transform: translateY(-1.73em); }
-.s-co .z4 { transform: translateX(34%); } .s-co .z4 .p { transform: translateY(-0.96em); }
-.s-co .c::after { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 0.14em solid var(--cyan); opacity: 0; }
-.an .s-co .z { animation: co-x 6.4s linear infinite; }
-.an .s-co .p { animation: co-y 6.4s cubic-bezier(0.42, 0, 0.58, 1) infinite; }
-.an .s-co .z1, .an .s-co .z1 .p { animation-delay: -1.95s; }
-.an .s-co .z2, .an .s-co .z2 .p { animation-delay: -1.3s; }
-.an .s-co .z3, .an .s-co .z3 .p { animation-delay: -0.65s; }
-.an .s-co .c::after { animation: k-ring 1.7s ease-out infinite; }
-@keyframes co-x { 0% { transform: translateX(0); opacity: 0; } 7% { opacity: 1; } 91% { opacity: 1; } 100% { transform: translateX(100%); opacity: 0; } }
-@keyframes co-y { from { transform: translateY(0); } to { transform: translateY(-4em); } }
+/* Karte (dunkler Kartenstil der App: Grund fast schwarz, Straßen grau), drei Ausschnitte */
+.szene.k { background-color: #0d0e10; background-repeat: no-repeat; }
+.k1 { background-image: linear-gradient(104deg, transparent 49%, #24262b 49% 51%, transparent 51%), linear-gradient(7deg, transparent 49.3%, #1c1e22 49.3% 50.7%, transparent 50.7%), linear-gradient(171deg, transparent 49.5%, #191a1e 49.5% 50.5%, transparent 50.5%), linear-gradient(#141518, #141518), linear-gradient(#131417, #131417);
+  background-size: 100% 100%, 100% 70%, 100% 80%, 26% 34%, 22% 26%; background-position: -40px 0, 0 10%, 0 110%, 8% 62%, 84% 20%; }
+.k2 { background-image: linear-gradient(77deg, transparent 49%, #24262b 49% 51%, transparent 51%), linear-gradient(-6deg, transparent 49.3%, #1c1e22 49.3% 50.7%, transparent 50.7%), linear-gradient(96deg, transparent 49.5%, #191a1e 49.5% 50.5%, transparent 50.5%), linear-gradient(#111a14, #111a14), linear-gradient(#141518, #141518);
+  background-size: 100% 100%, 100% 80%, 60% 100%, 24% 40%, 20% 24%; background-position: 50px 0, 0 80%, -30% 0, 90% 70%, 12% 18%; }
+.k3 { background-image: linear-gradient(8deg, transparent 48.8%, #24262b 48.8% 51.2%, transparent 51.2%), linear-gradient(94deg, transparent 49.4%, #1c1e22 49.4% 50.6%, transparent 50.6%), linear-gradient(-12deg, transparent 49.5%, #191a1e 49.5% 50.5%, transparent 50.5%), linear-gradient(#0f1a28, #0f1a28), linear-gradient(#141518, #141518);
+  background-size: 100% 100%, 70% 100%, 100% 60%, 30% 22%, 20% 30%; background-position: 0 -20px, 120% 0, 0 100%, 0 100%, 70% 16%; }
+/* Route (Logo-Cyan mit dunklem Rand wie in der App) und der eigene Punkt mit Blickkegel */
+.rt { left: 50%; top: -1em; bottom: 1.5em; width: 0.46em; margin-left: -0.23em; border-radius: 0.3em; background: var(--a); box-shadow: 0 0 0 0.1em rgba(0, 0, 0, 0.85); }
+.b .ro { position: absolute; left: 50%; bottom: 0; width: 15em; height: 22em; margin-left: -7.5em; }
+.ro path { stroke: var(--a); stroke-width: 4.6; }
+.ro .ca { stroke: rgba(0, 0, 0, 0.85); stroke-width: 6.6; }
+.pk { left: 50%; bottom: 0.8em; width: 1.4em; height: 1.4em; margin-left: -0.7em; box-sizing: border-box; border-radius: 50%; background: var(--a); border: 0.22em solid #fff; }
+.pk::before { content: ""; position: absolute; left: 50%; bottom: 84%; margin-left: -0.85em; border: 0.85em solid transparent; border-bottom: 0; border-top: 1.2em solid rgba(44, 184, 227, 0.28); }
+/* Flächen der App: Karte über der Karte (.cd), Hinweis mit Warn-Rand (.cd.wa), Blatt von unten (.bs) */
+.cd { background: rgba(28, 28, 30, 0.96); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 1em; }
+.cd.wa { border: 0.13em solid #ff9f0a; }
+.bs { left: 0; right: 0; bottom: 0; padding: 0.85em 0.9em 0.6em; background: var(--fl); border-radius: 1.1em 1.1em 0 0; }
+.bs::before { content: ""; position: absolute; left: 50%; top: 0.3em; width: 2.2em; height: 0.24em; margin-left: -1.1em; border-radius: 1em; background: rgba(235, 235, 245, 0.3); }
+.bs b { display: block; font-size: 1.3em; line-height: 1.15; white-space: nowrap; }
+/* Abbiegekarte: Pfeil, Entfernung, Straßenschild, Name */
+.nc { position: absolute; left: 0.6em; right: 0.6em; top: 0.6em; display: flex; align-items: center; gap: 0.55em; padding: 0.5em 0.7em 0.55em; }
+.b .mv { flex: none; width: 2.3em; height: 2.3em; stroke-width: 3; }
+.nc p { white-space: nowrap; }
+.nc .d { display: flex; align-items: center; gap: 0.3em; font-size: 1.7em; font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; }
+.sh { padding: 0.04em 0.36em; font-size: 0.5em; font-weight: 700; letter-spacing: 0; color: #fff; background: #1d5ba6; border: 0.13em solid #fff; border-radius: 0.42em; }
+.nc .n { font-size: 1.12em; font-weight: 700; }
+/* Tacho mit Ring und Tempolimit-Schild */
+.tc { width: 4.2em; height: 4.2em; border-radius: 50%; background: rgba(28, 28, 30, 0.96); text-align: center; }
+.tc::before { content: ""; position: absolute; inset: 0.1em; border-radius: 50%; border: 0.2em solid #fff; border-left-color: transparent; transform: rotate(-45deg); }
+.tc b { display: block; margin-top: 0.4em; font-size: 1.7em; line-height: 1; letter-spacing: -0.02em; }
+.tc small { font-weight: 600; overflow: visible; }
+.tc .r { color: #ff6961; }
+.b .ls { right: -1.15em; bottom: -0.95em; width: 2.5em; height: 2.5em; box-sizing: border-box; border-radius: 50%; background: #fff; border: 0.3em solid #d0021b; font-size: 0.8em; font-weight: 700; line-height: 1.9em; text-align: center; color: #101010; }
+/* Blitzer-Zeichen auf der Karte: Schild mit doppeltem Ring */
+.cm { width: 1.7em; height: 1.7em; box-sizing: border-box; border-radius: 50%; background: #fff; border: 0.2em solid #d0021b; box-shadow: 0 0 0 0.14em #fff, 0 0 0 0.34em #d0021b; font-size: 0.72em; font-weight: 600; line-height: 1.3em; text-align: center; color: #101010; }
+/* Listen: Zeile mit runder Kategorie-Kachel, Titel, Nebenzeile, Wert rechts */
+.li { position: absolute; inset: 0; display: flex; flex-direction: column; }
+.kp { display: flex; align-items: center; gap: 0.4em; padding: 0.65em 0.8em 0.25em; white-space: nowrap; }
+.kp .ti { flex: 1; font-size: 1.05em; font-weight: 700; }
+.zl { position: relative; display: flex; align-items: center; gap: 0.65em; padding: 0.5em 0.8em; }
+.zl + .zl::before { content: ""; position: absolute; left: 3.65em; right: 0; top: 0; border-top: 1px solid var(--ln); }
+.b .ik { position: relative; flex: none; display: grid; place-items: center; width: 2.2em; height: 2.2em; border-radius: 50%; color: #fff; background: #2c2c2e; }
+.ik.f { background: #0a84ff; } .ik.e { background: #178a3f; } .ik.pa { background: #5e5ce6; } .ik.fo { background: #c2410c; } .ik.ws { background: #0e7c86; }
+.tx { flex: 1; min-width: 0; }
+.tx p { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.re { flex: none; text-align: right; }
+/* Knöpfe, Auswahl-Pillen, Schalter, Profilbilder */
+.cp, .kn { display: inline-flex; align-items: center; gap: 0.3em; padding: 0.34em 0.75em; border-radius: 99em; background: var(--fu); font-size: 0.82em; font-weight: 600; white-space: nowrap; }
+.kn, .cp.an { background: var(--a); color: #001a22; }
+.kn.to { background: var(--fu); color: #fff; }
+.b .sw { position: relative; flex: none; width: 2.5em; height: 1.5em; border-radius: 1em; background: rgba(120, 120, 128, 0.32); }
+.sw::before { content: ""; position: absolute; inset: 0; border-radius: 1em; background: var(--a); opacity: 0; }
+.sw::after { content: ""; position: absolute; left: 0.14em; top: 0.14em; width: 1.22em; height: 1.22em; border-radius: 50%; background: #fff; }
+.sw.an::before { opacity: 1; }
+.sw.an::after { transform: translateX(1em); }
+.sw.t::before { animation: sw-a 7s ease infinite; }
+.sw.t::after { animation: sw-b 7s cubic-bezier(0.3, 0, 0.2, 1) infinite; }
+@keyframes sw-a { 0%, 36% { opacity: 0; } 42%, 94% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes sw-b { 0%, 36% { transform: none; } 42%, 94% { transform: translateX(1em); } 100% { transform: none; } }
+.av { position: relative; flex: none; display: inline-grid; place-items: center; width: 2em; height: 2em; border-radius: 50%; background: #2c2c2e; box-shadow: 0 0 0 0.09em rgba(255, 255, 255, 0.12); font-size: 0.9em; font-weight: 600; }
+.av.on::after { content: ""; position: absolute; right: -0.08em; bottom: -0.08em; width: 0.55em; height: 0.55em; border-radius: 50%; background: #30d158; border: 0.13em solid #1c1c1e; }
+.av.sp::before { content: ""; position: absolute; inset: -0.24em; border-radius: 50%; border: 0.19em solid var(--a); }
+.av .kr { position: absolute; right: -0.3em; bottom: -0.25em; width: 0.6em; height: 0.6em; padding: 0.12em; border-radius: 50%; background: #ffd60a; color: #101010; stroke-width: 2.6; }
+/* Zahlen, die weiterzählen (Entfernung, Zusagen …): ein Fenster, die Werte rollen durch */
+.zw { display: inline-block; height: 1.2em; line-height: 1.2; overflow: hidden; vertical-align: bottom; }
+.zs { display: block; }
+.zs em { display: block; font-style: normal; }
+.z3 { animation: z3 7.5s cubic-bezier(0.3, 0, 0.2, 1) infinite; }
+.z2 { animation: z2 7s cubic-bezier(0.3, 0, 0.2, 1) infinite; }
+@keyframes z3 { 0%, 26% { transform: none; } 32%, 59% { transform: translateY(-33.333%); } 65%, 94% { transform: translateY(-66.667%); } 100% { transform: none; } }
+@keyframes z2 { 0%, 36% { transform: none; } 42%, 94% { transform: translateY(-50%); } 100% { transform: none; } }
+/* Zwei Zustände übereinander (.x): der zweite löst den ersten ab; in Ruhe steht der erste */
+.x { display: inline-grid; }
+.x > * { grid-area: 1 / 1; }
+.x > :last-child { opacity: 0; animation: x-b 7s ease infinite; }
+.x > :first-child { animation: x-a 7s ease infinite; }
+@keyframes x-a { 0%, 38% { opacity: 1; } 44%, 94% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes x-b { 0%, 38% { opacity: 0; } 44%, 94% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes k-druck { 0%, 30%, 40%, 100% { transform: none; } 35% { transform: scale(0.92); } }
+@keyframes k-puls { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
 
-/* Funk-Wellen (auch in Stereo und Rufen): Bögen leuchten von innen nach außen auf */
-.b .r { left: 50%; top: 50%; border-radius: 50%; border: 0.16em solid transparent; border-left-color: var(--cyan); border-right-color: var(--cyan); }
-.b .r1 { width: 4.4em; height: 4.4em; margin: -2.2em 0 0 -2.2em; }
-.b .r2 { width: 5.8em; height: 5.8em; margin: -2.9em 0 0 -2.9em; opacity: 0.6; }
-.b .r3 { width: 7.2em; height: 7.2em; margin: -3.6em 0 0 -3.6em; opacity: 0.3; }
-.an .r { animation: fu 1.8s ease-in-out infinite; }
-.an .r2 { animation-delay: -1.58s; } .an .r3 { animation-delay: -1.36s; }
-@keyframes fu { 0%, 100% { opacity: 0.14; transform: scale(0.94); } 30% { opacity: 1; transform: scale(1); } 62% { opacity: 0.14; transform: scale(1); } }
-.s-fu .m { left: 6em; top: 2em; width: 3em; height: 3em; }
+/* Convoy mit Funk: Mitfahrer als Profilbilder an der Route, wer spricht, hat den Ring; unten das Convoy-Dock */
+.s-co .rt { bottom: 3.4em; }
+.s-co .pk { bottom: 3.5em; }
+.mk { display: grid; justify-items: center; gap: 0.1em; font-size: 0.8em; font-weight: 600; text-shadow: 0 0 0.2em #000, 0 0 0.2em #000; }
+.s-co .m1 { left: 22%; bottom: 3.5em; animation: co-f 5s ease-in-out infinite alternate; }
+.s-co .m2 { left: 66%; bottom: 7.4em; animation: co-f 6.2s ease-in-out -2s infinite alternate; }
+.s-co .m1 .av::before { animation: k-puls 1.1s ease-in-out infinite; }
+@keyframes co-f { from { transform: translateY(0.5em); } to { transform: translateY(-0.5em); } }
+.dk { left: 0.6em; right: 0.6em; bottom: 0.55em; height: 2.3em; display: flex; align-items: center; justify-content: space-between; padding: 0 0.9em; border-radius: 99em; background: rgba(28, 28, 30, 0.96); border: 1px solid rgba(255, 255, 255, 0.08); font-size: 0.9em; }
+.dk > span { display: flex; align-items: center; gap: 0.35em; font-size: 0.82em; font-weight: 600; }
+.dk .sl { position: relative; width: 2.6em; height: 0.3em; border-radius: 1em; background: linear-gradient(90deg, var(--a) 62%, rgba(255, 255, 255, 0.14) 62%); }
+.dk .sl::after { content: ""; position: absolute; left: 50%; top: 50%; width: 0.9em; height: 0.9em; margin-top: -0.45em; border-radius: 50%; background: #fff; }
+.b .mi { left: 50%; bottom: -0.2em; width: 2.7em; height: 2.7em; margin-left: -1.35em; display: grid; place-items: center; border-radius: 50%; background: var(--a); color: #001a22; box-shadow: 0 0 0 0.2em #0d0e10; }
+.mi .ic { width: 1.35em; height: 1.35em; }
 
-/* Stereo-Musik und Funk: Balken links und rechts, kommt eine Funk-Welle, ducken sie sich */
-.s-st .g { bottom: 1.6em; width: 4.6em; height: 4.7em; transform-origin: 50% 100%; }
-.s-st .gl { left: 0.3em; } .s-st .gr { right: 0.3em; }
-.s-st .g i { bottom: 0; width: 0.64em; border-radius: 0.32em; background: #e9ecf0; transform-origin: 50% 100%; }
-.s-st .g i:nth-child(1) { left: 0; height: 2.5em; } .s-st .g i:nth-child(2) { left: 1.3em; height: 4.3em; }
-.s-st .g i:nth-child(3) { left: 2.6em; height: 3.3em; } .s-st .g i:nth-child(4) { left: 3.9em; height: 4.7em; }
-.s-st .gr i:nth-child(1) { height: 4.5em; } .s-st .gr i:nth-child(2) { height: 3em; }
-.s-st .gr i:nth-child(3) { height: 4.7em; } .s-st .gr i:nth-child(4) { height: 2.7em; }
-.s-st .lr { bottom: 0; width: 4.6em; text-align: center; color: var(--nebel); }
-.s-st .lr b { font-size: 1em; font-weight: 600; }
-.s-st .fk { left: 5.5em; top: 0.9em; width: 4em; height: 4em; opacity: 0.25; }
-.s-st .fk .p { left: 1.5em; top: 1.5em; width: 1em; height: 1em; }
-.s-st .r1 { width: 2.6em; height: 2.6em; margin: -1.3em 0 0 -1.3em; }
-.s-st .r2 { width: 4em; height: 4em; margin: -2em 0 0 -2em; }
-.an .s-st .g { animation: st-duck 6s ease-in-out infinite; }
-.an .s-st .g i { animation: k-balken 0.62s ease-in-out infinite alternate; }
-.an .s-st .g i:nth-child(2) { animation-duration: 0.78s; animation-delay: -0.2s; }
-.an .s-st .g i:nth-child(3) { animation-duration: 0.54s; animation-delay: -0.35s; }
-.an .s-st .g i:nth-child(4) { animation-duration: 0.7s; animation-delay: -0.1s; }
-.an .s-st .gr i { animation-direction: alternate-reverse; }
-.an .s-st .fk { animation: st-fk 6s ease-in-out infinite; }
-@keyframes st-duck { 0%, 44% { transform: scaleY(1); opacity: 1; } 52%, 82% { transform: scaleY(0.34); opacity: 0.5; } 90%, 100% { transform: scaleY(1); opacity: 1; } }
-@keyframes st-fk { 0%, 44% { opacity: 0.22; } 52%, 82% { opacity: 1; } 90%, 100% { opacity: 0.22; } }
+/* Blitzer: das Schild kommt auf der Route näher, am Tacho zählt die Entfernung in Rot herunter */
+.s-bl .rt, .s-bl .pk { left: 34%; }
+.s-bl .cm { left: 34%; top: 50%; margin: -2.4em 0 0 -0.85em; animation: bl-k 7.5s linear infinite; }
+@keyframes bl-k { 0% { transform: translateY(-2.6em); } 94% { transform: translateY(1.5em); opacity: 1; } 100% { transform: translateY(1.5em); opacity: 0; } }
+.s-bl .tc { right: 1.5em; top: 50%; margin-top: -2.4em; }
 
-/* Blitzer: du fährst darauf zu, die Kamera meldet sich zweimal */
-.s-bl .k { left: 0.9em; top: 1.3em; width: 4.4em; height: 4.4em; }
-.s-bl .wr { left: 0.2em; top: 0.6em; width: 5.8em; height: 5.8em; border-radius: 50%; border: 0.17em solid var(--rot); opacity: 0.85; }
-.s-bl .ln { left: 6.6em; top: 3.43em; width: 8em; height: 0.14em; background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.3) 0 0.5em, transparent 0.5em 1em); }
-.s-bl .p { left: 13.4em; top: 2.95em; transform: translateX(-3em); }
-.an .s-bl .p { animation: bl-p 4.2s linear infinite; }
-.an .s-bl .wr { animation: bl-w 4.2s ease-out infinite; }
-@keyframes bl-p { 0% { transform: translateX(0); opacity: 0; } 8% { opacity: 1; } 80% { opacity: 1; } 92%, 100% { transform: translateX(-6.6em); opacity: 0; } }
-@keyframes bl-w { 0%, 26% { opacity: 0; transform: scale(0.82); } 32% { opacity: 1; transform: scale(1); } 45% { opacity: 0; transform: scale(1.2); } 52% { opacity: 0; transform: scale(0.82); } 58% { opacity: 1; transform: scale(1); } 71%, 100% { opacity: 0; transform: scale(1.2); } }
+/* Stereo-Musik und Funk: links die Musik auf zwei Kanälen, rechts wer gerade spricht – dann geht die Musik kurz herunter */
+.s-st .st { left: 0.9em; right: 6.2em; top: 50%; height: 3.4em; margin-top: -1.7em; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 0.5em 0.5em; font-size: 0.8em; font-weight: 600; color: var(--t2); }
+.s-st .pg { position: relative; height: 0.62em; overflow: hidden; border-radius: 0.2em; background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.14) 0 0.5em, transparent 0.5em 0.72em); }
+.s-st .pg::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, #fff 0 0.5em, transparent 0.5em 0.72em); transform-origin: 0 50%; transform: scaleX(0.86); animation: st-m 6s ease-in-out infinite; }
+.s-st .pg.r::after { transform: scaleX(0.74); animation-name: st-n; }
+@keyframes st-m { 0% { transform: scaleX(0.86); } 12% { transform: scaleX(0.7); } 24% { transform: scaleX(0.92); } 36% { transform: scaleX(0.78); } 46%, 80% { transform: scaleX(0.3); } 90% { transform: scaleX(0.8); } 100% { transform: scaleX(0.86); } }
+@keyframes st-n { 0% { transform: scaleX(0.74); } 12% { transform: scaleX(0.9); } 24% { transform: scaleX(0.66); } 36% { transform: scaleX(0.84); } 46%, 80% { transform: scaleX(0.26); } 90% { transform: scaleX(0.7); } 100% { transform: scaleX(0.74); } }
+.s-st .mk { right: 1.5em; top: 50%; margin-top: -1.9em; font-size: 0.85em; text-shadow: none; }
+.s-st .mk .av { width: 2.6em; height: 2.6em; margin-bottom: 0.25em; }
+.s-st .mk .av::before { animation: st-r 6s ease infinite; }
+@keyframes st-r { 0%, 40% { opacity: 0; } 46%, 80% { opacity: 1; } 86%, 100% { opacity: 0; } }
 
-/* Auto-Display: Tacho, Limit, Route und Convoy am Schirm */
-.s-au .sc { left: 2.3em; top: 0.3em; width: 10.4em; height: 5.7em; border: 0.15em solid rgba(242, 243, 245, 0.8); border-radius: 0.9em; }
-.s-au .sc::before { content: ""; position: absolute; left: 3.1em; top: 0; bottom: 0; width: 0.08em; background: rgba(255, 255, 255, 0.2); }
-.s-au .ta { left: 0.55em; top: 0.6em; width: 2em; height: 2em; border: 0.16em solid var(--licht); border-bottom-color: transparent; border-radius: 50%; }
-.s-au .li { left: 0.8em; top: 3.2em; width: 1.5em; height: 1.5em; border: 0.27em solid var(--rot); border-radius: 50%; background: #f2f3f5; }
-.s-au .rt { left: 3.6em; top: 0.5em; width: 6em; height: 4.4em; stroke: var(--cyan); stroke-width: 2.2; }
-.s-au .p { width: 0.62em; height: 0.62em; }
-.s-au .c { left: 6.55em; top: 2.05em; width: 0.9em; height: 0.9em; }
-.s-au .p2 { left: 5.2em; top: 3.5em; } .s-au .p3 { left: 8.1em; top: 1.35em; }
-.s-au .c::after { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 0.12em solid var(--cyan); opacity: 0; }
-.s-au .fs { left: 6.5em; top: 6.2em; width: 2em; height: 0.16em; border-radius: 0.1em; background: rgba(242, 243, 245, 0.55); }
-.an .s-au .c::after { animation: k-ring 1.9s ease-out infinite; }
-.an .s-au .p2, .an .s-au .p3 { animation: au-p 1.9s ease-in-out infinite alternate; }
-.an .s-au .p3 { animation-delay: -0.8s; }
-@keyframes au-p { from { transform: translate(-0.22em, 0.16em); } to { transform: translate(0.26em, -0.2em); } }
+/* Tanken, Parken, Essen: die Kategorien aus „Wohin?“, darunter die nächste Tankstelle mit Preis */
+.s-pr .ka { display: flex; justify-content: space-between; padding: 0.7em 1.1em 0.35em; text-align: center; font-size: 0.74em; font-weight: 600; }
+.s-pr .ka .ik { margin: 0 auto 0.25em; width: 2.6em; height: 2.6em; font-size: 1.1em; }
+.s-pr .ka span:first-child .ik { animation: k-druck 7s ease infinite; }
+.s-pr .re { animation: pr-p 7s ease infinite; }
+@keyframes pr-p { 0%, 36% { opacity: 0; transform: translateX(0.4em); } 44%, 100% { opacity: 1; transform: none; } }
 
-/* Tanken, Parken, Essen (k3, Luka 20.11.2026): keine Zahl mehr, nur „Preise live in FREQ“ – die drei Knöpfe leuchten reihum,
-   der Live-Punkt pulsiert, ein Glanz läuft über das Schild */
-.s-pr .ch { top: 0.3em; width: 2.8em; height: 2.8em; border-radius: 50%; border: 0.13em solid rgba(255, 255, 255, 0.28); }
-.s-pr .ch svg { left: 0.5em; top: 0.5em; width: 1.54em; height: 1.54em; }
-.s-pr .ch::before { content: ""; position: absolute; inset: -0.13em; border-radius: 50%; border: 0.13em solid var(--cyan); background: rgba(39, 196, 232, 0.16); box-shadow: 0 0 0.9em rgba(39, 196, 232, 0.35); opacity: 0; }
-.s-pr .on::before { opacity: 1; }
-.s-pr .on { left: 2.7em; } .s-pr .c2 { left: 6.1em; } .s-pr .c3 { left: 9.5em; }
-.s-pr .lv { left: 0.4em; top: 4.1em; width: 14.2em; height: 2.5em; border-radius: 1.25em; border: 0.13em solid rgba(39, 196, 232, 0.7); background: rgba(39, 196, 232, 0.1); overflow: hidden; display: flex; align-items: center; justify-content: center; }
-.s-pr .lv b { font-size: 1.08em; font-weight: 650; display: flex; align-items: center; gap: 0.45em; }
-.s-pr .lv b::before { content: ""; flex: none; width: 0.62em; height: 0.62em; border-radius: 50%; background: var(--gruen); box-shadow: 0 0 0.6em rgba(48, 209, 88, 0.7); }
-.s-pr .lv::after { content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 40%; background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.16), transparent); transform: translateX(-110%); }
-.an .s-pr .ch::before { animation: pr-an 4.8s ease-in-out infinite; }
-.an .s-pr .c2::before { animation-delay: -3.2s; } .an .s-pr .c3::before { animation-delay: -1.6s; }
-.an .s-pr .lv b::before { animation: pr-live 1.4s ease-in-out infinite alternate; }
-.an .s-pr .lv::after { animation: pr-glanz 3.2s ease-in-out infinite; }
-@keyframes pr-an { 0% { opacity: 0; } 6%, 30% { opacity: 1; } 38%, 100% { opacity: 0; } }
-@keyframes pr-live { from { opacity: 0.35; transform: scale(0.8); } to { opacity: 1; transform: scale(1.1); } }
-@keyframes pr-glanz { 0%, 30% { transform: translateX(-110%); } 75%, 100% { transform: translateX(260%); } }
+/* CarPlay und Android Auto: das Auto-Display mit Abbiegekarte, Route und Tacho */
+.s-au .dp { left: 0.8em; right: 0.8em; top: 50%; height: 5.8em; margin-top: -2.9em; overflow: hidden; border-radius: 0.8em; border: 0.14em solid #3a3a3c; background: #0d0e10 linear-gradient(98deg, transparent 49%, #24262b 49% 51%, transparent 51%) 2em 0 / 100% 100% no-repeat; }
+.s-au .lb { left: 0; top: 0; bottom: 0; width: 1.7em; display: flex; flex-direction: column; align-items: center; gap: 0.4em; padding-top: 0.35em; background: #2a2a2d; font-size: 0.8em; }
+.s-au .lb span { font-size: 0.55em; font-weight: 600; }
+.s-au .lb img { width: 1.3em; height: 1.3em; border-radius: 0.3em; background: #000; }
+.s-au .lb i { bottom: 0.4em; left: 50%; width: 0.9em; height: 0.9em; margin-left: -0.45em; background: radial-gradient(circle, #fff 34%, transparent 38%) 0 0 / 33.4% 33.4%; }
+.s-au .nc { left: 2em; right: auto; top: 0.5em; font-size: 0.78em; padding: 0.45em 0.7em 0.5em; border-radius: 0.8em; }
+.s-au .rt, .s-au .pk { left: 68%; }
+.s-au .pk { bottom: 0.7em; font-size: 0.85em; }
+.s-au .tc { right: 1.1em; top: 0.5em; font-size: 0.6em; }
 
-/* Grenze, Vignette, Umweltzone: Vignette passt, die Schranke geht auf */
-.s-gr .bo, .s-an .bo { left: 0.5em; top: 6.4em; width: 14em; height: 0.14em; background: rgba(255, 255, 255, 0.22); }
-.s-gr .po { left: 6.4em; top: 3.7em; width: 0.6em; height: 2.7em; border-radius: 0.2em; background: #dfe3e8; }
-.s-gr .ar { left: 6.7em; top: 3.95em; width: 5.4em; height: 0.52em; border-radius: 0.26em; background: repeating-linear-gradient(90deg, var(--rot) 0 0.9em, #f2f3f5 0.9em 1.8em); transform-origin: 0.15em 50%; transform: rotate(-52deg); }
-.s-gr .p { left: 0.8em; top: 5.25em; transform: translateX(9em); }
-.s-gr .vi { left: 1.1em; top: 0.9em; width: 2.5em; height: 2.5em; border-radius: 0.6em; border: 0.14em solid var(--cyan); color: var(--cyan); background: rgba(39, 196, 232, 0.1); }
-.s-gr .vi svg { left: 0.42em; top: 0.42em; width: 1.4em; height: 1.4em; stroke-width: 2.4; }
-.an .s-gr .p { animation: gr-p 5.4s ease-in-out infinite; }
-.an .s-gr .ar { animation: gr-a 5.4s ease-in-out infinite; }
-.an .s-gr .vi { animation: gr-v 5.4s ease-out infinite; }
-@keyframes gr-p { 0% { transform: translateX(0); opacity: 0; } 6% { opacity: 1; } 28%, 46% { transform: translateX(4.2em); opacity: 1; } 84% { transform: translateX(12.4em); opacity: 1; } 94%, 100% { transform: translateX(12.4em); opacity: 0; } }
-@keyframes gr-a { 0%, 30% { transform: rotate(0deg); } 44%, 86% { transform: rotate(-52deg); } 98%, 100% { transform: rotate(0deg); } }
-@keyframes gr-v { 0%, 22% { opacity: 0; transform: scale(0.6); } 30% { opacity: 1; transform: scale(1.1); } 35%, 86% { opacity: 1; transform: scale(1); } 96%, 100% { opacity: 0; transform: scale(0.9); } }
+/* Grenze, Vignette, Umweltzone: der Hinweis vor der Grenze, darunter die Vignette des Nachbarlands mit „Habe ich“ */
+.s-gr .cd { position: absolute; left: 0.6em; right: 0.6em; display: flex; align-items: center; gap: 0.45em; padding: 0.5em 0.6em; }
+.s-gr .wa { top: 0.6em; }
+.s-gr .wa .ic { width: 1.4em; height: 1.4em; }
+.s-gr .vg { top: 3.95em; }
+.s-gr .vg > small { flex: none; }
 
-/* Offline-Karten: die Karten-Kacheln eines Landes laden Spalte für Spalte */
-.s-of .dl { left: 0.5em; top: 1.8em; width: 3.4em; height: 3.4em; }
-.s-of .kg { width: 9.2em; height: 5.6em; background: repeating-linear-gradient(90deg, currentColor 0 2em, transparent 2em 2.4em); -webkit-mask: repeating-linear-gradient(180deg, #000 0 1.6em, transparent 1.6em 2em); mask: repeating-linear-gradient(180deg, #000 0 1.6em, transparent 1.6em 2em); }
-.s-of .kd { left: 5.3em; top: 0.7em; color: rgba(255, 255, 255, 0.13); }
-.s-of .wo { left: 5.3em; top: 0.7em; width: 9.2em; height: 5.6em; overflow: hidden; }
-.b .wi { inset: 0; overflow: hidden; }
-.s-of .kh { left: 0; top: 0; color: var(--cyan); }
-.an .s-of .dl { animation: k-wipp 1.1s ease-in-out infinite alternate; }
-.an .s-of .wi { animation: k-wisch-a 5.2s steps(4) infinite; }
-.an .s-of .kh { animation: k-wisch-b 5.2s steps(4) infinite; }
-.an .s-of .wo { animation: k-weg 5.2s linear infinite; }
+/* Offline-Karten: ein Land lädt, der Balken füllt sich, dann der Haken */
+.fl { position: relative; flex: none; width: 1.7em; height: 1.2em; border-radius: 0.2em; background: linear-gradient(#c8102e 33.3%, #fff 33.3% 66.6%, #c8102e 66.6%); }
+.fl.it { background: linear-gradient(90deg, #008c45 33.3%, #fff 33.3% 66.6%, #cd212a 66.6%); }
+.fl.de { background: linear-gradient(#000 33.3%, #dd0000 33.3% 66.6%, #ffce00 66.6%); }
+.s-of .zl + .zl::before { left: 3.15em; }
+.s-of .bk { position: relative; width: 3.4em; height: 0.3em; overflow: hidden; border-radius: 1em; background: rgba(255, 255, 255, 0.14); }
+.s-of .bk::after { content: ""; position: absolute; inset: 0; border-radius: 1em; background: var(--a); transform-origin: 0 50%; animation: of-b 7s linear infinite; }
+@keyframes of-b { 0% { transform: scaleX(0.04); } 40%, 100% { transform: scaleX(1); } }
+.s-of .ok { color: #30d158; width: 1.4em; height: 1.4em; stroke-width: 2.6; }
+.s-of .x { place-items: center end; }
 
-/* Car-Meets: Punkte kommen am Treffpunkt zusammen */
-.s-me .pn { left: 5.5em; top: 0.3em; width: 4em; height: 4em; color: var(--cyan); }
-.s-me .el { left: 6em; top: 3.5em; width: 3em; height: 1em; border-radius: 50%; border: 0.13em solid var(--cyan); opacity: 0.5; }
-.s-me .p { width: 0.9em; height: 0.9em; }
-.s-me .p1 { left: 4.2em; top: 5.2em; --x: -3.8em; --y: 0.3em; }
-.s-me .p2 { left: 7.1em; top: 5.7em; --x: 0em; --y: 1.5em; }
-.s-me .p3 { left: 10em; top: 5.1em; --x: 4.2em; --y: -0.6em; }
-.an .s-me .el { animation: k-ring 2s ease-out infinite; }
-.an .s-me .p { animation: me-p 5s ease-out infinite; }
-.an .s-me .p2 { animation-delay: -4.75s; } .an .s-me .p3 { animation-delay: -4.5s; }
-@keyframes me-p { 0% { opacity: 0; transform: translate(var(--x), var(--y)); } 12% { opacity: 1; } 55%, 84% { opacity: 1; transform: none; } 96%, 100% { opacity: 0; transform: none; } }
+/* Car-Meets: das Treffen auf der Karte, unten die Zeile aus der App – wie weit, wer hinfährt */
+.s-me .pn { left: 50%; top: 50%; width: 2em; height: 2em; margin: -3.2em 0 0 -1em; display: grid; place-items: center; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: #a21caf; box-shadow: 0 0 0 0.12em #fff; }
+.s-me .pn .ic { transform: rotate(45deg); width: 1.1em; height: 1.1em; }
+.s-me .dt { width: 0.7em; height: 0.7em; border-radius: 50%; background: var(--a); border: 0.14em solid #fff; }
+.s-me .d1 { left: 20%; top: 50%; margin-top: -1.2em; animation: me-a 7s ease-in-out infinite; }
+.s-me .d2 { left: 78%; top: 50%; margin-top: -2.6em; animation: me-b 7s ease-in-out infinite; }
+@keyframes me-a { 0% { transform: translate(-2em, 0.6em); } 80%, 100% { transform: translate(1.2em, -0.4em); } }
+@keyframes me-b { 0% { transform: translate(2em, -0.6em); } 80%, 100% { transform: translate(-1.2em, 0.2em); } }
+.s-me .bs { padding-top: 0.75em; }
+.s-me .bs p { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* Rufen per Stimme: du sagst den Namen */
-.s-ru .m { left: 0.5em; top: 2em; width: 3em; height: 3em; }
-.s-ru .v { top: 2.4em; width: 0.36em; height: 2.2em; border-radius: 0.2em; background: var(--cyan); }
-.s-ru .v1 { left: 4.2em; } .s-ru .v2 { left: 5em; } .s-ru .v3 { left: 5.8em; }
-.s-ru .bb { left: 7.2em; top: 1.7em; width: 7.5em; height: 3.5em; border-radius: 1.2em 1.2em 1.2em 0.25em; border: 0.14em solid var(--cyan); background: rgba(39, 196, 232, 0.1); display: flex; align-items: center; justify-content: center; transform-origin: 0 100%; }
-.s-ru .bb b { font-size: 1.55em; }
-.an .s-ru .v { animation: k-balken 0.5s ease-in-out infinite alternate; }
-.an .s-ru .v2 { animation-duration: 0.66s; } .an .s-ru .v3 { animation-duration: 0.42s; }
-.an .s-ru .bb { animation: ru 3.8s ease-out infinite; }
-@keyframes ru { 0%, 10% { opacity: 0; transform: scale(0.6); } 20% { opacity: 1; transform: scale(1.06); } 26%, 78% { opacity: 1; transform: scale(1); } 90%, 100% { opacity: 0; transform: scale(0.92); } }
+/* Gabelungen und „Dann …“: die Karte zeigt die Gabelung und darunter schon den Schritt danach */
+.s-gb .nc { display: block; padding: 0; }
+.s-gb .nc > div { display: flex; align-items: center; gap: 0.55em; padding: 0.45em 0.7em 0.4em; }
+.s-gb .nc > .da { gap: 0.5em; padding: 0.28em 0.7em 0.32em 1.2em; border-top: 1px solid var(--ln); font-size: 0.86em; color: var(--t2); }
+.s-gb .da .mv { width: 1.2em; height: 1.2em; margin-right: 0.55em; }
+.s-gb .ro .ab { stroke: #303237; stroke-width: 5; }
 
-/* Navi mit Stimme: der Pfeil und die Entfernung bis zum Abbiegen */
-.s-na .pf { left: 0.9em; top: 1em; width: 5em; height: 5em; color: var(--cyan); }
-.s-na .fe { left: 7.2em; top: 2.3em; width: 7.7em; height: 2.4em; overflow: hidden; }
-.s-na .st { transform: translateY(-66.667%); }
-.an .s-na .pf { animation: na-p 0.9s ease-in-out infinite alternate; }
-.an .s-na .st { animation: na 5.4s ease-in-out infinite; }
-@keyframes na-p { from { transform: translateX(-0.1em); } to { transform: translateX(0.32em); } }
-@keyframes na { 0%, 22% { transform: translateY(0); } 33%, 55% { transform: translateY(-33.333%); } 66%, 92% { transform: translateY(-66.667%); } 100% { transform: translateY(0); } }
+/* Vignetten-Wächter: vor der Auffahrt sagt die Karte, was geradeaus kommt – und dass es dort eine Vignette braucht */
+.s-vw .ab { left: -1em; right: -1em; top: 50%; height: 1em; margin-top: 0.4em; background: #666460; box-shadow: 0 0 0 0.12em #1f1e1c; transform: rotate(-7deg); }
+.s-vw .ab::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 0.08em dashed rgba(255, 255, 255, 0.4); }
+.s-vw .rt { left: 68%; top: 50%; margin-top: 0.6em; }
+.s-vw .pk { left: 68%; bottom: 0.4em; animation: vw-p 7s ease-in-out infinite; }
+@keyframes vw-p { 0% { transform: translateY(0.5em); } 90%, 100% { transform: translateY(-0.2em); } }
+.s-vw .cd { position: absolute; left: 0.6em; top: 0.6em; padding: 0.5em 0.9em 0.75em 0.75em; white-space: nowrap; }
+.s-vw .cd p { font-size: 1.12em; font-weight: 700; }
+.s-vw .cd small { font-size: 0.86em; }
+.s-vw .cd i { left: 0.75em; right: 0.75em; bottom: 0.4em; height: 0.2em; border-radius: 1em; background: rgba(255, 255, 255, 0.14); overflow: hidden; }
+.s-vw .cd i::after { content: ""; position: absolute; inset: 0; background: #0a84ff; transform-origin: 0 50%; transform: scaleX(0.4); animation: vw-b 7s linear infinite; }
+@keyframes vw-b { from { transform: scaleX(1); } 90%, to { transform: scaleX(0); } }
 
-/* Tempolimit am Tacho: das nächste Limit löst das alte ab */
-.s-te .ga { left: 1em; top: 0.9em; width: 5.2em; height: 5.2em; }
-.s-te .sg { left: 8.6em; top: 1.2em; width: 4.6em; height: 4.6em; border-radius: 50%; background: #f2f3f5; border: 0.56em solid var(--rot); display: flex; align-items: center; justify-content: center; }
-.s-te .sg b { font-size: 1.45em; font-weight: 800; color: #0b0d0f; letter-spacing: -0.05em; }
-.s-te .s2 b { font-size: 1.9em; }
-.s-te .s1 { opacity: 0; }
-.an .s-te .s1 { animation: te1 4.6s ease-in-out infinite; }
-.an .s-te .s2 { animation: te2 4.6s ease-in-out infinite; }
-@keyframes te1 { 0%, 34% { opacity: 1; transform: scale(1); } 44%, 90% { opacity: 0; transform: scale(0.7); } 100% { opacity: 1; transform: scale(1); } }
-@keyframes te2 { 0%, 34% { opacity: 0; transform: scale(1.3); } 44%, 90% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.3); } }
+/* Was fährst du? Auto oder Motorrad und die Farbe – die Wahl springt hin und her */
+.szene.sw0 { background: #000; }
+.s-ew .kp { padding-top: 0.75em; }
+.s-ew .wl { display: flex; gap: 0.5em; padding: 0.3em 0.8em 0; }
+.s-ew .wl span { position: relative; flex: 1; display: flex; align-items: center; gap: 0.45em; padding: 0.55em 0.6em; border-radius: 0.8em; background: var(--fl); font-size: 0.85em; font-weight: 600; }
+.s-ew .wl .ic { width: 1.5em; height: 1.5em; }
+.s-ew .wl span::after { content: ""; position: absolute; inset: 0; border-radius: 0.8em; border: 0.15em solid var(--a); background: rgba(44, 184, 227, 0.16); }
+.s-ew .wl span:first-child::after { animation: x-a 7s ease infinite; }
+.s-ew .wl span:last-child::after { opacity: 0; animation: x-b 7s ease infinite; }
+.s-ew .fa { display: flex; gap: 0.75em; padding: 0.7em 1em 0; }
+.s-ew .fa span { position: relative; width: 1.25em; height: 1.25em; border-radius: 50%; }
+.s-ew .fa span::after { content: ""; position: absolute; inset: -0.28em; border-radius: 50%; border: 0.14em solid #fff; opacity: 0; }
+.s-ew .fa span:first-child::after { opacity: 1; animation: x-a 7s ease infinite; }
+.s-ew .fa span:nth-child(3)::after { animation: x-b 7s ease infinite; }
 
-/* Abschnittskontrolle: zwischen zwei Messpunkten fährt dein Schnitt mit */
-.s-ab .ln { left: 1.6em; top: 5em; width: 11.8em; height: 0.14em; background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.3) 0 0.5em, transparent 0.5em 1em); }
-.s-ab .ps { top: 2.5em; width: 0.5em; height: 3em; border-radius: 0.2em; background: #dfe3e8; }
-.s-ab .ps::before { content: ""; position: absolute; left: -0.45em; top: -0.3em; width: 1.4em; height: 0.8em; border-radius: 0.25em; background: #dfe3e8; }
-.s-ab .a1 { left: 0.9em; } .s-ab .a2 { left: 13.6em; }
-.s-ab .mv { left: 2.4em; top: 0; width: 0; height: 0; transform: translateX(5em); }
-.s-ab .mv .p { left: 0; top: 4.45em; }
-.s-ab .pl { left: -1.65em; top: 1.6em; width: 4.4em; height: 1.9em; border-radius: 1em; border: 0.13em solid var(--cyan); background: rgba(39, 196, 232, 0.12); display: flex; align-items: center; justify-content: center; }
-.s-ab .pl b { font-size: 1.05em; }
-.an .s-ab .mv { animation: ab 4.8s linear infinite; }
-@keyframes ab { 0% { transform: translateX(0); opacity: 0; } 8% { opacity: 1; } 88% { opacity: 1; } 100% { transform: translateX(9.2em); opacity: 0; } }
+/* Funk ohne Taste: das Mikro ist an, wer spricht, bekommt den Ring */
+.s-fu .mr { left: 0; right: 0; top: 50%; margin-top: -2.9em; display: flex; justify-content: center; gap: 0.75em; }
+.s-fu .mr .av { width: 2.3em; height: 2.3em; }
+.s-fu .mr .av::before { opacity: 0; animation: fu-r 6s ease infinite; }
+.s-fu .mr .av:nth-child(3)::before { animation-delay: -4s; }
+.s-fu .mr .av:nth-child(1)::before { animation-delay: -2s; }
+.s-fu .mr .av:nth-child(2)::before { opacity: 1; }
+@keyframes fu-r { 0%, 4% { opacity: 0; } 8%, 30% { opacity: 1; } 34%, 100% { opacity: 0; } }
+.s-fu .dk { justify-content: center; height: 2.5em; }
+.s-fu .mi { position: relative; left: auto; bottom: auto; margin: 0 0.5em 0 0; width: 2em; height: 2em; box-shadow: none; }
+.s-fu .mi .ic { width: 1.1em; height: 1.1em; }
 
-/* Ladesäulen: belegt wird frei */
-.s-la .zp { left: 1.2em; top: 1.3em; width: 4.4em; height: 4.4em; color: var(--cyan); }
-.s-la .pl { left: 6.5em; top: 2.3em; width: 8.3em; height: 2.4em; border-radius: 1.2em; border: 0.13em solid rgba(255, 255, 255, 0.3); display: flex; align-items: center; gap: 0.55em; padding-left: 0.8em; box-sizing: border-box; }
-.s-la .pl::before { content: ""; flex: none; width: 0.72em; height: 0.72em; border-radius: 50%; background: #7d848c; }
-.s-la .pl b { font-size: 1.05em; font-weight: 650; }
-.s-la .fr { border-color: rgba(48, 209, 88, 0.65); } .s-la .fr::before { background: var(--gruen); }
-.s-la .be { opacity: 0; }
-.an .s-la .be { animation: la1 4.4s ease-in-out infinite; }
-.an .s-la .fr { animation: la2 4.4s ease-in-out infinite; }
-.an .s-la .zp { animation: la-z 1.1s ease-in-out infinite alternate; }
-@keyframes la1 { 0%, 40% { opacity: 1; transform: none; } 50%, 90% { opacity: 0; transform: translateY(-0.5em); } 100% { opacity: 1; transform: none; } }
-@keyframes la2 { 0%, 40% { opacity: 0; transform: translateY(0.5em); } 50%, 90% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateY(0.5em); } }
-@keyframes la-z { from { opacity: 0.55; } to { opacity: 1; } }
+/* Tempolimit am Tacho: die Vorschau nennt das nächste Limit, dann wechselt das Schild */
+.s-te .rt, .s-te .pk { left: 26%; }
+.s-te .tc { left: 50%; top: 50%; margin: -2.9em 0 0 -0.4em; font-size: 1.15em; }
+.s-te .tc b { font-size: 1.45em; margin-top: 0.55em; }
+.s-te .ls { display: grid; line-height: 1.9em; }
+.s-te .ls span { grid-area: 1 / 1; }
+.s-te .ls span:first-child { animation: te-a 8s ease infinite; }
+.s-te .ls span:last-child { opacity: 0; animation: te-b 8s ease infinite; }
+.s-te .vs { left: 50%; top: 50%; margin: 2.35em 0 0 -1.6em; width: 7.4em; text-align: center; font-size: 0.86em; font-weight: 600; white-space: nowrap; text-shadow: 0 0 0.25em #000, 0 0 0.25em #000; animation: te-a 8s ease infinite; }
+@keyframes te-a { 0%, 62% { opacity: 1; } 68%, 94% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes te-b { 0%, 62% { opacity: 0; } 68%, 94% { opacity: 1; } 100% { opacity: 0; } }
 
-/* Pause-Vorschlag: Dampf über der Tasse */
-.s-pa .cu { left: 5.2em; top: 1.7em; width: 5em; height: 5em; }
-.s-pa .d { top: 2em; width: 0.17em; height: 1.1em; border-radius: 0.1em; background: var(--cyan); opacity: 0.7; }
-.s-pa .d1 { left: 6.35em; } .s-pa .d2 { left: 7.2em; } .s-pa .d3 { left: 8.05em; }
-.an .s-pa .d { animation: pa 2.2s ease-out infinite; }
-.an .s-pa .d2 { animation-delay: -1.65s; } .an .s-pa .d3 { animation-delay: -1.1s; }
-@keyframes pa { 0% { opacity: 0; transform: translateY(0.5em); } 30% { opacity: 0.9; } 100% { opacity: 0; transform: translateY(-1.2em); } }
+/* Navi mit Stimme: Abbiegekarte mit Spurpfeilen, die Entfernung zählt herunter */
+.s-na .nc { flex-wrap: wrap; row-gap: 0.1em; }
+.s-na .sp { flex: 0 0 100%; display: flex; justify-content: center; align-items: center; gap: 0.25em; color: #fff; }
+.s-na .sp .mv { width: 1.45em; height: 1.45em; }
+.s-na .sp .mv:nth-child(-n+2) { color: var(--t3); }
+.s-na .sp .mv + .mv { margin-left: 0.25em; padding-left: 0.25em; border-left: 1px solid var(--ln); }
+.s-na .ro { height: 6em; }
 
-/* Stau und Sperren: ein Stück der Route färbt sich */
-.s-sa .ro { left: 0.6em; top: 4.2em; width: 13.8em; height: 0.56em; border-radius: 0.3em; background: rgba(39, 196, 232, 0.55); }
-.s-sa .rs { left: 6em; top: 4.2em; width: 5.2em; height: 0.56em; border-radius: 0.3em; background: var(--rot); transform-origin: 0 50%; }
-.s-sa .wa { left: 7.2em; top: 0.6em; width: 2.8em; height: 2.8em; }
-.s-sa .p { left: 1.4em; top: 3.93em; transform: translateX(2.6em); }
-.an .s-sa .rs { animation: sa 5s ease-in-out infinite; }
-.an .s-sa .wa { animation: sa-w 5s ease-out infinite; }
-.an .s-sa .p { animation: sa-p 5s linear infinite; }
-@keyframes sa { 0%, 12% { transform: scaleX(0); opacity: 1; } 40%, 84% { transform: scaleX(1); opacity: 1; } 96%, 100% { transform: scaleX(1); opacity: 0; } }
-@keyframes sa-w { 0%, 34% { opacity: 0; transform: translateY(0.4em) scale(0.7); } 44%, 84% { opacity: 1; transform: none; } 96%, 100% { opacity: 0; transform: none; } }
-@keyframes sa-p { 0% { transform: translateX(0); opacity: 0; } 8% { opacity: 1; } 84% { transform: translateX(3em); opacity: 1; } 96%, 100% { transform: translateX(3em); opacity: 0; } }
+/* Ausfahrten planen: die Reihe „Ausfahrten“ aus „Wohin?“ – Termin, Treffpunkt, Zusagen */
+.s-af .af { margin: 0.25em 0.8em 0; padding: 0.6em 0.75em; border-radius: 0.9em; background: #2c2c2e; }
+.s-af .af p { font-weight: 600; }
+.s-af .zu { display: flex; align-items: center; gap: 0.5em; margin-top: 0.45em; font-size: 0.82em; font-weight: 600; }
+.s-af .zu .av { font-size: 0.82em; margin-right: -0.75em; box-shadow: 0 0 0 0.14em #2c2c2e; }
+.s-af .zu .av:nth-of-type(3) { margin-right: 0.2em; }
+.s-af .zu .av:nth-of-type(2) { animation: af-z 7.5s ease infinite; }
+.s-af .zu .av:nth-of-type(3) { animation: af-z 7.5s ease -5s infinite; }
+@keyframes af-z { 0%, 28% { opacity: 0; transform: scale(0.6); } 34%, 96% { opacity: 1; transform: none; } 100% { opacity: 0; } }
 
-/* Melden mit einem Tipp */
-.s-ml .bt, .s-ml .rp { left: 5.4em; top: 2.4em; width: 4.2em; height: 4.2em; border-radius: 50%; border: 0.14em solid var(--cyan); box-sizing: border-box; }
-.s-ml .bt { background: rgba(39, 196, 232, 0.14); color: var(--cyan); }
-.s-ml .bt svg { left: 0.85em; top: 0.85em; width: 2.2em; height: 2.2em; }
-.s-ml .rp { opacity: 0; }
-.s-ml .mk { left: 9.5em; top: 0.3em; width: 2.3em; height: 2.3em; border-radius: 50% 50% 50% 0.3em; background: var(--rot); display: flex; align-items: center; justify-content: center; }
-.s-ml .mk b { font-size: 1.5em; font-weight: 800; color: #fff; }
-.an .s-ml .bt { animation: ml-b 3.6s ease-out infinite; }
-.an .s-ml .rp { animation: ml-r 3.6s ease-out infinite; }
-.an .s-ml .mk { animation: ml-m 3.6s ease-out infinite; }
-@keyframes ml-b { 0%, 8% { transform: scale(1); } 13% { transform: scale(0.9); } 20%, 100% { transform: scale(1); } }
-@keyframes ml-r { 0%, 12% { opacity: 0; transform: scale(1); } 16% { opacity: 0.9; transform: scale(1); } 46%, 100% { opacity: 0; transform: scale(1.9); } }
-@keyframes ml-m { 0%, 30% { opacity: 0; transform: translateY(0.8em) scale(0.5); } 42% { opacity: 1; transform: translateY(0) scale(1.1); } 48%, 84% { opacity: 1; transform: none; } 96%, 100% { opacity: 0; transform: none; } }
+/* Motorrad-Modus: die Schräglage klein am Tacho, die Knöpfe groß genug für Handschuhe */
+.s-mo .rt, .s-mo .pk { left: 16%; }
+.s-mo .tc { left: 50%; top: 50%; margin: -2.5em 0 0 -3.6em; font-size: 1.1em; }
+.s-mo .tc small { display: flex; justify-content: center; align-items: center; gap: 0.3em; }
+.s-mo .nl { position: relative; width: 0.16em; height: 0.8em; border-radius: 1em; background: #fff; transform-origin: 50% 100%; transform: rotate(32deg); animation: mo-n 7.5s cubic-bezier(0.3, 0, 0.2, 1) infinite; }
+@keyframes mo-n { 0%, 26% { transform: rotate(32deg); } 32%, 59% { transform: rotate(-18deg); } 65%, 94% { transform: rotate(8deg); } 100% { transform: rotate(32deg); } }
+.s-mo .gk { right: 0.9em; top: 50%; width: 3.3em; height: 3.3em; display: grid; place-items: center; border-radius: 50%; background: rgba(28, 28, 30, 0.96); border: 1px solid rgba(255, 255, 255, 0.08); }
+.s-mo .gk .ic { width: 1.6em; height: 1.6em; }
+.s-mo .g1 { margin-top: -3.4em; right: 2.6em; }
+.s-mo .g2 { margin-top: -0.6em; background: #ff453a; border-color: transparent; }
 
-/* Am Sperrbildschirm: die Abbiegung kommt als Karte herein */
-.s-sp .ph { left: 5.4em; top: 0.1em; width: 4.2em; height: 6.8em; border: 0.15em solid rgba(242, 243, 245, 0.8); border-radius: 0.9em; overflow: hidden; box-sizing: border-box; }
-.s-sp .is { left: 1.35em; top: 0.35em; width: 1.2em; height: 0.36em; border-radius: 0.2em; background: #f2f3f5; }
-.s-sp .nc { left: 0.3em; top: 1.2em; width: 3.3em; height: 1.7em; border-radius: 0.45em; background: rgba(39, 196, 232, 0.2); border: 0.1em solid var(--cyan); box-sizing: border-box; }
-.s-sp .nc::before { content: ""; position: absolute; left: 0.3em; top: 0.5em; width: 0.5em; height: 0.5em; border-top: 0.17em solid var(--cyan); border-right: 0.17em solid var(--cyan); }
-.s-sp .nc::after { content: ""; position: absolute; left: 1.35em; top: 0.45em; width: 1.4em; height: 0.17em; border-radius: 0.1em; background: #f2f3f5; box-shadow: 0 0.42em 0 rgba(242, 243, 245, 0.5); }
-.s-sp .n2 { left: 0.3em; top: 3.2em; width: 3.3em; height: 1.2em; border-radius: 0.4em; background: rgba(255, 255, 255, 0.1); }
-.an .s-sp .nc { animation: sp 4.4s ease-out infinite; }
-@keyframes sp { 0%, 12% { opacity: 0; transform: translateY(-1em); } 24%, 80% { opacity: 1; transform: none; } 92%, 100% { opacity: 0; transform: none; } }
+/* Ladesäulen: wie viele Punkte frei sind, mit Leistung und Preis */
+.s-la .tx small b { color: #30d158; font-weight: 600; }
+.s-la .zl { padding-right: 0.5em; }
 
-/* Karte in 3D: drei Ebenen */
-.s-3d .l { left: 4.9em; width: 5.2em; height: 5.2em; }
-.s-3d .l i { inset: 0; border: 0.15em solid rgba(242, 243, 245, 0.45); border-radius: 0.5em; background: rgba(255, 255, 255, 0.05); transform: scaleY(0.5) rotate(45deg); }
-.s-3d .l1 { top: -0.5em; } .s-3d .l2 { top: 0.6em; } .s-3d .l3 { top: 1.7em; }
-.s-3d .l1 i { border-color: var(--cyan); background: rgba(39, 196, 232, 0.16); }
-.an .s-3d .l1 { animation: d3-a 1.9s ease-in-out infinite alternate; }
-.an .s-3d .l3 { animation: d3-b 1.9s ease-in-out infinite alternate; }
-@keyframes d3-a { from { transform: translateY(0.1em); } to { transform: translateY(-0.55em); } }
-@keyframes d3-b { from { transform: translateY(-0.1em); } to { transform: translateY(0.55em); } }
+/* Am Sperrbildschirm: die Abbiegung als Karte unter der Uhr */
+.s-sp .uh { left: 0; right: 0; top: 0.22em; text-align: center; font-size: 2.2em; font-weight: 600; line-height: 1; letter-spacing: -0.02em; color: rgba(255, 255, 255, 0.9); }
+.s-sp .cd { position: absolute; left: 0.6em; right: 0.6em; bottom: 0.6em; display: flex; align-items: center; gap: 0.5em; padding: 0.55em 0.75em; border-radius: 1.2em; }
+.s-sp .cd img { position: absolute; right: 0.6em; top: 0.5em; width: 1.2em; height: 1.2em; border-radius: 0.3em; }
+.s-sp .cd .mv { width: 2em; height: 2em; }
+.s-sp .cd p { font-size: 1.35em; font-weight: 700; line-height: 1.1; white-space: nowrap; }
+.s-sp .cd .re { margin: 0.9em 0 0 auto; }
+.s-sp .cd .re b { font-size: 0.95em; }
 
-/* Ohne Werbung */
-.s-we .sh, .s-we .ck { left: 5em; top: 0.9em; width: 5em; height: 5em; }
-.s-we .ck { color: var(--cyan); stroke-width: 2.3; }
-.s-we .rg { left: 4.6em; top: 0.5em; width: 5.8em; height: 5.8em; border-radius: 50%; border: 0.13em solid var(--cyan); opacity: 0; box-sizing: border-box; }
-.an .s-we .ck { animation: we 3.8s ease-out infinite; }
-.an .s-we .rg { animation: we-r 3.8s ease-out infinite; }
-@keyframes we { 0%, 12% { opacity: 0; transform: scale(0.4); } 24% { opacity: 1; transform: scale(1.16); } 30%, 88% { opacity: 1; transform: scale(1); } 98%, 100% { opacity: 0; transform: scale(1); } }
-@keyframes we-r { 0%, 20% { opacity: 0; transform: scale(0.9); } 28% { opacity: 0.7; transform: scale(1); } 56%, 100% { opacity: 0; transform: scale(1.3); } }
+/* Stau und Sperren: die Meldung mit Verzug und Quelle, „Umfahren“ sucht den schnelleren Weg */
+.s-sa .rt::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 60%; border-radius: 0.3em; background: #ff9f0a; }
+.s-sa .rt, .s-sa .pk { left: 91%; }
+.hk { position: absolute; left: 0.6em; top: 0.6em; min-width: 10.4em; max-width: 12.6em; box-sizing: border-box; padding: 0.5em 0.7em 0.6em; }
+.hk p { display: flex; align-items: center; gap: 0.4em; font-size: 0.95em; font-weight: 600; white-space: nowrap; }
+.hk small { margin-top: 0.15em; }
+.hk div { display: flex; justify-content: flex-end; gap: 0.4em; margin-top: 0.45em; }
+.hk .kn:last-child { animation: k-druck 7s ease infinite; }
 
-/* Zuhause-Zone: in der Zone verschwindet der Punkt */
-.s-zu .zn { left: 1.9em; top: 0.4em; width: 6.2em; height: 6.2em; border-radius: 50%; border: 0.13em dashed rgba(39, 196, 232, 0.75); box-sizing: border-box; }
-.s-zu .hs { left: 3.6em; top: 2em; width: 2.8em; height: 2.8em; }
-.s-zu .p { left: 13.2em; top: 2.95em; transform: translateX(-3em); }
-.an .s-zu .zn { animation: k-dreh 26s linear infinite; }
-.an .s-zu .p { animation: zu 4.6s ease-in-out infinite; }
-@keyframes zu { 0% { transform: translateX(0); opacity: 0; } 8% { opacity: 1; } 50% { transform: translateX(-4.6em); opacity: 1; } 64%, 100% { transform: translateX(-6.4em); opacity: 0; } }
+/* Ohne Werbung: die Schalter unter „Datenschutz“ – was geteilt wird, entscheidest du */
+.s-we .zl { justify-content: space-between; padding: 0.62em 0.9em; }
+.s-we .zl + .zl::before { left: 0.9em; }
 
-/* Große Convoys: bis 15 Autos, eins nach dem anderen */
-.s-gs .dt { width: 15em; height: 0.8em; background: radial-gradient(circle, currentColor 0 0.35em, transparent 0.39em) 0 0 / 1em 0.8em; }
-.s-gs .dd { left: 0; top: 3.6em; color: rgba(255, 255, 255, 0.15); }
-.s-gs .wo { left: 0; top: 3.6em; width: 15em; height: 0.8em; overflow: hidden; }
-.s-gs .dh { left: 0; top: 0; color: #e9ecf0; }
-.s-gs .p { left: 0.12em; top: 3.62em; width: 0.76em; height: 0.76em; }
-.s-gs .kr { left: -0.3em; top: 1.7em; width: 1.6em; height: 1.6em; color: var(--cyan); }
-.an .s-gs .wi { animation: k-wisch-a 6s steps(15) infinite; }
-.an .s-gs .dh { animation: k-wisch-b 6s steps(15) infinite; }
-.an .s-gs .wo { animation: k-weg 6s linear infinite; }
+/* Große Convoys: das Convoy-Blatt füllt sich bis 15 */
+.s-gs .kp { display: block; padding-bottom: 0.45em; }
+.s-gs .kp .zw { height: 1.22em; }
+.s-gs .gr { display: flex; flex-wrap: wrap; gap: 0.42em 0.36em; padding: 0 0.8em; }
+.s-gs .gr .av { width: 1.9em; height: 1.9em; font-size: 0.72em; }
+.s-gs .gr .av:nth-child(n+14) { animation: gs-a 7.5s ease infinite; }
+.s-gs .gr .av:nth-child(15) { animation-delay: 2.4s; animation-name: gs-b; }
+@keyframes gs-a { 0%, 28% { opacity: 0; } 34%, 96% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes gs-b { 0%, 28% { opacity: 0; } 34%, 64% { opacity: 1; } 68%, 100% { opacity: 0; } }
 
-/* Gemeinsam ankommen */
-.s-an .bo { top: 5.9em; }
-.s-an .fl { left: 11.2em; top: 2.7em; width: 3.6em; height: 3.6em; color: var(--cyan); }
-.s-an .p { top: 4.75em; }
-.s-an .p1 { left: 9.6em; --x: -8.6em; } .s-an .p2 { left: 8.2em; --x: -7.6em; } .s-an .p3 { left: 6.8em; --x: -6.4em; }
-.s-an .pl { left: 0.4em; top: 0.5em; width: 5.8em; height: 2em; border-radius: 1em; border: 0.13em solid var(--cyan); background: rgba(39, 196, 232, 0.12); display: flex; align-items: center; justify-content: center; box-sizing: border-box; transform-origin: 0 50%; }
-.s-an .pl b { font-size: 1.1em; font-variant-numeric: tabular-nums; }
-.an .s-an .p { animation: an-p 5s ease-out infinite; }
-.an .s-an .pl { animation: an-l 5s ease-out infinite; }
-@keyframes an-p { 0% { opacity: 0; transform: translateX(var(--x)); } 10% { opacity: 1; } 58%, 86% { opacity: 1; transform: none; } 96%, 100% { opacity: 0; transform: none; } }
-@keyframes an-l { 0%, 54% { opacity: 0; transform: scale(0.7); } 62%, 86% { opacity: 1; transform: scale(1); } 96%, 100% { opacity: 0; transform: scale(1); } }
+/* Fahrt beendet: die gefahrene Spur, Strecke und Zeit, und „Teilen“ */
+.s-fb .li { flex-direction: row; align-items: center; gap: 0.8em; padding: 0 0.8em; }
+.s-fb .sk { position: relative; flex: none; width: 5.2em; height: 5.2em; overflow: hidden; border-radius: 0.8em; background: #0d0e10; }
+.s-fb .sk svg { position: absolute; left: 0.6em; top: 0.6em; width: 4em; height: 4em; }
+.s-fb .sk path { stroke: var(--a); stroke-width: 3; }
+.s-fb .sk i { inset: 0; background: #0d0e10; transform: translateX(101%); animation: fb-w 7s cubic-bezier(0.4, 0, 0.3, 1) infinite; }
+@keyframes fb-w { 0% { transform: translateX(0); } 40%, 100% { transform: translateX(101%); } }
+.s-fb .tx p { font-weight: 700; margin-bottom: 0.2em; }
+.s-fb .tx small b { color: #fff; }
+.s-fb .kn { margin-top: 0.55em; }
 
-/* Einladen: Handys nebeneinanderhalten */
-.s-ei .ph { top: 1.7em; width: 2.8em; height: 4.9em; border: 0.15em solid rgba(242, 243, 245, 0.8); border-radius: 0.6em; box-sizing: border-box; }
-.s-ei .h1 { left: 2.6em; transform: translateX(1.9em); } .s-ei .h2 { left: 9.6em; transform: translateX(-1.9em); }
-.s-ei .rg { left: 6em; top: 2.65em; width: 3em; height: 3em; border-radius: 50%; border: 0.14em solid var(--cyan); box-sizing: border-box; opacity: 0; }
-.s-ei .lk { left: 6.7em; top: -0.1em; width: 1.6em; height: 1.6em; color: var(--cyan); }
-.an .s-ei .h1 { animation: ei1 4.4s ease-in-out infinite; }
-.an .s-ei .h2 { animation: ei2 4.4s ease-in-out infinite; }
-.an .s-ei .rg { animation: ei-r 4.4s ease-out infinite; }
-.an .s-ei .lk { animation: ei-l 4.4s ease-out infinite; }
-@keyframes ei1 { 0%, 10% { transform: translateX(0); } 38%, 82% { transform: translateX(1.9em); } 96%, 100% { transform: translateX(0); } }
-@keyframes ei2 { 0%, 10% { transform: translateX(0); } 38%, 82% { transform: translateX(-1.9em); } 96%, 100% { transform: translateX(0); } }
-@keyframes ei-r { 0%, 36% { opacity: 0; transform: scale(0.4); } 44% { opacity: 1; transform: scale(0.8); } 72%, 100% { opacity: 0; transform: scale(2); } }
-@keyframes ei-l { 0%, 38% { opacity: 0; transform: scale(0.5); } 48%, 82% { opacity: 1; transform: scale(1); } 94%, 100% { opacity: 0; transform: scale(1); } }
+/* Waschanlagen: SB-Box oder Waschstraße als Filter über der Liste */
+.s-wa .kp { gap: 0.35em; padding-bottom: 0.3em; }
+.s-wa .zl:nth-child(3) { animation: wa-z 7s ease infinite; }
+@keyframes wa-z { 0%, 30% { opacity: 0; transform: translateY(0.4em); } 38%, 100% { opacity: 1; transform: none; } }
 
-/* ── Neu 20.11.2026 (k5): sieben Funktionen mehr, Fakten im App-Stand geprüft ── */
-/* Motorrad-Modus: das Motorrad legt sich in die Kurve, der Bogen zeigt die Schräglage */
-.s-mo .bo { left: 1em; top: 6.5em; width: 13em; height: 0.14em; background: rgba(255, 255, 255, 0.22); }
-.s-mo .bg { left: 2em; top: 1em; width: 11em; height: 11em; border-radius: 50%; border: 0.16em solid transparent; border-top-color: rgba(39, 196, 232, 0.55); }
-.s-mo .mr { left: 5.3em; top: 2.45em; width: 4.4em; height: 4.4em; transform-origin: 50% 92%; }
-.s-mo .zg { left: 7.1em; top: 0.68em; width: 0.8em; height: 0.8em; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 0.7em rgba(39, 196, 232, 0.7); transform-origin: 50% 5.82em; }
-.an .s-mo .mr, .an .s-mo .zg { animation: mo 2.6s ease-in-out infinite alternate; }
-@keyframes mo { from { transform: rotate(-26deg); } to { transform: rotate(26deg); } }
+/* Sprachsuche und Favoriten: das Ziel wird gesagt und steht im Suchfeld, darunter die Favoriten */
+.s-ss .su { display: flex; align-items: center; gap: 0.5em; margin: 0.75em 0.8em 0; padding: 0.55em 0.8em; border-radius: 99em; background: var(--fu); white-space: nowrap; }
+.s-ss .su .ic:first-child { color: var(--t2); }
+.s-ss .su .x { flex: 1; min-width: 0; }
+.s-ss .su .x span:first-child { color: var(--t2); }
+.s-ss .su .ic:last-child { color: var(--a); animation: k-puls 1.2s ease-in-out infinite; }
+.s-ss .fv { display: flex; gap: 0.5em; padding: 0.6em 0.8em 0; }
+.s-ss .fv span { flex: 1; min-width: 0; padding: 0.5em 0.2em 0.45em; border-radius: 0.8em; background: #2c2c2e; text-align: center; font-size: 0.74em; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.s-ss .fv .ic { display: block; margin: 0 auto 0.25em; width: 1.5em; height: 1.5em; }
 
-/* Waschanlagen: Tropfen fallen aufs Auto, danach glänzt es */
-.s-wa .ca { left: 4.3em; top: 1.7em; width: 6.4em; height: 6.4em; }
-.s-wa .d { top: 0.3em; width: 0.34em; height: 0.95em; border-radius: 0.2em; background: var(--cyan); opacity: 0.8; }
-.s-wa .d1 { left: 5.2em; } .s-wa .d2 { left: 6.7em; } .s-wa .d3 { left: 8.2em; } .s-wa .d4 { left: 9.7em; }
-.s-wa .gl { left: 11.2em; top: 0.7em; width: 2.1em; height: 2.1em; color: var(--cyan); stroke-width: 2.2; }
-.an .s-wa .d { animation: wa-d 1.5s ease-in infinite; }
-.an .s-wa .d2 { animation-delay: -0.75s; } .an .s-wa .d3 { animation-delay: -0.35s; } .an .s-wa .d4 { animation-delay: -1.1s; }
-.an .s-wa .gl { animation: wa-g 3s ease-out infinite; }
-@keyframes wa-d { 0% { opacity: 0; transform: translateY(0); } 20% { opacity: 0.9; } 80% { opacity: 0.9; } 100% { opacity: 0; transform: translateY(2.3em); } }
-@keyframes wa-g { 0%, 40% { opacity: 0; transform: scale(0.4) rotate(0deg); } 55% { opacity: 1; transform: scale(1.15) rotate(30deg); } 70%, 84% { opacity: 1; transform: scale(1) rotate(45deg); } 96%, 100% { opacity: 0; transform: scale(1) rotate(45deg); } }
+/* Pass-Sperren: die Route führt über den Pass, die Meldung nennt Quelle und Stand */
+.s-ps .ro .zu { stroke: #ff453a; stroke-dasharray: 5 7; }
+.s-ps .hk { left: auto; right: 0.6em; width: 10.4em; min-width: 0; }
+.s-ps .hk p { align-items: flex-start; white-space: normal; }
 
-/* Sprachsuche und Favoriten: im Suchfeld wird gesprochen, das Ziel landet als Stern */
-.s-ss .su { left: 0.4em; top: 1.6em; width: 14.2em; height: 3.8em; border-radius: 1.9em; border: 0.13em solid rgba(255, 255, 255, 0.28); background: rgba(255, 255, 255, 0.04); }
-.s-ss .m { left: 1.4em; top: 2.2em; width: 2.6em; height: 2.6em; color: var(--cyan); }
-.s-ss .v { top: 2.4em; width: 0.36em; height: 2.2em; border-radius: 0.2em; background: var(--cyan); }
-.s-ss .v1 { left: 4.7em; } .s-ss .v2 { left: 5.5em; } .s-ss .v3 { left: 6.3em; } .s-ss .v4 { left: 7.1em; }
-.s-ss .fv { left: 11em; top: 2.15em; width: 2.7em; height: 2.7em; color: var(--cyan); }
-.an .s-ss .v { animation: k-balken 0.5s ease-in-out infinite alternate; }
-.an .s-ss .v2 { animation-duration: 0.64s; } .an .s-ss .v3 { animation-duration: 0.42s; } .an .s-ss .v4 { animation-duration: 0.58s; animation-delay: -0.2s; }
-.an .s-ss .fv { animation: ss-f 3.6s ease-out infinite; }
-@keyframes ss-f { 0%, 40% { opacity: 0; transform: scale(0.4); } 52% { opacity: 1; transform: scale(1.2); } 60%, 86% { opacity: 1; transform: scale(1); } 96%, 100% { opacity: 0; transform: scale(1); } }
+/* Unsichtbar: ein Schalter, und der grüne Punkt am eigenen Bild ist weg */
+.s-un .zl { padding: 0.62em 0.9em; }
+.s-un .av { font-size: 1em; }
+.s-un .av.on::after { animation: x-a 7s ease infinite; }
+.s-un .zl + .zl::before { left: 0.9em; }
+.s-un .zl + .zl small { white-space: normal; }
 
-/* Fahrt beendet: das Bild mit deiner Spur entsteht, dann wird geteilt */
-.s-fb .kt { left: 4.2em; top: 0.1em; width: 5.5em; height: 6.8em; border: 0.15em solid rgba(242, 243, 245, 0.8); border-radius: 0.7em; background: rgba(255, 255, 255, 0.04); overflow: hidden; }
-.s-fb .wo { left: 0.45em; top: 0.5em; width: 4.3em; height: 3.5em; overflow: hidden; }
-.s-fb .sp { left: 0; top: 0; width: 4.3em; height: 3.5em; stroke: var(--cyan); stroke-width: 2.6; }
-.s-fb .z1 { left: 0.55em; top: 4.55em; width: 3.2em; height: 0.36em; border-radius: 0.2em; background: #f2f3f5; opacity: 0.85; }
-.s-fb .z2 { left: 0.55em; top: 5.35em; width: 2.1em; height: 0.36em; border-radius: 0.2em; background: #f2f3f5; opacity: 0.4; }
-.s-fb .tl { left: 10.9em; top: 2.1em; width: 2.6em; height: 2.6em; color: var(--cyan); }
-.an .s-fb .wi { animation: fb-a 4.6s ease-in-out infinite; }
-.an .s-fb .sp { animation: fb-b 4.6s ease-in-out infinite; }
-.an .s-fb .wo { animation: k-weg 4.6s linear infinite; }
-.an .s-fb .tl { animation: fb-t 4.6s ease-in-out infinite; }
-@keyframes fb-a { 0%, 6% { transform: translateX(-100%); } 50%, 100% { transform: translateX(0); } }
-@keyframes fb-b { 0%, 6% { transform: translateX(100%); } 50%, 100% { transform: translateX(0); } }
-@keyframes fb-t { 0%, 52% { transform: none; } 60% { transform: translateY(-0.45em); } 68%, 100% { transform: none; } }
+/* Gemeinsam ankommen: eine Ankunftszeit für alle, und wie viele schon da sind */
+.s-an .zf { left: 50%; top: 50%; margin: -3.4em 0 0 -1em; width: 2em; height: 2em; display: grid; place-items: center; border-radius: 50%; background: #fff; color: #101010; }
+.s-an .zf .ic { width: 1.1em; height: 1.1em; }
+.s-an .av { position: absolute; top: 50%; font-size: 0.8em; }
+.s-an .a1 { left: 28%; margin-top: -3.4em; }
+.s-an .a2 { left: 64%; margin-top: -3.9em; }
+.s-an .a3 { left: 76%; margin-top: -1.9em; animation: an-a 7.5s ease-in-out infinite; }
+@keyframes an-a { 0% { transform: translate(2.6em, 1.6em); } 30%, 100% { transform: none; } }
 
-/* Unsichtbar: ein Schalter, dein Punkt wird blass, das Auge durchgestrichen */
-.s-un .rg { left: 1.6em; top: 1.55em; width: 3.9em; height: 3.9em; border-radius: 50%; border: 0.13em dashed rgba(39, 196, 232, 0.7); }
-.s-un .p { left: 3em; top: 2.95em; }
-.s-un .au { left: 8.4em; top: 1.6em; width: 3.8em; height: 3.8em; }
-.s-un .sl { left: 8.1em; top: 3.4em; width: 4.4em; height: 0.22em; border-radius: 0.12em; background: var(--licht); box-shadow: 0 0 0 0.12em #15181c; transform: rotate(-40deg); }
-.an .s-un .p { animation: un-p 4.4s ease-in-out infinite; }
-.an .s-un .rg { animation: un-p 4.4s ease-in-out infinite; }
-.an .s-un .sl { animation: un-s 4.4s ease-in-out infinite; }
-@keyframes un-p { 0%, 22% { opacity: 1; } 38%, 80% { opacity: 0.12; } 94%, 100% { opacity: 1; } }
-@keyframes un-s { 0%, 20% { transform: rotate(-40deg) scaleX(0); } 36%, 82% { transform: rotate(-40deg) scaleX(1); } 94%, 100% { transform: rotate(-40deg) scaleX(0); } }
+/* Abschnittskontrolle: zwischen den zwei Messpunkten steht dein Schnitt am Tacho */
+.s-ab .rt, .s-ab .pk { left: 28%; }
+.s-ab .rt::after { content: ""; position: absolute; left: -0.28em; right: -0.28em; top: 0; bottom: 0; border-left: 0.1em dashed #d0021b; border-right: 0.1em dashed #d0021b; }
+.s-ab .cm { left: 28%; margin-left: -0.85em; top: 0.7em; }
+.s-ab .pk { animation: ab-p 7.5s linear infinite; }
+@keyframes ab-p { from { transform: translateY(0.6em); } to { transform: translateY(-0.8em); } }
+.s-ab .tc { right: 1.8em; top: 50%; margin-top: -2.5em; font-size: 1.1em; }
 
-/* Pass-Sperren: über den Pass ist zu, die Strecke färbt sich rot gestrichelt */
-.s-ps .bg { left: 4.5em; top: -0.2em; width: 6em; height: 6em; color: rgba(242, 243, 245, 0.6); }
-.s-ps .ro { left: 0.6em; top: 5.7em; width: 13.8em; height: 0.56em; border-radius: 0.3em; background: rgba(39, 196, 232, 0.55); }
-.s-ps .rs { left: 5em; top: 5.7em; width: 5em; height: 0.56em; border-radius: 0.3em; background: #15181c repeating-linear-gradient(90deg, var(--rot) 0 0.7em, transparent 0.7em 1.1em); transform-origin: 0 50%; }
-.s-ps .sg { left: 10.6em; top: 0.9em; width: 2.6em; height: 2.6em; border-radius: 50%; background: var(--rot); }
-.s-ps .sg::before { content: ""; position: absolute; left: 0.5em; right: 0.5em; top: 1.08em; height: 0.44em; border-radius: 0.1em; background: #fff; }
-.an .s-ps .rs { animation: sa 5s ease-in-out infinite; }
-.an .s-ps .sg { animation: sa-w 5s ease-out infinite; }
+/* Rufen per Stimme: den Namen sagen, FREQ ruft – oben die Rückmeldung aus der App */
+.s-ru .to { display: flex; align-items: center; justify-content: center; gap: 0.4em; margin: 0.6em 0.8em 0.1em; padding: 0.4em 0.8em; border-radius: 99em; background: #000; font-size: 0.86em; font-weight: 600; white-space: nowrap; }
+.s-ru .to .ic { color: var(--a); width: 1.1em; height: 1.1em; }
+.s-ru .zl { padding: 0.42em 0.8em; }
+.s-ru .zl:nth-child(2) .kn { animation: k-druck 7s ease 0.4s infinite; }
 
-/* Ausfahrten planen: Termin steht, einer nach dem anderen sagt zu */
-.s-af .kl { left: 0.8em; top: 1em; width: 4.6em; height: 4.6em; }
-.s-af .pl { left: 6.4em; top: 0.9em; width: 7.8em; height: 2.3em; border-radius: 1.15em; border: 0.13em solid var(--cyan); background: rgba(39, 196, 232, 0.12); display: flex; align-items: center; justify-content: center; }
-.s-af .pl b { font-size: 1.1em; font-variant-numeric: tabular-nums; }
-.s-af .p { top: 4.45em; }
-.s-af .p1 { left: 7.6em; } .s-af .p2 { left: 9.75em; } .s-af .p3 { left: 11.9em; }
-.an .s-af .p { animation: af-p 4.5s ease-out infinite; }
-.an .s-af .p2 { animation-delay: -4.05s; } .an .s-af .p3 { animation-delay: -3.6s; }
-@keyframes af-p { 0%, 12% { opacity: 0; transform: scale(0.3); } 20% { opacity: 1; transform: scale(1.18); } 26%, 82% { opacity: 1; transform: scale(1); } 94%, 100% { opacity: 0; transform: scale(1); } }
+/* Pause-Vorschlag: die Karte aus der App, wie sie nach langer Fahrt kommt */
+.s-pa .rt, .s-pa .pk { left: 84%; }
+.s-pa .hk { width: 11em; min-width: 0; }
+.s-pa .hk p { display: block; white-space: normal; }
 
-/* ── Neu in der App (Stand 23./24.11.2026): Gabelungen mit „Dann …“, Vignetten-Wächter, neuer Einstieg „Was fährst du?“.
-   Die Ruhelage (ohne Animation: .ruhe und „Bewegung reduzieren“) ist jeweils das fertige Bild. ── */
+/* Karte in 3D: die Karte kippt nach hinten, die Häuser wachsen aus dem Boden */
+.s-3d { perspective: 11em; perspective-origin: 50% 0; }
+.s-3d .eb { left: -6em; right: -6em; top: -9em; bottom: -0.5em; transform-origin: 50% 100%; transform: rotateX(58deg); animation: dd-k 9s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  background: linear-gradient(90deg, transparent 48.6%, #26282d 48.6% 51.4%, transparent 51.4%), repeating-linear-gradient(0deg, #1e2024 0 0.4em, transparent 0.4em 4.2em), repeating-linear-gradient(90deg, #1b1c20 0 0.3em, transparent 0.3em 5em) #0d0e10; }
+.s-3d .eb .rt { top: 0; bottom: 0; }
+@keyframes dd-k { 0%, 10% { transform: rotateX(0deg); } 34%, 90% { transform: rotateX(58deg); } 100% { transform: rotateX(0deg); } }
+.s-3d .hs { bottom: 0; background: linear-gradient(#34363c 38%, #1d1e22 38%); border-radius: 0.1em; transform-origin: 50% 100%; animation: dd-h 9s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+.s-3d .h1 { left: 50%; margin-left: -6em; bottom: 1.3em; width: 2.9em; height: 3em; }
+.s-3d .h2 { left: 50%; margin-left: -3.4em; bottom: 3.3em; width: 1.7em; height: 1.7em; }
+.s-3d .h3 { left: 50%; margin-left: 2.2em; bottom: 1.8em; width: 3.4em; height: 3.6em; }
+.s-3d .h4 { left: 50%; margin-left: 1.5em; bottom: 4em; width: 1.5em; height: 1.4em; }
+@keyframes dd-h { 0%, 16% { transform: scaleY(0.05); opacity: 0; } 38%, 88% { transform: none; opacity: 1; } 98%, 100% { transform: scaleY(0.05); opacity: 0; } }
 
-/* Gabelungen und „Dann …“: die Route nimmt den rechten Arm, die Karte zeigt die Entfernung, dann kommt der Schritt danach */
-.s-gb .st { left: 0.4em; top: 0.1em; width: 6.2em; height: 6.8em; stroke: rgba(255, 255, 255, 0.2); stroke-width: 7; }
-.s-gb .rt { left: 0.4em; top: 0.1em; width: 6.2em; height: 6.8em; stroke: var(--cyan); stroke-width: 3; stroke-dasharray: 100; stroke-dashoffset: 0; }
-.s-gb .nk { left: 7.1em; top: 0.5em; width: 7.6em; height: 3.1em; border-radius: 0.8em; background: rgba(255, 255, 255, 0.06); border: 0.1em solid rgba(255, 255, 255, 0.16); }
-.s-gb .nk svg { left: 0.5em; top: 0.45em; width: 2.1em; height: 2.1em; color: var(--cyan); stroke-width: 2.4; }
-.s-gb .nk b { position: absolute; left: 1.85em; top: 0.38em; font-size: 1.45em; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
-.s-gb .dn { left: 7.1em; top: 4.1em; height: 2.2em; padding: 0 0.8em 0 0.6em; border-radius: 1.1em; border: 0.12em solid rgba(39, 196, 232, 0.6); background: rgba(39, 196, 232, 0.12); display: flex; align-items: center; gap: 0.35em; }
-.s-gb .dn b { font-size: 1.1em; font-weight: 650; }
-.s-gb .dn svg { position: static; width: 1.3em; height: 1.3em; color: var(--cyan); stroke-width: 2.4; }
-.an .s-gb .rt { animation: gb-r 5.6s ease-in-out infinite; }
-.an .s-gb .dn { animation: gb-d 5.6s ease-out infinite; }
-@keyframes gb-r { 0%, 6% { stroke-dashoffset: 100; } 52%, 90% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 0; opacity: 0; } }
-@keyframes gb-d { 0%, 38% { opacity: 0; transform: translateY(0.6em); } 48%, 90% { opacity: 1; transform: none; } 100% { opacity: 0; transform: none; } }
+/* Melden mit einem Tipp: das Blatt „Melden“ mit den Arten in ihren Farben */
+.s-ml .ka { display: flex; justify-content: space-between; padding: 0.35em 0.9em 0; text-align: center; font-size: 0.72em; font-weight: 600; }
+.s-ml .ka .ik { margin: 0 auto 0.3em; width: 2.6em; height: 2.6em; font-size: 1.15em; }
+.s-ml .ka span:nth-child(3) .ik { animation: k-druck 6s ease infinite; }
+.s-ml .hi { padding: 0.55em 0.9em 0; }
 
-/* Vignetten-Wächter: dein Punkt fährt auf die Auffahrt zu, darüber die Autobahn – der Hinweis kommt, bevor du drauf bist */
-.s-vw .ab { left: 0.3em; top: 0.7em; width: 7.6em; height: 1.1em; border-radius: 0.2em; background: rgba(255, 255, 255, 0.2); }
-.s-vw .ab::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 0.08em; background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.55) 0 0.5em, transparent 0.5em 1em); }
-.s-vw .sg { left: 0.6em; top: 2.2em; height: 1.4em; padding: 0 0.45em; border-radius: 0.3em; background: #2f6fd6; display: flex; align-items: center; }
-.s-vw .sg b { font-size: 0.95em; font-weight: 800; color: #fff; }
-.s-vw .rp { left: 0.3em; top: 0.7em; width: 7.6em; height: 6.2em; stroke: rgba(255, 255, 255, 0.2); stroke-width: 5; }
-.s-vw .p { left: 5.95em; top: 3.4em; }
-.s-vw .pl { left: 8.4em; top: 1.6em; width: 6.4em; height: 3.8em; border-radius: 0.8em; border: 0.13em solid rgba(245, 178, 27, 0.75); background: rgba(245, 178, 27, 0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.25em; }
-.s-vw .pl svg { position: static; width: 1.5em; height: 1.5em; color: #f5b21b; stroke-width: 2.2; }
-.s-vw .pl b { font-size: 1.05em; font-weight: 650; }
-.an .s-vw .p { animation: vw-p 5.2s ease-in-out infinite; }
-.an .s-vw .pl { animation: vw-w 5.2s ease-out infinite; }
-@keyframes vw-p { 0% { transform: translateY(2.4em); opacity: 0; } 8% { opacity: 1; } 55%, 88% { transform: none; opacity: 1; } 100% { transform: none; opacity: 0; } }
-@keyframes vw-w { 0%, 32% { opacity: 0; transform: scale(0.8); } 40% { opacity: 1; transform: scale(1.06); } 46%, 88% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1); } }
+/* Zuhause-Zone: im Umkreis ums Zuhause sendet FREQ die Position nicht – die Zeile sagt es */
+.s-zu .zo { left: 50%; top: 50%; width: 6.4em; height: 6.4em; margin: -2.2em 0 0 -3.2em; display: grid; place-items: center; border-radius: 50%; background: rgba(44, 184, 227, 0.14); border: 0.1em dashed rgba(44, 184, 227, 0.7); }
+.s-zu .zo .ic { width: 1.5em; height: 1.5em; color: var(--a); }
+.s-zu .pk { left: 50%; bottom: auto; top: 50%; margin: 1.6em 0 0 1em; animation: zu-p 7s ease-in-out infinite; }
+.s-zu .pk::before { display: none; }
+@keyframes zu-p { 0% { transform: translate(4.5em, 2em); } 34%, 100% { transform: none; } }
+.s-zu .pl { left: 0.6em; right: 0.6em; top: 0.6em; display: flex; justify-content: center; align-items: center; gap: 0.4em; padding: 0.42em 0.6em; border-radius: 99em; background: rgba(28, 28, 30, 0.96); font-size: 0.8em; font-weight: 600; white-space: nowrap; animation: zu-l 7s ease infinite; }
+@keyframes zu-l { 0%, 34% { opacity: 0; transform: translateY(-0.4em); } 42%, 100% { opacity: 1; transform: none; } }
 
-/* Was fährst du? Auto oder Motorrad, dazu die Farbe – die Wahl springt hin und her */
-.s-ew .ch { top: 0.6em; width: 4.4em; height: 4.4em; border-radius: 0.9em; border: 0.13em solid rgba(255, 255, 255, 0.16); background: rgba(255, 255, 255, 0.04); }
-.s-ew .ch svg { left: 0.8em; top: 0.8em; width: 2.8em; height: 2.8em; }
-.s-ew .c1 { left: 0.5em; border-color: var(--cyan); background: rgba(39, 196, 232, 0.12); color: var(--cyan); }
-.s-ew .c2 { left: 5.4em; }
-.s-ew .fa { left: 10.6em; top: 0.5em; width: 3.8em; height: 4.6em; }
-.s-ew .fa i { width: 1.3em; height: 1.3em; border-radius: 50%; }
-.s-ew .f1 { left: 0; top: 0; background: var(--cyan); box-shadow: 0 0 0 0.18em #131519, 0 0 0 0.32em var(--cyan); }
-.s-ew .f2 { left: 2.2em; top: 0; background: var(--rot); }
-.s-ew .f3 { left: 0; top: 2.4em; background: #f2f3f5; }
-.s-ew .f4 { left: 2.2em; top: 2.4em; background: #f5b21b; }
-.s-ew .lt { left: 0.5em; top: 5.7em; width: 9.3em; height: 0.16em; border-radius: 0.1em; background: linear-gradient(90deg, transparent, var(--cyan) 30%, var(--rot) 75%, transparent); opacity: 0.7; }
-.an .s-ew .c1 { animation: ew-a 4.8s steps(1, end) infinite; }
-.an .s-ew .c2 { animation: ew-b 4.8s steps(1, end) infinite; }
-.an .s-ew .lt { animation: ew-l 2.4s ease-in-out infinite alternate; }
-.an .s-ew .f1 { animation: ew-f1 4.8s steps(1, end) infinite; }
-.an .s-ew .f2 { animation: ew-f2 4.8s steps(1, end) infinite; }
-@keyframes ew-a { 0%, 49.9% { border-color: var(--cyan); background: rgba(39, 196, 232, 0.12); color: var(--cyan); } 50%, 100% { border-color: rgba(255, 255, 255, 0.16); background: rgba(255, 255, 255, 0.04); color: var(--licht); } }
-@keyframes ew-b { 0%, 49.9% { border-color: rgba(255, 255, 255, 0.16); background: rgba(255, 255, 255, 0.04); color: var(--licht); } 50%, 100% { border-color: var(--rot); background: rgba(232, 64, 42, 0.12); color: var(--rot); } }
-@keyframes ew-f1 { 0%, 49.9% { box-shadow: 0 0 0 0.18em #131519, 0 0 0 0.32em var(--cyan); } 50%, 100% { box-shadow: none; } }
-@keyframes ew-f2 { 0%, 49.9% { box-shadow: none; } 50%, 100% { box-shadow: 0 0 0 0.18em #131519, 0 0 0 0.32em var(--rot); } }
-@keyframes ew-l { from { transform: scaleX(0.55); opacity: 0.35; } to { transform: scaleX(1); opacity: 0.85; } }
+/* Einladen: dein Code zum Teilen, oder beide suchen gleichzeitig „In der Nähe“ */
+.s-ei .co { display: flex; align-items: center; gap: 0.5em; padding: 0.1em 0.8em 0.5em; }
+.s-ei .co b { flex: 1; font-size: 1.5em; letter-spacing: 0.14em; }
+.s-ei .kn:last-child { animation: k-druck 7s ease infinite; }
+.s-ei .zl { padding: 0.55em 0.8em; }
+.s-ei .zl small { white-space: normal; }
+.s-ei .zl::before { content: ""; position: absolute; left: 0.8em; right: 0; top: 0; border-top: 1px solid var(--ln); }
 
 /* ── Großer Bildschirm (Vollbild, Luka 20.11.2026): genug Platz, die Kacheln auszupacken – 13 Plätze rund ums Logo, mehr Luft ── */
 @media (min-width: 1200px) and (min-height: 700px) {
@@ -634,19 +583,19 @@ html.bereit.laden-halten .kacheln { transform: none; }
   .kacheln { gap: 8px; max-height: none; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: "a a" "m b" "m c" "d e"; }
   .k-f, .k-g, .k-h { display: none; }
   .kachel { --rund: 18px; }
-  .seite { padding: 11px 12px 10px; gap: 4px; }
+  .wort { padding: 8px 12px 10px; }
   .wort b { font-size: 14.5px; }
   .wort span { font-size: 12px; margin-top: 2px; }
-  .wort i { top: 9px; right: 9px; font-size: 10px; padding: 3px 7px; }
+  .wort i { font-size: 10px; padding: 1px 6px; }
   .mitte { padding: 10px; }
   .kacheln .laden-logo { width: min(74cqw, calc(100cqh - 96px)); }
   .kacheln .laden-stand { font-size: 12px; flex-direction: column; align-items: center; gap: 0; }
   .kacheln .laden-prozent { min-width: 0; text-align: center; }
 }
 @media (max-width: 720px) {
-  @container (min-height: 250px) { .wort b { font-size: 16px; } .wort span { font-size: 12.5px; } .seite { padding: 12px 12px 12px; } }
+  @container (min-height: 250px) { .wort b { font-size: 16px; } .wort span { font-size: 12.5px; } .wort { padding: 10px 12px 12px; } }
   @container (min-aspect-ratio: 2/1) and (min-width: 330px) {
-    .seite { padding: 10px 12px; gap: 10px; }
+    .wort { padding: 10px 12px; }
     .wort b { font-size: 15px; }
   }
 }
@@ -669,10 +618,10 @@ html.bereit.laden-halten .kacheln { transform: none; }
   .k-a, .k-b, .k-c, .k-d { display: block; }
   .k-e, .k-f, .k-g, .k-h { display: none; }
   .kachel { --rund: 18px; }
-  .seite { padding: 10px 12px 9px; gap: 3px; }
+  .wort { padding: 7px 12px 9px; }
   .wort b { font-size: 14.5px; }
   .wort span { font-size: 12px; margin-top: 2px; }
-  .wort i { top: 9px; right: 9px; font-size: 10px; padding: 3px 7px; }
+  .wort i { font-size: 10px; padding: 1px 6px; }
   .mitte { padding: 8px; gap: 5px; }
   .kacheln .laden-logo { width: min(64cqw, calc(100cqh - 92px)); }
   .kacheln .laden-text { font-size: clamp(13px, 7.6cqw, 17px); }
@@ -687,7 +636,7 @@ html.bereit.laden-halten .kacheln { transform: none; }
 /* ── Bewegung reduzieren: kein Aufbau-Flug, keine Dauerschleifen, kein Hinaus- und Hereinfliegen – die Kacheln wechseln nur
    ruhig per Überblenden (und seltener, siehe Skript in der Seite) ── */
 @media (prefers-reduced-motion: reduce) {
-  .kachel, .seite::after, .k-mitte::before, .kacheln .laden-logo::before, .kacheln .b *, .kacheln .b *::before, .kacheln .b *::after { animation: none !important; }
+  .kachel, .k-mitte::before, .kacheln .b *, .kacheln .b *::before, .kacheln .b *::after { animation: none !important; }
   .kacheln, html.bereit .kacheln { transition: none; transform: none; }
   .seite.rein { animation: s-ein-ruhig 1.2s ease both; }
   .seite.raus { animation: s-aus-ruhig 0.5s ease both; }
