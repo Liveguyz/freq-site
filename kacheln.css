@@ -1,111 +1,41 @@
-/* FREQ — Kacheln im Ladebildschirm (Luka 19./20.11.2026): solange die 3D-Welt lädt, zeigt ein Raster, was FREQ kann.
-   Nur HTML, CSS und Inline-SVG; alles bewegt sich über transform/opacity (läuft auch, während die Welt den Hauptfaden
-   belegt). Die Mittelkachel ist das echte Logo, dessen Ring der echte Lade-Fortschritt ist (wie bisher, --laden-bogen
-   aus welt.js). Liegt bewusst NICHT in welt/: der Service Worker holt diese Datei erst aus dem Netz, nie veraltet.
-   Aufbau: ein Platz (.kachel) hält eine Kachel (.seite) – die Karte mit Rand und Hintergrund ist die .seite, damit sie als Ganzes
-   hinaus- und hereinfliegen kann (Skript in der Seite). Am Handy wenige Plätze, am großen Bildschirm (Vollbild) 13 mit mehr Luft.
-   Seit 24.11.2026 ist jede Szene ein nachgebauter Ausschnitt aus der App (Abbiegekarte, Tacho, Blätter, Listen …) statt eines
-   Bildchens; die Schriftgröße der Bühne folgt der Kachel (Container-Einheiten). Zeichen: ein SVG-Vorrat im HTML (#l-…). */
+/* FREQ — Kacheln „Was FREQ kann“ (Abschnitt #funktionen der Startseite).
+   Bis zum 24.11.2026 waren sie der Ladebildschirm (Luka 19./20.11.2026: solange die 3D-Welt lädt, zeigt ein Raster, was FREQ
+   kann). Einen Ladebildschirm gibt es nicht mehr – die Seite ist sofort da –, die Kacheln stehen jetzt als eigener Abschnitt
+   nach der Fahrt im Seitenfluss: zwölf sofort, die übrigen hinter der Taste „Alle zeigen“ (Skript in der Seite).
+   Nur HTML, CSS und Inline-SVG; alles bewegt sich über transform/opacity. Seit 24.11.2026 ist jede Szene ein nachgebauter
+   Ausschnitt aus der App (Abbiegekarte, Tacho, Blätter, Listen …) statt eines Bildchens; die Schriftgröße der Bühne folgt der
+   Kachel (Container-Einheiten). Zeichen: ein SVG-Vorrat im HTML (#l-…).
+   Lädt, ohne die Seite aufzuhalten (media-Trick im HTML); den Rahmen des Abschnitts (Überschrift, Abstände) hält welt.css.
+   Die kleinen Bewegungen in den Szenen laufen nur, solange der Abschnitt im Bild ist (.ruhe am Abschnitt, Skript in der Seite). */
 
-.laden.raster {
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: left;
-  padding: calc(78px + env(safe-area-inset-top)) calc(20px + env(safe-area-inset-right)) calc(22px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left));
-}
-.kacheln {
-  flex: 1 1 auto; min-height: 0; width: 100%; max-width: 1120px; max-height: 760px;
-  display: grid; gap: 12px;
-  grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: repeat(4, minmax(0, 1fr));
-  grid-template-areas: "a a b c" "d m m c" "e m m f" "g h h f";
-  transition: transform 1s cubic-bezier(0.3, 0, 0.2, 1);
-}
-/* Welt bereit: das Raster kommt beim Ausblenden ein Stück auf einen zu */
-html.bereit .kacheln { transform: scale(1.035); }
-/* Sehr schnelles Laden: der Aufbau spielt kurz zu Ende, erst dann blendet der Vorhang aus (Klasse setzt das Skript in der Seite) */
-html.bereit.laden-halten .laden { opacity: 0.999; visibility: visible; pointer-events: auto; }
-html.bereit.laden-halten .kacheln { transform: none; }
-.laden.aus { display: none; }
-/* k1 (Luka 20.11.2026): die Kacheln bleiben bis zum Schluss. Sobald alles geladen ist, misst welt.js in einer Probefahrt die
-   Bildzeiten des Geräts und wählt danach die Qualitätsstufe. Damit nichts die Messung verfälscht, kommen die Kacheln dann zur
-   Ruhe (.ruhe setzt das Skript in der Seite): kein Wechsel mehr, jede Szene steht in ihrer Ruhelage (dieselbe wie bei „Bewegung
-   reduzieren“). Bewusst „animation: none“ und nicht nur angehalten: angehaltene Animationen rechnet der Browser bei jeder
-   Stil-Berechnung mit – die Probefahrt löst Hunderte aus (gemessen 20.11.2026, 1920 × 1080, Rechner 4× gebremst: angehalten
-   +75 % Stil-Zeit und +0,4 s Hauptfaden je Probefahrt, „none“ wie ganz ohne Kacheln). Ring, Komet, Prozent und Schriftzug des
-   Logos laufen weiter – genau wie beim alten Ladebild, gegen das die Probefahrt abgestimmt ist. */
-.laden.ruhe .kachel:not(.k-mitte), .laden.ruhe .kachel:not(.k-mitte) *, .laden.ruhe .kachel:not(.k-mitte) *::before, .laden.ruhe .kachel:not(.k-mitte) *::after,
-.laden.ruhe .k-mitte::before { animation: none !important; }
+/* Raster: vier Spalten, feste Zeilenhöhe; einzelne Kacheln sind breit (Text links, Szene rechts) oder hoch (mehr Karte, mehr
+   Zeilen) – so gesetzt, dass jede Liste ein volles Rechteck füllt (dense: Lücken füllt die nächste passende Kachel). */
+.kacheln { display: grid; gap: 12px; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: 236px; grid-auto-flow: dense; }
+.kacheln + .kacheln { margin-top: 12px; }
+html.mit-js .funktionen:not(.offen) .kacheln.mehr { display: none; }
+.kachel { --rund: 22px; position: relative; min-width: 0; min-height: 0; container-type: size; }
+/* erste Liste (12 Kacheln, 16 Felder): 1 und 8 breit, 3 und 4 hoch */
+.kacheln:not(.mehr) .kachel:nth-child(1), .kacheln:not(.mehr) .kachel:nth-child(8) { grid-column: span 2; }
+.kacheln:not(.mehr) .kachel:nth-child(3), .kacheln:not(.mehr) .kachel:nth-child(4) { grid-row: span 2; }
+/* zweite Liste (22 Kacheln, 28 Felder): 1, 8, 13 und 20 breit, 4 und 10 hoch */
+.kacheln.mehr .kachel:nth-child(1), .kacheln.mehr .kachel:nth-child(8), .kacheln.mehr .kachel:nth-child(13), .kacheln.mehr .kachel:nth-child(20) { grid-column: span 2; }
+.kacheln.mehr .kachel:nth-child(4), .kacheln.mehr .kachel:nth-child(10) { grid-row: span 2; }
+/* Ruhe: der Abschnitt ist nicht im Bild (oder „Bewegung reduzieren“) – jede Szene steht in ihrer Ruhelage. Bewusst
+   „animation: none“ und nicht nur angehalten: angehaltene Animationen rechnet der Browser bei jeder Stil-Berechnung mit. */
+.funktionen.ruhe .kachel, .funktionen.ruhe .kachel *, .funktionen.ruhe .kachel *::before, .funktionen.ruhe .kachel *::after { animation: none !important; }
 
-.kachel {
-  --rund: 22px;
-  position: relative; min-width: 0; min-height: 0;
-  container-type: size;
-  --n: 0; --dx: 0px; --dy: 18px; --dr: 0deg;
-  animation: k-auf 0.72s cubic-bezier(0.16, 0.84, 0.24, 1) backwards; animation-delay: calc(80ms + var(--n) * 65ms);
-}
-@keyframes k-auf { from { opacity: 0; transform: translate3d(var(--dx), var(--dy), 0) scale(0.9); } to { opacity: 1; transform: none; } }
-/* Die Karte: Mittelkachel und jede Funktion */
-.k-mitte, .seite {
+/* ── Eine Kachel (.seite): oben ein Ausschnitt aus der App (.szene, randlos), darunter das Wort – gebaut wie die App selbst: Karte
+   oben, Blatt unten. Sie füllt ihren Platz (.kachel) im Raster. ── */
+.seite {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
   overflow: hidden; border-radius: var(--rund);
   clip-path: inset(0 round var(--rund));   /* Safari schneidet bewegte Kinder sonst nicht an den runden Ecken ab */
   background: #141518;
   border: 1px solid rgba(255, 255, 255, 0.09);
 }
-.k-mitte { grid-area: m; --dy: 0px; }
-.k-a { grid-area: a; --n: 1; --dx: -26px; --dy: -18px; --dr: -3deg; }
-.k-b { grid-area: b; --n: 2; --dy: -26px; --dr: 2deg; }
-.k-c { grid-area: c; --n: 3; --dx: 26px; --dy: -14px; --dr: 3deg; }
-.k-d { grid-area: d; --n: 4; --dx: -28px; --dy: 0px; --dr: -3deg; }
-.k-e { grid-area: e; --n: 6; --dx: -28px; --dy: 10px; --dr: -2deg; }
-.k-f { grid-area: f; --n: 5; --dx: 28px; --dy: 12px; --dr: 3deg; }
-.k-g { grid-area: g; --n: 8; --dx: -22px; --dy: 22px; --dr: -2deg; }
-.k-h { grid-area: h; --n: 7; --dy: 28px; --dr: 2deg; }
-.k-i { grid-area: i; --n: 9; --dx: -24px; --dy: 16px; --dr: -2deg; }
-.k-j { grid-area: j; --n: 10; --dx: 24px; --dy: 16px; --dr: 2deg; }
-.k-k { grid-area: k; --n: 11; --dx: -20px; --dy: 26px; --dr: -2deg; }
-.k-l { grid-area: l; --n: 12; --dy: 28px; --dr: 1deg; }
-.k-n { grid-area: n; --n: 13; --dx: 20px; --dy: 26px; --dr: 2deg; }
-/* Plätze i–n gibt es nur im großen Raster */
-.k-i, .k-j, .k-k, .k-l, .k-n { display: none; }
-/* ── Mittelkachel: das echte Logo, sein Ring ist der Fortschritt; um den Rand laufen die zwei Logo-Farben ── */
-.k-mitte { border-color: transparent; background: #0d0f12; text-align: center; }
-.k-mitte::before {
-  content: ""; position: absolute; left: 50%; top: 50%; width: 220%; aspect-ratio: 1; margin: -110% 0 0 -110%;
-  width: 150cqmax; margin: -75cqmax 0 0 -75cqmax;
-  background: conic-gradient(from 0deg, rgba(255, 255, 255, 0.1) 0 58%, rgba(39, 196, 232, 0.95) 76%, rgba(255, 255, 255, 0.1) 78% 88%, rgba(232, 64, 42, 0.8) 97%, rgba(255, 255, 255, 0.1) 100%);
-  animation: k-dreh 8s linear infinite;
-}
-.k-mitte::after {
-  content: ""; position: absolute; inset: 1.5px; border-radius: calc(var(--rund) - 1.5px); pointer-events: none;
-  background: radial-gradient(95% 75% at 50% 36%, #161b22 0%, #0f1215 62%, #0c0e10 100%);
-}
-@keyframes k-dreh { to { transform: rotate(360deg); } }
-.mitte {
-  position: absolute; inset: 0; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: clamp(6px, 3cqh, 16px); padding: 14px;
-}
-.kacheln .laden-logo { width: 120px; width: min(72cqw, calc(100cqh - 140px)); flex: none; }
-.kacheln .laden-logo picture { position: relative; display: block; width: 100%; height: 100%; }
-.kacheln .laden-logo .laden-geist { position: absolute; inset: 0; opacity: 0.17; }
-.kacheln .laden-geist img { width: 100%; height: 100%; object-fit: contain; display: block; }
-.kacheln .laden-text { margin: 0; font-size: 13px; font-size: clamp(12px, 3.4cqw, 20px); line-height: 1.18; letter-spacing: -0.01em; text-shadow: none; }
-.kacheln .laden-zeile { display: block; margin: 0; }
-.kacheln .laden-stand { font-size: 13px; gap: 4px 8px; flex-wrap: wrap; justify-content: center; }
-.kacheln .laden-prozent { min-width: 2.7em; }
-
-/* ── Eine Kachel (.seite): oben ein Ausschnitt aus der App (.szene, randlos), darunter das Wort – gebaut wie die App selbst: Karte
-   oben, Blatt unten. Hinaus fliegt sie nach außen (Richtung des Platzes) und kippt leicht, die neue fliegt von unten herein.
-   Animation ohne Verzögerung (eine transition-delay hielte den Hauptfaden wach): die neue wartet in ihren ersten Bildern
-   unsichtbar. Das Skript ändert nur Klassen an diesen zwei Kacheln. ── */
-.seite { position: absolute; inset: 0; display: flex; flex-direction: column; opacity: 0; pointer-events: none; }
-.seite.an { opacity: 1; }
-.seite.rein { animation: s-rein 0.95s cubic-bezier(0.2, 0.8, 0.25, 1.06) both; }
-.seite.raus { animation: s-raus 0.5s cubic-bezier(0.55, 0, 0.8, 0.4) both; }
-@keyframes s-rein { 0%, 26% { opacity: 0; transform: translate3d(0, 34px, 0) scale(0.88) rotate(calc(var(--dr) * -1)); } 70% { opacity: 1; } 100% { opacity: 1; transform: none; } }
-@keyframes s-raus { from { opacity: 1; transform: none; } 40% { opacity: 0.9; } to { opacity: 0; transform: translate3d(calc(var(--dx) * 2.2), calc(var(--dy) * 2.2 - 18px), 0) scale(0.8) rotate(calc(var(--dr) * 2)); } }
-@keyframes s-ein-ruhig { 0%, 42% { opacity: 0; } 100% { opacity: 1; } }
-@keyframes s-aus-ruhig { from { opacity: 1; } to { opacity: 0; } }
 .wort { margin: 0; flex: none; min-width: 0; padding: 10px 14px 12px; }
-.wort b { display: block; font-size: 17px; font-weight: 650; line-height: 1.2; letter-spacing: -0.012em; color: var(--licht); overflow-wrap: break-word; }
-.wort span { display: block; margin-top: 3px; font-size: 13.5px; line-height: 1.32; color: var(--nebel); }
+.wort h3 { margin: 0; display: block; font-size: 17px; font-weight: 650; line-height: 1.2; letter-spacing: -0.012em; color: var(--licht); overflow-wrap: break-word; }
+.wort p { margin-left: 0; margin-right: 0; margin-bottom: 0; display: block; margin-top: 3px; font-size: 13.5px; line-height: 1.32; color: var(--nebel); }
 /* „Premium“ und „Neu“ stehen in der Titelzeile (die Szene reicht jetzt bis an den Rand) */
 .wort i {
   display: inline-block; margin-left: 4px; padding: 2px 7px; vertical-align: 2px; font-style: normal; font-size: 10.5px; font-weight: 600; line-height: 1.2; letter-spacing: 0;
@@ -119,34 +49,34 @@ html.bereit.laden-halten .kacheln { transform: none; }
 /* Hohe Kachel: größere Schrift */
 @container (min-height: 330px) {
   .wort { padding: 13px 18px 16px; }
-  .wort b { font-size: 20px; }
-  .wort span { font-size: 14.5px; }
+  .wort h3 { margin: 0; font-size: 20px; }
+  .wort p { margin-left: 0; margin-right: 0; margin-bottom: 0; font-size: 14.5px; }
 }
 /* Schmale Kachel (Tablet hochkant): kleinere Schrift, damit der Titel in zwei Zeilen passt */
 @container (max-width: 199px) and (min-height: 160px) {
-  .wort b { font-size: 15px; }
-  .wort span { font-size: 12.5px; }
+  .wort h3 { margin: 0; font-size: 15px; }
+  .wort p { margin-left: 0; margin-right: 0; margin-bottom: 0; font-size: 12.5px; }
 }
 /* Schmale, nicht hohe Kachel (Vollbild, einzelne Plätze): die Szene bekommt mindestens die Hälfte, die Unterzeile höchstens zwei Zeilen */
 @container (max-width: 279px) and (min-height: 160px) and (max-height: 329px) {
   .szene { min-height: 52%; }
-  .wort span { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+  .wort p { margin-left: 0; margin-right: 0; margin-bottom: 0; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
 }
 /* Breite Kachel: Text links, Szene rechts */
 @container (min-aspect-ratio: 2/1) and (min-width: 330px) {
   .seite { flex-direction: row-reverse; align-items: stretch; }
   .wort { flex: 1 1 0; align-self: center; padding: 14px 18px; }
-  .wort b { font-size: 19px; }
+  .wort h3 { margin: 0; font-size: 19px; }
   .szene { flex: 1.15 1 0; border-bottom: 0; border-left: 1px solid rgba(255, 255, 255, 0.09); }
 }
 /* Niedrige Kachel (nicht breit): nur der Titel steht da, die Unterzeile bleibt für Screenreader */
 @container (max-height: 159px) and ((max-aspect-ratio: 2/1) or (max-width: 329px)) {
   .wort { padding: 7px 12px 9px; }
-  .wort span { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .wort p { margin-left: 0; margin-right: 0; margin-bottom: 0; position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 }
 /* Schmale Kachel (Tablet hochkant): ebenfalls nur der Titel, etwas kleiner */
 @container (max-width: 199px) and (min-height: 160px) and (max-height: 259px) {
-  .wort span { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .wort p { margin-left: 0; margin-right: 0; margin-bottom: 0; position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 }
 
 /* ── Die Szenen: Ausschnitte aus der App, nachgebaut in HTML/CSS (24.11.2026, Luka: „schöner bzw. realistischer“).
@@ -155,7 +85,7 @@ html.bereit.laden-halten .kacheln { transform: none; }
    Namen erfunden. Die Bühne (.b) füllt die Szene; 1 em = ein Fünfzehntel der Breite (mindestens 15 em × 7 em sind zu sehen,
    hohe Kacheln zeigen mehr Karte bzw. mehr Zeilen). Bewegung nur über transform/opacity. Ohne Animation (.ruhe, „Bewegung
    reduzieren“) steht jede Szene als fertiges Bild da. Kein Schein, keine farbigen Schatten (docs/DESIGN.md). ── */
-.laden { --a: #2cb8e3; --fl: #1c1c1e; --t2: rgba(235, 235, 245, 0.75); --t3: rgba(235, 235, 245, 0.45); --ln: rgba(255, 255, 255, 0.12); --fu: rgba(120, 120, 128, 0.24); }
+.kacheln { --a: #2cb8e3; --fl: #1c1c1e; --t2: rgba(235, 235, 245, 0.75); --t3: rgba(235, 235, 245, 0.45); --ln: rgba(255, 255, 255, 0.12); --fu: rgba(120, 120, 128, 0.24); }
 .b { position: absolute; inset: 0; font-size: 9px; font-size: clamp(4px, min(calc(100cqh / 7), calc(100cqw / 15)), 19px); line-height: 1.22; font-variant-numeric: tabular-nums; }
 :where(.b) i { position: absolute; display: block; font-style: normal; }
 :where(.b) p { margin: 0; }
@@ -557,89 +487,33 @@ html.bereit.laden-halten .kacheln { transform: none; }
 .s-ei .zl small { white-space: normal; }
 .s-ei .zl::before { content: ""; position: absolute; left: 0.8em; right: 0; top: 0; border-top: 1px solid var(--ln); }
 
-/* ── Großer Bildschirm (Vollbild, Luka 20.11.2026): genug Platz, die Kacheln auszupacken – 13 Plätze rund ums Logo, mehr Luft ── */
-@media (min-width: 1200px) and (min-height: 700px) {
-  .laden.raster { padding: calc(84px + env(safe-area-inset-top)) calc(32px + env(safe-area-inset-right)) calc(32px + env(safe-area-inset-bottom)) calc(32px + env(safe-area-inset-left)); }
-  .kacheln {
-    max-width: 1760px; max-height: 1040px; gap: 18px;
-    grid-template-columns: repeat(6, minmax(0, 1fr)); grid-template-rows: repeat(4, minmax(0, 1fr));
-    grid-template-areas: "a a b c d d" "e f m m g h" "e i m m j h" "k k l l n n";
-  }
-  .k-i, .k-j, .k-k, .k-l, .k-n { display: block; }
-  .kachel { --rund: 24px; }
+/* ── Tablet: drei Spalten (erste Liste 15 Felder: 1 und 8 breit, 3 hoch; zweite 24 Felder: 1 und 13 breit) ── */
+@media (min-width: 721px) and (max-width: 1099px) {
+  .kacheln { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .kacheln:not(.mehr) .kachel:nth-child(4) { grid-row: auto; }
+  .kacheln.mehr .kachel:nth-child(8), .kacheln.mehr .kachel:nth-child(20) { grid-column: auto; }
+  .kacheln.mehr .kachel:nth-child(4), .kacheln.mehr .kachel:nth-child(10) { grid-row: auto; }
 }
-
-/* ── Tablet hochkant: die Höhe reicht für zwei Reihen mehr – 13 Plätze statt 8 ── */
-@media (min-width: 721px) and (max-width: 1199px) and (min-height: 1000px) and (orientation: portrait) {
-  .kacheln {
-    max-height: 1180px; gap: 14px;
-    grid-template-rows: repeat(6, minmax(0, 1fr));
-    grid-template-areas: "a a b c" "d m m c" "e m m f" "g h h f" "i j j k" "l l n n";
-  }
-  .k-i, .k-j, .k-k, .k-l, .k-n { display: block; }
-}
-
-/* ── Handy hochkant: zwei Spalten, weniger und größere Kacheln (unten bleibt Platz für das Dock) ── */
+/* ── Handy: zwei Spalten (schmale Kacheln zeigen wie im alten Ladebild nur den Titel, breite auch die Unterzeile); zuerst acht Kacheln, der Rest hinter der Taste ── */
 @media (max-width: 720px) {
-  .laden.raster { gap: 8px; padding: calc(72px + env(safe-area-inset-top)) calc(12px + env(safe-area-inset-right)) calc(104px + env(safe-area-inset-bottom)) calc(12px + env(safe-area-inset-left)); }
-  .kacheln { gap: 8px; max-height: none; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: "a a" "m b" "m c" "d e"; }
-  .k-f, .k-g, .k-h { display: none; }
-  .kachel { --rund: 18px; }
-  .wort { padding: 8px 12px 10px; }
-  .wort b { font-size: 14.5px; }
-  .wort span { font-size: 12px; margin-top: 2px; }
-  .wort i { font-size: 10px; padding: 1px 6px; }
-  .mitte { padding: 10px; }
-  .kacheln .laden-logo { width: min(74cqw, calc(100cqh - 96px)); }
-  .kacheln .laden-stand { font-size: 12px; flex-direction: column; align-items: center; gap: 0; }
-  .kacheln .laden-prozent { min-width: 0; text-align: center; }
-}
-@media (max-width: 720px) {
-  @container (min-height: 250px) { .wort b { font-size: 16px; } .wort span { font-size: 12.5px; } .wort { padding: 10px 12px 12px; } }
+  .kacheln { gap: 8px; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 216px; }
+  .kacheln + .kacheln { margin-top: 8px; }
+  .kacheln .kachel { --rund: 18px; }
+  .kacheln:not(.mehr) .kachel:nth-child(3), .kacheln:not(.mehr) .kachel:nth-child(4), .kacheln.mehr .kachel:nth-child(4), .kacheln.mehr .kachel:nth-child(10) { grid-row: auto; }
+  /* breite Kacheln über beide Spalten, halb so hoch (Text links, Szene rechts) */
+  .kacheln:not(.mehr) .kachel:nth-child(1), .kacheln:not(.mehr) .kachel:nth-child(8), .kacheln.mehr .kachel:nth-child(1), .kacheln.mehr .kachel:nth-child(8), .kacheln.mehr .kachel:nth-child(13), .kacheln.mehr .kachel:nth-child(20) { grid-column: 1 / -1; }
+  html.mit-js .funktionen:not(.offen) .kacheln:not(.mehr) .kachel:nth-child(n+9) { display: none; }
+  @container (min-height: 250px) { .wort h3 { font-size: 16px; } .wort p { font-size: 12.5px; } .wort { padding: 10px 12px 12px; } }
   @container (min-aspect-ratio: 2/1) and (min-width: 330px) {
     .wort { padding: 10px 12px; }
-    .wort b { font-size: 15px; }
+    .wort h3 { font-size: 15px; }
   }
+  @container (max-width: 169px) { .wort h3 { font-size: 13.5px; } }
 }
-@media (max-width: 720px) { @container (max-width: 169px) { .wort b { font-size: 13.5px; } } }
-@media (max-width: 340px) { .wort b { font-size: 13px; } }
-/* Hohes Handy: eine breite Kachel mehr */
-@media (max-width: 720px) and (min-height: 780px) {
-  .kacheln { grid-template-rows: repeat(5, minmax(0, 1fr)); grid-template-areas: "a a" "m b" "m c" "d e" "h h"; }
-  .k-h { display: block; }
-}
-/* Niedriges Handy hochkant (kleines Gerät mit Browser-Leisten): drei Reihen */
-@media (max-width: 720px) and (max-height: 599px) and (orientation: portrait) {
-  .kacheln { grid-template-rows: repeat(3, minmax(0, 1fr)); grid-template-areas: "a a" "m b" "m c"; }
-  .k-d, .k-e { display: none; }
-}
-/* Flaches Querformat (Handy quer): das Logo in der Mitte, je zwei Kacheln links und rechts; die Tasten stehen im Kopf, kein Dock */
-@media (max-height: 460px) and (orientation: landscape) {
-  .laden.raster { gap: 6px; padding: calc(68px + env(safe-area-inset-top)) calc(14px + env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) calc(14px + env(safe-area-inset-left)); }
-  .kacheln { gap: 8px; max-height: none; grid-template-columns: minmax(0, 1fr) minmax(0, 0.86fr) minmax(0, 1fr); grid-template-rows: repeat(2, minmax(0, 1fr)); grid-template-areas: "a m b" "c m d"; }
-  .k-a, .k-b, .k-c, .k-d { display: block; }
-  .k-e, .k-f, .k-g, .k-h { display: none; }
-  .kachel { --rund: 18px; }
-  .wort { padding: 7px 12px 9px; }
-  .wort b { font-size: 14.5px; }
-  .wort span { font-size: 12px; margin-top: 2px; }
-  .wort i { font-size: 10px; padding: 1px 6px; }
-  .mitte { padding: 8px; gap: 5px; }
-  .kacheln .laden-logo { width: min(64cqw, calc(100cqh - 92px)); }
-  .kacheln .laden-text { font-size: clamp(11.5px, 6.5cqw, 15px); }
-  .kacheln .laden-stand { font-size: 12px; flex-direction: column; align-items: center; gap: 0; }
-  .kacheln .laden-prozent { min-width: 0; text-align: center; }
-}
-@media (max-height: 300px) and (orientation: landscape) {
-  .laden.raster { padding-top: calc(62px + env(safe-area-inset-top)); padding-bottom: calc(6px + env(safe-area-inset-bottom)); }
-  .kacheln .laden-logo { width: min(50cqw, calc(100cqh - 46px)); }
-}
+@media (max-width: 340px) { .wort h3 { font-size: 13px; } }
 
-/* ── Bewegung reduzieren: kein Aufbau-Flug, keine Dauerschleifen, kein Hinaus- und Hereinfliegen – die Kacheln wechseln nur
-   ruhig per Überblenden (und seltener, siehe Skript in der Seite) ── */
+/* ── Bewegung reduzieren: keine Dauerschleifen – jede Szene steht als fertiges Bild da ── */
 @media (prefers-reduced-motion: reduce) {
-  .kachel, .k-mitte::before, .kacheln .b *, .kacheln .b *::before, .kacheln .b *::after { animation: none !important; }
-  .kacheln, html.bereit .kacheln { transition: none; transform: none; }
-  .seite.rein { animation: s-ein-ruhig 1.2s ease both; }
-  .seite.raus { animation: s-aus-ruhig 0.5s ease both; }
+  .kachel, .kacheln .b *, .kacheln .b *::before, .kacheln .b *::after { animation: none !important; }
 }
+@media print { .kacheln { grid-template-columns: repeat(3, minmax(0, 1fr)); } .seite { background: #fff; border-color: #bbb; } .wort h3 { color: #111; } .wort p { color: #333; } .szene { display: none; } .kachel { container-type: normal; } .seite { position: static; } .kacheln { grid-auto-rows: auto; } html.mit-js .funktionen:not(.offen) .kacheln.mehr { display: grid; } }

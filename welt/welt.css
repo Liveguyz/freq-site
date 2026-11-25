@@ -1,7 +1,17 @@
-/* FREQ — die Welt. Dunkles Chrome, ein Cyan, Systemschrift (wie die App).
-   Ohne JavaScript, ohne WebGL oder mit „Bewegung reduzieren" ist dies eine
-   ruhige, normale Seite (Standard). Mit der Welt (html.welt) werden die Kapitel
-   zu festen Tafeln über der 3D-Welt, und die Seite scrollt nur noch unsichtbar. */
+/* FREQ — die Startseite. Dunkles Chrome, ein Cyan, Titelschrift Saira, Fließtext Systemschrift (wie die App).
+
+   Seit dem 24.11.2026 steht die Seite sofort da: jeder Abschnitt (.kapitel) ist echtes HTML im Dokumentfluss und bringt ein
+   Standbild seiner Szene mit (picture.bild) – ohne JavaScript, ohne Ladebildschirm. Die 3D-Welt (canvas#welt) liegt fest
+   dahinter; ist die Szene eines Abschnitts geladen, blendet sein Standbild aus (.live, setzt welt/quelle/main.js).
+
+   Zwei Darstellungen derselben Seite:
+   – Bühne (html.buehne, mit JavaScript; Luka 25.11.2026: „Der Text soll stehen bleiben … wie früher“): der Kapiteltext steht
+     fest an seinem Platz wie im Stand bis zum 24.11. – am Handy unten über den Tasten auf dem dunklen Verlauf, am Desktop
+     links, rechts oder oben – und blendet mit dem Scrollen ein und aus; dahinter fährt die Kamera. Jeder Abschnitt ist im
+     Fluss nur noch Scrollweg, für alle gleich lang. Solange die Szene eines Abschnitts lädt (oder ohne WebGL, im
+     Datensparmodus), steht dort sein Standbild; zwischen zwei Standbildern wird überblendet.
+   – Fluss (ohne JavaScript, bei „Bewegung reduzieren“, im Druck): eine gewöhnliche Seite, je Abschnitt Bild und Text
+     untereinander. */
 
 :root {
   --asphalt: #0b0d0f;
@@ -9,14 +19,21 @@
   --rand: rgba(255, 255, 255, 0.12);
   --licht: #f2f3f5;
   --nebel: #9ba1a8;
+  --hell: #c9ced6;
   --cyan: #27c4e8;
   --rot: #e8402a;
   --gruen: #30d158;
   --mx: 51.9%;
   --my: 48.0%;
   --bogen: 372deg;
+  /* Höhe der Bühne: die GROSSE Ansicht (Browser-Leisten eingefahren) – sie ändert sich beim Scrollen nicht, also springt nichts */
+  --buehne: 100vh;
+  /* Scrollweg je Kapitel auf der Bühne: für alle gleich und reichlich (früher 1,16 bis 2,04 Bildhöhen – „an manchen Stellen
+     geht es super schnell“). Der Text eines Kapitels steht über gut vier Fünftel davon voll da. */
+  --kapitel: 150vh;
   color-scheme: dark;
 }
+@supports (height: 100lvh) { :root { --buehne: 100lvh; --kapitel: 150lvh; } }
 /* Titelschrift nur auf der Website (Luka 24.11.2026; die App bleibt bei der Systemschrift): Saira, breiter fetter Schnitt
    (Expanded Bold) – ihre eckig-runden, breiten Formen sind die des FREQ-Schriftzugs im Logo. SIL Open Font License 1.1,
    selbst gehostet (kein Schrift-Dienst, nichts verlässt die Seite), Latin mit Umlauten, ein Schnitt, 11 KB.
@@ -35,6 +52,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%; text-size-adjust: 100%;
   overflow-x: hidden;
 }
 a { color: var(--cyan); }
@@ -43,46 +61,46 @@ img { display: block; max-width: 100%; }
 .springen { position: absolute; left: 12px; top: -60px; z-index: 60; min-height: 44px; display: inline-flex; align-items: center; background: var(--karte); color: var(--licht); padding: 8px 12px; border-radius: 8px; text-decoration: none; }
 .springen:focus { top: 12px; }
 
-/* ── Hintergrund: Standbild und Leinwand ── */
-.poster {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background: var(--asphalt) url("hero.webp") center / cover no-repeat;
-  transition: opacity 1.2s ease;
-}
-.poster::after {
-  content: ""; position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(11, 13, 15, 0.55), rgba(11, 13, 15, 0.25) 40%, rgba(11, 13, 15, 0.75));
-}
+/* ── Die Bühne: die Leinwand der Welt, fest hinter der Seite ── */
 canvas#welt {
-  position: fixed; inset: 0; z-index: 1; display: block; width: 100%; height: 100%;
-  opacity: 0; transition: opacity 0.9s ease; pointer-events: none;
+  position: fixed; left: 0; top: 0; z-index: 0; display: block; width: 100%; height: var(--buehne);
+  pointer-events: none; background: var(--asphalt);
 }
-.bereit canvas#welt { opacity: 1; }
-.bereit .poster { opacity: 0; }
-/* Mit der Welt liegt der Ladebildschirm deckend über allem: das Standbild braucht es dann nicht, und die Leinwand ist
-   schon sichtbar, damit beim Aufgehen des Vorhangs das fertige Bild darunter steht (kein zweites Einblenden) */
-html.welt .poster { display: none; }
-html.welt canvas#welt { opacity: 1; transition: none; }
+html:not(.mit-js) canvas#welt, html.ruhig canvas#welt, html.sparsam canvas#welt, html.ohne-webgl canvas#welt { display: none; }
 
 /* ── Kopf (immer da) ── */
 header.kopf {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 55;   /* über dem Ladebildschirm (50): das Wesentliche ist schon da, während die Welt lädt */
+  position: fixed; top: 0; left: 0; right: 0; z-index: 55;
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
   padding: calc(10px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right)) 10px calc(16px + env(safe-area-inset-left));
   pointer-events: none;
+  /* über der Fahrt ohne Fläche (die Szene bleibt frei), danach mit Fläche – weich umgeschaltet */
+  background: rgba(11, 13, 15, 0); border-bottom: 1px solid transparent;
+  transition: background-color 0.25s, border-color 0.25s;
 }
 header.kopf > * { pointer-events: auto; }
+/* Der Text scrollt unter dem Kopf hinaus: ein weicher dunkler Saum lässt ihn dort auslaufen (statt unter Logo und Tasten durchzulaufen) */
+header.kopf::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; bottom: -26px; z-index: -1; pointer-events: none;
+  background: linear-gradient(180deg, rgba(8, 10, 13, 0.86) 0, rgba(8, 10, 13, 0.62) 46%, rgba(8, 10, 13, 0.24) 78%, rgba(8, 10, 13, 0) 100%);
+  transition: opacity 0.25s;
+}
+html.nach-fahrt header.kopf::before { opacity: 0; }
+html.nach-fahrt header.kopf {
+  background: rgba(11, 13, 15, 0.86); border-bottom-color: var(--rand);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+}
 .marke { display: flex; align-items: center; gap: 9px; min-height: 44px; text-decoration: none; color: var(--licht); }
 .marke img { width: 30px; height: 30px; }
 .marke b { font-family: var(--titel); font-size: 16px; letter-spacing: 1.5px; font-weight: 700; }
 /* Der eine Satz neben dem Logo (nur wo Platz ist) */
 .nutzen {
-  flex: 1 1 auto; min-width: 0; margin: 0 8px 0 10px; color: #c9ced6; font-size: 14px; line-height: 1.2;
+  flex: 1 1 auto; min-width: 0; margin: 0 8px 0 10px; color: var(--hell); font-size: 14px; line-height: 1.2;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   text-shadow: 0 1px 10px rgba(0, 0, 0, 0.9), 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 @media (max-width: 1080px) { .nutzen { display: none; } }
-/* Tasten: „Überblick“ (leise) und die Hauptaktion (cyan) – im Kopf, im Dock, im Auftakt und im Finale dieselben */
+/* Tasten: „Überblick“ (leise) und die Hauptaktion (cyan) – im Kopf, im Dock, im Auftakt und am Schluss dieselben */
 .taste {
   position: relative; height: 36px; padding: 0 14px; border-radius: 999px; flex: none;
   display: inline-flex; align-items: center; justify-content: center; gap: 7px; white-space: nowrap;
@@ -112,286 +130,295 @@ header.kopf > * { pointer-events: auto; }
 .knopf::after { content: ""; position: absolute; inset: -4px; }
 .knopf[aria-pressed="true"] { border-color: var(--cyan); color: var(--cyan); }
 .knopf[hidden] { display: none; }
-html:not(.welt) .knopf { display: none; }
-html:not(.welt) header.kopf {
-  background: rgba(11, 13, 15, 0.82); border-bottom: 1px solid var(--rand);
-  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
-}
+html:not(.welt-an) .knopf { display: none; }   /* die Neigung steuert nur die bewegte Welt */
 nav.sprachen { gap: 2px; padding: 0 6px; cursor: default; }
 nav.sprachen a { color: var(--nebel); text-decoration: none; display: inline-flex; align-items: center; justify-content: center; min-width: 36px; height: 44px; margin: -4px 0; }
 nav.sprachen a.aktiv { color: var(--cyan); }
 
-/* ── Kapitelpunkte (nur in der Welt) ── */
-.kapitelnav { display: none; }
-
-/* ── Fuß (immer erreichbar) ── */
-footer.fuss {
-  display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 18px;
-  padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
-  color: var(--nebel); font-size: 13px; position: relative; z-index: 40;
+/* ── Die Fahrt: Abschnitte im Dokumentfluss (Grundform „Fluss“; die Bühne weiter unten stellt Text und Bild fest) ── */
+main { position: relative; z-index: 1; }
+.kapitel { position: relative; min-height: var(--buehne); }
+/* Standbild: so groß wie die Leinwand, haftet oben, solange sein Abschnitt da ist – der Text scrollt darüber hinweg.
+   Höhe und negativer Rand heben sich auf: das Bild nimmt im Fluss keinen Platz weg (und sein Ausblenden verschiebt nichts). */
+.kapitel .bild {
+  position: -webkit-sticky; position: sticky; top: 0; z-index: 0; display: block; overflow: hidden;
+  height: var(--buehne); margin-bottom: calc(-1 * var(--buehne));
+  background: var(--asphalt);
+  transition: opacity 0.9s ease;
 }
-footer.fuss a { color: var(--nebel); text-decoration: none; }
-footer.fuss a:hover { color: var(--licht); }
-footer.fuss span { opacity: 0.7; }
-
-/* ── Standard: die ruhige Seite ── */
-main { position: relative; z-index: 2; }
-.kapitel { max-width: 760px; margin: 0 auto; padding: 14vh 24px; }
-.kapitel .text { max-width: 36rem; }
-.kapitel h1 { margin: 0 0 14px; font-family: var(--titel); font-size: clamp(29px, 5.5vw, 70px); font-weight: 700; letter-spacing: -0.012em; line-height: 1.06; }
-.kapitel h2 { margin: 0 0 12px; font-family: var(--titel); font-size: clamp(23px, 3.6vw, 43px); font-weight: 700; letter-spacing: -0.01em; line-height: 1.12; }
-.kapitel p { margin: 0; color: var(--nebel); font-size: clamp(16px, 1.3vw, 19px); }
-.kapitel p b { color: var(--licht); font-weight: 600; }
-.kapitel p.kurz { display: none; }   /* die kurze Fassung fürs Handy (höchstens drei Zeilen, Luka 24.11.2026) – nur in der Welt hochkant */
-.kapitel .beispiel { margin-top: 12px; font-size: 15px; color: var(--nebel); }
-/* Hauptaktion im Auftakt und im Finale */
-.kapitel .aktion { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; margin-top: 22px; text-shadow: none; }
-.kapitel .aktion .stand { margin-top: 0; }
-html.welt .kapitel.auftakt .aktion, html.welt .kapitel.finale .aktion { justify-content: center; }
-@media (min-width: 721px) { html.welt .kapitel.finale .aktion { flex-wrap: nowrap; } }
-/* Niedrige Fenster (Laptop mit Leisten): das Finale-Logo kleiner, damit Überschrift, Satz und Aktion zwischen Kopf und Fuß passen */
-@media (max-height: 800px) and (min-width: 721px) { html.welt .finale-logo-rahmen { width: min(36vmin, 280px); margin-bottom: 12px; } html.welt .kapitel.finale .aktion { margin-top: 14px; } }
-.kapitel .beispiel::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); margin-right: 8px; vertical-align: 1px; }
-.kapitel.auftakt { min-height: 78svh; display: grid; align-content: center; padding-top: 110px; }
-.kapitel.auftakt p { font-size: clamp(17px, 1.6vw, 22px); }
-.hinweis { display: none; }
-.finale-logo-rahmen { width: min(52vmin, 360px); aspect-ratio: 900 / 893; margin: 0 0 22px; }
-.finale-logo { width: 100%; height: 100%; object-fit: contain; }
-.kapitel.finale .text { margin-top: 0; }
-.stand { white-space: nowrap; display: inline-flex; align-items: center; gap: 10px; margin-top: 18px; padding: 9px 16px; border-radius: 999px; background: var(--karte); border: 1px solid var(--rand); font-size: 14px; font-weight: 600; }
-.stand .puls { width: 8px; height: 8px; border-radius: 50%; background: var(--gruen); }
-.stand.warte .puls { background: #ff9f0a; }   /* „noch nicht“: Bernstein statt Grün */
-.kapitel h1 .spiel, .kapitel h2 .spiel { display: none; }
-
-/* ── Die Welt ── */
-html.welt { scrollbar-width: none; overscroll-behavior: none; }
-html.welt::-webkit-scrollbar { display: none; }
-html.welt body { overscroll-behavior: none; }
-html.welt main { height: 100vh; }
-html.welt .kapitel {
-  position: fixed; inset: 0; z-index: 2; max-width: none; margin: 0;
+.kapitel .bild img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; }
+/* Das Standbild ist Hintergrund: nicht berührbar. Am iPhone öffnete ein langer Druck sonst Safaris Bild-Menü („In Fotos
+   sichern“) samt Vorschau – mitten in der Seite (gesehen am Gerät, 25.11.2026). */
+.kapitel .bild, .kapitel .bild img { pointer-events: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+/* Die Szene ist da: das Standbild gibt die Welt frei (dieselbe Kamera, dasselbe Licht – ein Überblenden, kein Schnitt) */
+.kapitel.live .bild { opacity: 0; }
+.kapitel.nur-welt .bild { display: none; }
+/* Der Platz des Textes: eine Bildhöhe (die KLEINE Ansicht – mit eingeblendeten Browser-Leisten steht der Text über dem Dock),
+   der Text unten. Liegt der Abschnitt oben am Bildrand an, zeigt die Welt genau sein Standbild. */
+.platz {
+  position: relative; z-index: 1; min-height: 100vh; min-height: 100svh;
   display: grid; align-content: end; justify-content: start;
-  padding: calc(72px + env(safe-area-inset-top)) calc(24px + env(safe-area-inset-right)) calc(64px + env(safe-area-inset-bottom)) calc(24px + env(safe-area-inset-left));
-  opacity: 0; visibility: hidden; pointer-events: none;
-  will-change: opacity, transform;
+  padding: calc(84px + env(safe-area-inset-top)) calc(24px + env(safe-area-inset-right)) calc(56px + env(safe-area-inset-bottom)) calc(24px + env(safe-area-inset-left));
 }
-html.welt .kapitel.da { visibility: visible; }
-/* Handy (07.11.2026): die Kapiteltexte bleiben als Ebene bestehen (nur durchsichtig), damit der Browser sie nicht bei
-   jedem Erscheinen neu zeichnen muss – gemessen waren das die letzten Hänger genau beim Eintreten eines Kapitels */
-@media (max-width: 720px), (pointer: coarse) {
-  html.welt.bereit .kapitel { visibility: visible; }
-  html.welt .kapitel:not(.da) { opacity: 0 !important; }
-  /* Vorzeichnen unter dem Ladebildschirm (11.11.2026): eine ganz durchsichtige Ebene zeichnet der Browser gar nicht erst –
-     jedes Kapitel kostete deshalb beim ALLERERSTEN Erscheinen noch ein Standbild (Pixel 10: 9 Bilder über 50 ms, bis 217 ms,
-     genau bei x,1). Kurz vor dem Aufgehen des Vorhangs stehen alle Texte ein paar Bilder lang mit 2 % Deckkraft darunter. */
-  html.welt.textwarm .kapitel { visibility: visible; opacity: 0.02 !important; }
-  html.welt .kapitel .text { text-shadow: 0 1px 10px rgba(0, 0, 0, 0.85), 0 1px 2px rgba(0, 0, 0, 0.8); }
-  /* Entschlüsselung ohne weichen Schatten: jedes Bild davon wird neu gezeichnet, der Schatten ist dabei das Teure */
-  html.welt .kapitel h1.entschluesselt .spiel, html.welt .kapitel h2.entschluesselt .spiel { text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9); }
-}
-html.welt .kapitel.da a, html.welt .kapitel.da button { pointer-events: auto; }
-html.welt .kapitel .text {
+.kapitel .text {
   max-width: 34rem; position: relative; padding: 30px 40px; margin: -30px -40px; border-radius: 28px;
   /* dezenter dunkler Hof hinter dem Text, damit er vor Autos und Lichtern lesbar bleibt – farthest-corner und
      Ende bei 70 %: der Verlauf ist an jeder Kante des Kastens schon 0, keine sichtbare Kante (Luka 22.10., Punkt 21) */
-  background: radial-gradient(farthest-corner at 50% 50%, rgba(8, 10, 14, 0.6), rgba(8, 10, 14, 0.36) 38%, rgba(8, 10, 14, 0) 70%);
+  background: radial-gradient(farthest-corner at 50% 50%, rgba(8, 10, 14, 0.62), rgba(8, 10, 14, 0.38) 38%, rgba(8, 10, 14, 0) 70%);
   text-shadow: 0 2px 28px rgba(0, 0, 0, 0.85), 0 1px 3px rgba(0, 0, 0, 0.8), 0 0 2px rgba(0, 0, 0, 0.6);
 }
-html.welt .kapitel p { color: #c9ced6; }
+.kapitel h1 { margin: 0 0 14px; font-family: var(--titel); font-size: clamp(29px, 5.5vw, 70px); font-weight: 700; letter-spacing: -0.012em; line-height: 1.06; text-wrap: balance; }
+.kapitel h2 { margin: 0 0 12px; font-family: var(--titel); font-size: clamp(23px, 3.6vw, 43px); font-weight: 700; letter-spacing: -0.01em; line-height: 1.12; text-wrap: balance; }
+.kapitel p { margin: 0; color: var(--hell); font-size: clamp(16px, 1.3vw, 19px); }
+.kapitel p b { color: var(--licht); font-weight: 600; }
+.kapitel p.kurz { display: none; }   /* die kurze Fassung fürs Handy (höchstens drei Zeilen, Luka 24.11.2026) */
+.kapitel .beispiel { margin-top: 12px; font-size: 15px; }
+.kapitel .beispiel::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); margin-right: 8px; vertical-align: 1px; }
+.kapitel.rechts .platz { justify-content: end; }
+.kapitel.rechts .text { text-align: right; }
 /* Kapitel „Im Auto“: Text oben (über der Frontscheibe), nie auf Lenkrad, Kombi oder CarPlay-Bildschirm */
-html.welt .kapitel.oben { align-content: start; padding-top: calc(96px + env(safe-area-inset-top)); }
-html.welt .kapitel.rechts { justify-content: end; }
-html.welt .kapitel.rechts .text { text-align: right; }
-html.welt .kapitel.mitte, html.welt .kapitel.auftakt { justify-content: center; align-content: center; }
-html.welt .kapitel.mitte .text, html.welt .kapitel.auftakt .text { text-align: center; max-width: 42rem; }
-html.welt .kapitel.oben { align-content: start; }
-html.welt .kapitel.finale { justify-content: center; align-content: center; }
-html.welt .kapitel.finale .text { text-align: center; display: grid; justify-items: center; }
-html.welt .finale-logo-rahmen { margin: 0 auto 20px; }
-/* Finale, erste Phase „Car-Meets“ (texte.js setzt .phase-treffen, solange die Kamera am Parkplatz vorbeifährt):
-   nur der Block .text.treffen, links unten wie in den anderen Kapiteln – der Parkplatz liegt rechts im Bild */
-html.welt .kapitel.finale .text.treffen { display: none; }
-html.welt .kapitel.finale.phase-treffen { justify-content: start; align-content: end; }
-html.welt .kapitel.finale.phase-treffen .text.treffen { display: block; text-align: left; }
-html.welt .kapitel.finale.phase-treffen .text:not(.treffen) { display: none; }
-html:not(.welt) .kapitel.finale .text.treffen { margin-bottom: 14vh; }
-html.welt .finale-logo {
+.kapitel.oben .platz { align-content: start; padding-top: calc(104px + env(safe-area-inset-top)); }
+/* Hauptaktion im Auftakt und am Schluss */
+.kapitel .aktion { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; margin-top: 22px; text-shadow: none; }
+.kapitel .aktion .stand { margin-top: 0; }
+.stand { white-space: nowrap; display: inline-flex; align-items: center; gap: 10px; margin-top: 18px; padding: 9px 16px; border-radius: 999px; background: var(--karte); border: 1px solid var(--rand); font-size: 14px; font-weight: 600; }
+.stand .puls { width: 8px; height: 8px; border-radius: 50%; background: var(--gruen); }
+.stand.warte .puls { background: #ff9f0a; }   /* „noch nicht“: Bernstein statt Grün */
+
+/* Auftakt: die erste Ansicht. Überschrift und Tasten mittig, der Convoy kommt dahinter entgegen */
+.kapitel.auftakt .platz { align-content: center; justify-content: center; }
+.kapitel.auftakt .text { text-align: center; max-width: 42rem; }
+.kapitel.auftakt p { font-size: clamp(17px, 1.6vw, 22px); }
+.kapitel.auftakt .aktion { justify-content: center; }
+.hinweis {
+  position: absolute; left: 0; right: 0; bottom: calc(26px + env(safe-area-inset-bottom)); margin: 0;
+  color: var(--nebel); font-size: 13px !important; letter-spacing: 0.04em; text-align: center; pointer-events: none;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.9);
+}
+.hinweis::after {
+  content: ""; display: block; width: 10px; height: 10px; margin: 8px auto 0;
+  border-right: 2px solid var(--nebel); border-bottom: 2px solid var(--nebel); transform: rotate(45deg);
+  animation: nicken 1.8s ease-in-out 3;   /* dreimal, dann Ruhe */
+}
+@keyframes nicken { 0%, 100% { transform: translateY(0) rotate(45deg); opacity: 1; } 50% { transform: translateY(6px) rotate(45deg); opacity: 0.4; } }
+/* Datensparmodus: ein Satz und die Taste, die die Welt trotzdem lädt */
+.spar { position: absolute; left: 16px; right: 16px; bottom: calc(74px + env(safe-area-inset-bottom)); margin: 0; text-align: center; font-size: 13px !important; color: var(--nebel) !important; text-shadow: 0 1px 8px rgba(0, 0, 0, 0.9); }
+.spar[hidden] { display: none; }
+.spar button { font: inherit; font-weight: 600; color: var(--cyan); background: none; border: 0; padding: 12px 4px; margin: -12px 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Schluss: das Logo, der Preis, die Hauptaktion – mittig vor dem Nachthimmel. Eine Bildhöhe, danach geht die Seite weiter. */
+.kapitel.finale { min-height: var(--buehne); }
+.kapitel.finale .platz { min-height: var(--buehne); align-content: center; justify-content: center; }
+.kapitel.finale .text { text-align: center; display: grid; justify-items: center; max-width: 40rem; }
+.kapitel.finale .aktion { justify-content: center; }
+@media (min-width: 721px) { .kapitel.finale .aktion { flex-wrap: nowrap; } }
+.finale-logo-rahmen { width: min(52vmin, 360px); aspect-ratio: 900 / 893; margin: 0 auto 20px; }
+.finale-logo {
+  width: 100%; height: 100%; object-fit: contain;
+  /* Der Komet der Welt zeichnet den Ring nach (--bogen aus main.js); ohne Welt steht das Logo ganz da (372deg) */
   -webkit-mask-image: conic-gradient(from 180deg at var(--mx) var(--my), #000 calc(var(--bogen) - 9deg), rgba(0, 0, 0, 0) var(--bogen));
   mask-image: conic-gradient(from 180deg at var(--mx) var(--my), #000 calc(var(--bogen) - 9deg), rgba(0, 0, 0, 0) var(--bogen));
 }
-html.welt .kapitel h1 .echt, html.welt .kapitel h2 .echt { transition: opacity 0.15s; }
-html.welt .kapitel h1 .echt, html.welt .kapitel h2 .echt, html.welt .kapitel h1 .spiel, html.welt .kapitel h2 .spiel { white-space: pre-line; }
-html.welt .kapitel h1, html.welt .kapitel h2 { position: relative; }
-/* Während der Entschlüsselung bestimmt die Kopie die Höhe der Überschrift (sie läuft im Textfluss, der echte Text liegt
-   unsichtbar darunter): bricht sie anders um, rückt der Absatz kurz nach, nichts überlappt oder wird abgeschnitten */
-html.welt .kapitel h1 .spiel, html.welt .kapitel h2 .spiel { display: none; color: var(--cyan); }
-html.welt .kapitel h1.entschluesselt .echt, html.welt .kapitel h2.entschluesselt .echt { position: absolute; inset: 0; opacity: 0; }
-html.welt .kapitel h1.entschluesselt .spiel, html.welt .kapitel h2.entschluesselt .spiel { display: block; }
-html.welt .hinweis {
-  display: block; position: fixed; left: 50%; bottom: calc(52px + env(safe-area-inset-bottom)); transform: translateX(-50%);
-  z-index: 3; color: var(--nebel); font-size: 13px; letter-spacing: 0.06em; text-align: center; pointer-events: none;
-  transition: opacity 0.6s;
-}
-html.welt .hinweis::after {
-  content: ""; display: block; width: 10px; height: 10px; margin: 8px auto 0;
-  border-right: 2px solid var(--nebel); border-bottom: 2px solid var(--nebel); transform: rotate(45deg);
-  animation: nicken 1.8s ease-in-out infinite;
-}
-@keyframes nicken { 0%, 100% { transform: translateY(0) rotate(45deg); opacity: 1; } 50% { transform: translateY(6px) rotate(45deg); opacity: 0.4; } }
-html.welt .kapitelnav {
+/* Niedrige Fenster (Laptop mit Leisten): das Logo kleiner, damit Überschrift, Satz und Aktion zwischen Kopf und Unterkante passen */
+@media (max-height: 800px) and (min-width: 721px) { .finale-logo-rahmen { width: min(36vmin, 280px); margin-bottom: 12px; } .kapitel.finale .aktion { margin-top: 14px; } }
+
+/* ── Kapitelpunkte: zeigen, wo man in der Fahrt ist; ein Tipp scrollt hin ── */
+.kapitelnav { display: none; }
+html.mit-js .kapitelnav {
   display: flex; flex-direction: column; gap: 6px;
   position: fixed; right: calc(10px + env(safe-area-inset-right)); top: 50%; transform: translateY(-50%); z-index: 40;
+  transition: opacity 0.25s, visibility 0s linear 0s;
 }
-html.welt .kapitelnav button { width: 32px; height: 30px; background: none; border: 0; padding: 0; cursor: pointer; display: grid; place-items: center; color: var(--licht); }
-html.welt .kapitelnav button::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: rgba(255, 255, 255, 0.35); transition: transform 0.3s, background 0.3s; }
-html.welt .kapitelnav button[aria-current="true"]::before { background: var(--cyan); transform: scale(1.7); }
-html.welt .kapitelnav button:hover::before { background: var(--licht); }
-html.welt footer.fuss {
-  position: fixed; left: 0; right: 0; bottom: 0; padding-top: 10px; padding-bottom: calc(10px + env(safe-area-inset-bottom));
-  pointer-events: none; background: linear-gradient(180deg, rgba(11, 13, 15, 0), rgba(11, 13, 15, 0.55));
-}
-html.welt footer.fuss a { pointer-events: auto; }
-html.welt footer.fuss span { display: none; }
+html.nach-fahrt .kapitelnav { opacity: 0; visibility: hidden; transition: opacity 0.25s, visibility 0s linear 0.25s; }
+.kapitelnav button { width: 32px; height: 30px; background: none; border: 0; padding: 0; cursor: pointer; display: grid; place-items: center; color: var(--licht); }
+.kapitelnav button::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: rgba(255, 255, 255, 0.4); box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35); transition: transform 0.3s, background 0.3s; }
+.kapitelnav button[aria-current="true"]::before { background: var(--cyan); transform: scale(1.7); }
+.kapitelnav button:hover::before { background: var(--licht); }
 
+/* ── Fuß (am Ende der Seite) ── */
+footer.fuss {
+  position: relative; z-index: 2; background: var(--asphalt); border-top: 1px solid var(--rand);
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 0 22px;
+  padding: 10px 16px calc(14px + env(safe-area-inset-bottom));
+  color: var(--nebel); font-size: 13px;
+}
+footer.fuss a { color: var(--nebel); text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }
+footer.fuss a:hover { color: var(--licht); }
+footer.fuss span { flex: 0 0 100%; text-align: center; opacity: 0.85; padding: 4px 0 2px; }
+footer.fuss span a { display: inline; min-height: 0; text-decoration: underline; text-underline-offset: 2px; }
+
+/* ── Handy hochkant: Text mittig, höchstens drei Zeilen, unter ihm ein ruhiger Verlauf über die ganze Breite ── */
 @media (max-width: 720px) {
-  html.welt .kapitel, html.welt .kapitel.rechts, html.welt .kapitel.mitte { justify-content: center; align-content: end; padding-bottom: calc(112px + env(safe-area-inset-bottom)); }
-  html.welt .kapitel .text, html.welt .kapitel.rechts .text { text-align: center; max-width: 100%; }
-  /* Auftakt hochkant unten wie die anderen Kapitel (24.11.2026): mittig lag die Überschrift auf dem entgegenkommenden Convoy */
-  html.welt .kapitel.auftakt { align-content: end; padding-bottom: calc(176px + env(safe-area-inset-bottom)); }
-  html.welt .kapitel.auftakt .text::before { bottom: calc(-152px - env(safe-area-inset-bottom)); }
-  html.welt .kapitel.finale { align-content: center; }
-  html.welt .kapitel.finale.phase-treffen { justify-content: center; align-content: end; }
-  html.welt .kapitel.finale.phase-treffen .text.treffen { text-align: center; }
-  html.welt .kapitel h1 { font-size: clamp(21px, 6.5vw, 30px); text-wrap: balance; }
-  html.welt .kapitel h2 { font-size: clamp(19px, 5.5vw, 25px); text-wrap: balance; }
-  html.welt .kapitel p { font-size: 15px; line-height: 1.45; text-wrap: pretty; }
-  /* Handy: mittig, höchstens drei Zeilen – die kurze Fassung statt der langen (am Desktop und auf der ruhigen Seite bleibt die lange) */
-  html.welt .kapitel p.lang { display: none; }
-  html.welt .kapitel p.kurz { display: block; }
-  html.welt .kapitel .beispiel { display: none; } /* Hochkant: der Textblock deckte die halbe Bildhöhe (Convoy von oben) */
-  html.welt .finale-logo-rahmen { width: min(40vmin, 220px); margin-bottom: 12px; }
-  html.welt .kapitelnav { right: env(safe-area-inset-right); gap: 0; }
-  html.welt .kapitelnav button { width: 44px; height: 40px; }
-  /* Text nicht unter den Kapitelpunkten: links und rechts gleich viel Rand, damit er mittig bleibt */
-  html.welt .kapitel, html.welt .kapitel.rechts, html.welt .kapitel.mitte, html.welt .kapitel.auftakt, html.welt .kapitel.finale { padding-left: calc(44px + env(safe-area-inset-left)); padding-right: calc(44px + env(safe-area-inset-right)); }
-  html.welt .kapitel .text { padding: 24px 12px; margin: -24px -12px; }
-  /* Hochkant (24.11.2026, Bildschirmfoto vom Android-Handy: die Fahrbahnlinie lief durch den Absatz und hinter den Tasten durch):
-     statt des runden Hofs wird das Bild unter dem Text zur Nacht – ein Verlauf über die ganze Breite, vom oberen Rand des
-     Textes bis zur Unterkante, der mit dem Text ein- und ausblendet. Die Kamera neigt sich hochkant passend dazu (kamera.js
-     NEIGUNG_HOCH): das Motiv steht darüber, unter dem Text liegt nur die nahe Fahrbahn. */
-  html.welt .kapitel .text { background: none; }
-  html.welt .kapitel { overflow: hidden; }
-  html.welt .kapitel .text::before {
-    content: ""; position: absolute; z-index: -1; pointer-events: none;
-    /* weit über beide Ränder hinaus (24.11.2026): der Textkasten ist nur so breit wie sein Inhalt und steht nicht immer mittig –
-       mit festen −32 px blieb am iPhone rechts ein 24 px breiter Streifen ohne Verlauf. Das Kapitel schneidet am Bildrand ab. */
-    left: -100vw; right: -100vw;
-    top: -76px; bottom: calc(-88px - env(safe-area-inset-bottom));
-    background: linear-gradient(180deg, rgba(6, 9, 14, 0) 0, rgba(6, 9, 14, 0.14) 22px, rgba(6, 9, 14, 0.42) 52px, rgba(6, 9, 14, 0.7) 88px, rgba(6, 9, 14, 0.84) 132px, rgba(6, 9, 14, 0.9) 100%);
+  .platz, .kapitel.rechts .platz, .kapitel.auftakt .platz { justify-content: stretch; align-content: end; padding-left: 0; padding-right: 0; padding-bottom: calc(92px + env(safe-area-inset-bottom)); }
+  .kapitel.oben .platz { align-content: start; padding-top: calc(72px + env(safe-area-inset-top)); }
+  /* Der Text scrollt mit der Seite – also wandert auch sein Verlauf mit: ein Band über die ganze Breite, oben und unten weich
+     auslaufend (24.11.2026: die Fahrbahnlinie lief sonst durch den Absatz). Links und rechts gleich viel Rand: der Text steht
+     mittig und nie unter den Kapitelpunkten. */
+  .kapitel .text, .kapitel.rechts .text, .kapitel.auftakt .text {
+    max-width: none; margin: 0; border-radius: 0; text-align: center;
+    padding: 76px calc(44px + env(safe-area-inset-right)) 34px calc(44px + env(safe-area-inset-left));
+    background: linear-gradient(180deg, rgba(6, 9, 14, 0) 0, rgba(6, 9, 14, 0.14) 20px, rgba(6, 9, 14, 0.44) 46px, rgba(6, 9, 14, 0.74) 76px, rgba(6, 9, 14, 0.82) calc(100% - 40px), rgba(6, 9, 14, 0.5) calc(100% - 14px), rgba(6, 9, 14, 0) 100%);
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.85), 0 1px 2px rgba(0, 0, 0, 0.8);
   }
-  /* Im Auto steht der Text oben: derselbe Verlauf von der Oberkante herab */
-  html.welt .kapitel.oben .text::before {
-    top: calc(-72px - env(safe-area-inset-top)); bottom: -70px;
-    background: linear-gradient(0deg, rgba(6, 9, 14, 0) 0, rgba(6, 9, 14, 0.14) 20px, rgba(6, 9, 14, 0.42) 48px, rgba(6, 9, 14, 0.7) 82px, rgba(6, 9, 14, 0.84) 124px, rgba(6, 9, 14, 0.9) 100%);
-  }
-  /* Finale (Logo vor dem Himmel): kein Band, der runde Hof bleibt */
-  html.welt .kapitel.finale:not(.phase-treffen) .text::before { content: none; }
-  html.welt .kapitel.finale:not(.phase-treffen) .text { background: radial-gradient(farthest-corner at 50% 60%, rgba(8, 10, 14, 0.66), rgba(8, 10, 14, 0.4) 40%, rgba(8, 10, 14, 0) 70%); }
-  /* Fuß: jede Verknüpfung 44 px hoch; der Hinweis „Scrollen“ steht darüber statt auf den Links */
-  html.welt footer.fuss { row-gap: 0; padding-top: 4px; padding-bottom: calc(2px + env(safe-area-inset-bottom)); }
-  html.welt footer.fuss a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 2px; }
-  html.welt .hinweis { bottom: calc(112px + env(safe-area-inset-bottom)); }
-  /* Fuß einzeilig (Datenschutz, Support, Impressum); die übrigen Verknüpfungen stehen im Überblick */
-  html.welt footer.fuss a.zweit { display: none; }
-  html.welt footer.fuss { column-gap: 22px; }
+  .kapitel.oben .text { padding-top: 34px; padding-bottom: 70px; background: linear-gradient(0deg, rgba(6, 9, 14, 0) 0, rgba(6, 9, 14, 0.14) 20px, rgba(6, 9, 14, 0.44) 44px, rgba(6, 9, 14, 0.74) 72px, rgba(6, 9, 14, 0.82) calc(100% - 40px), rgba(6, 9, 14, 0.5) calc(100% - 14px), rgba(6, 9, 14, 0) 100%); }
+  .kapitel h1 { font-size: clamp(21px, 6.5vw, 30px); }
+  .kapitel h2 { font-size: clamp(19px, 5.5vw, 25px); }
+  .kapitel p { font-size: 15px; line-height: 1.45; text-wrap: pretty; }
+  /* Handy: die kurze Fassung statt der langen */
+  .kapitel p.lang { display: none; }
+  .kapitel p.kurz { display: block; }
+  .kapitel .beispiel { display: none; }
+  /* Auftakt: unten wie die Kapitel (mittig läge die Überschrift auf dem entgegenkommenden Convoy), der Hinweis im Band darunter */
+  .kapitel.auftakt .text { padding-bottom: 64px; }
+  .hinweis { bottom: calc(96px + env(safe-area-inset-bottom)); }
+  .spar { bottom: calc(150px + env(safe-area-inset-bottom)); }
+  /* Schluss: Logo, Überschrift, Satz, Stand – mittig; kein Band, der runde Hof */
+  .kapitel.finale .platz { align-content: center; padding-top: calc(72px + env(safe-area-inset-top)); }
+  .kapitel.finale .text { padding: 24px calc(40px + env(safe-area-inset-right)) 24px calc(40px + env(safe-area-inset-left)); background: radial-gradient(farthest-corner at 50% 60%, rgba(8, 10, 14, 0.66), rgba(8, 10, 14, 0.4) 40%, rgba(8, 10, 14, 0) 70%); }
+  .finale-logo-rahmen { width: min(40vmin, 220px); margin-bottom: 12px; }
+  html.mit-js .kapitelnav { right: env(safe-area-inset-right); gap: 0; }
+  .kapitelnav button { width: 44px; height: 40px; }
   .knopf .wort { display: none; }
   .knopf { padding: 0 10px; }
-  footer.fuss { font-size: 13px; gap: 4px 10px; padding-left: max(8px, env(safe-area-inset-left)); padding-right: max(8px, env(safe-area-inset-right)); }
+  footer.fuss { gap: 0 18px; padding-left: max(8px, env(safe-area-inset-left)); padding-right: max(8px, env(safe-area-inset-right)); }
 }
+/* Flaches Querformat (Handy quer): wenig Höhe – Text kleiner, die Tasten stehen im Kopf */
 @media (max-height: 460px) and (orientation: landscape) {
-  html.welt .kapitel { padding-top: calc(56px + env(safe-area-inset-top)); padding-bottom: calc(52px + env(safe-area-inset-bottom)); padding-right: calc(44px + env(safe-area-inset-right)); }
+  .platz { padding-top: calc(56px + env(safe-area-inset-top)); padding-bottom: calc(18px + env(safe-area-inset-bottom)); padding-right: calc(52px + env(safe-area-inset-right)); }
   .kapitel .aktion { display: none; }   /* Tasten stehen im Kopf, der Stand im Überblick */
-  html.welt .kapitel h1 { font-size: clamp(26px, 5vw, 40px); }
-  html.welt .kapitel h2 { font-size: clamp(20px, 3.6vw, 28px); }
-  html.welt .kapitel p { font-size: 14px; }
-  html.welt .kapitel .beispiel { display: none; }
-  html.welt .finale-logo-rahmen { width: 92px; margin-bottom: 4px; }   /* 92 statt 120 px: Überschrift, Satz und Stand passen zwischen Kopf und Fuß */
-  html.welt .hinweis { display: none; }
-  html.welt .kapitelnav { gap: 0; }
-  html.welt .kapitelnav button { width: 44px; height: 24px; }
+  .kapitel h1 { font-size: clamp(26px, 5vw, 40px); }
+  .kapitel h2 { font-size: clamp(20px, 3.6vw, 28px); }
+  .kapitel p { font-size: 14px; }
+  .kapitel .beispiel { display: none; }
+  .finale-logo-rahmen { width: 92px; margin-bottom: 4px; }
+  .hinweis { display: none; }
+  html.mit-js .kapitelnav { gap: 0; }
+  .kapitelnav button { width: 44px; height: 24px; }
 }
 
-/* ── Ruhig: Bewegung reduziert ── */
+/* ── Bühne: der Text steht fest, die Welt fährt dahinter (mit JavaScript; nicht bei „Bewegung reduzieren“, nicht im Druck) ──
+   Platz, Aussehen und Blenden wie im Stand bis zum 24.11.2026 (html.welt .kapitel): der Abschnitt im Fluss ist nur noch
+   Scrollweg. Das Skript der Seite setzt je Abschnitt --s (0 … 1, aus dem Scrollstand) und die Klassen:
+     .da     der Text ist zu sehen (sonst unsichtbar und nicht bedienbar)
+     .nah    Nachbar des aktuellen Abschnitts: seine Textebene steht schon bereit (durchsichtig) – kein Hänger beim Eintreten
+     .zeigt  sein Standbild ist zu sehen (solange seine Szene nicht läuft); .halten: das alte bleibt stehen, bis das neue ganz da ist
+     .live   seine Szene läuft (welt/quelle/main.js): das Standbild gibt die Welt frei */
+@media screen {
+  html.buehne .kapitel { height: var(--kapitel); min-height: 0; }
+  /* Der Schluss bekommt denselben Scrollweg wie jedes Kapitel – und dazu eine Bildhöhe, über die der Rest der Seite (die
+     Kacheln) von unten über die Bühne heraufzieht. Die Kamera ist am Ende der Fahrt, bevor das beginnt (rollen.js). */
+  html.buehne .kapitel.finale { height: calc(var(--kapitel) + var(--buehne)); }
+  html.buehne header.kopf::before { opacity: 0; }   /* hier scrollt kein Text unter dem Kopf durch */
+  /* Standbilder: fest über der Leinwand, eines zur Zeit; das neue blendet ÜBER dem alten ein (nie scheint die leere Leinwand durch) */
+  html.buehne .kapitel .bild {
+    position: fixed; left: 0; top: 0; width: 100%; height: var(--buehne); margin: 0; z-index: 0;
+    opacity: 0; visibility: hidden; transition: opacity 0.6s ease, visibility 0s linear 0.6s;
+  }
+  html.buehne .kapitel.halten .bild { transition: opacity 0s linear 0.5s, visibility 0s linear 0.5s; }
+  html.buehne .kapitel.zeigt .bild { opacity: 1; visibility: visible; z-index: 1; transition: opacity 0.45s ease, visibility 0s; }
+  html.buehne .kapitel.live .bild { opacity: 0; visibility: hidden; transition: opacity 0.9s ease, visibility 0s linear 0.9s; }
+  html.buehne .kapitel.nur-welt .bild { display: none; }
+  /* Text: fest über der Welt, Platz wie früher – unten links, .rechts unten rechts, .oben oben, Auftakt und Schluss mittig */
+  html.buehne .platz {
+    position: fixed; inset: 0; z-index: 2; min-height: 0; overflow: hidden;
+    display: grid; align-content: end; justify-content: start;
+    padding: calc(72px + env(safe-area-inset-top)) calc(24px + env(safe-area-inset-right)) calc(64px + env(safe-area-inset-bottom)) calc(24px + env(safe-area-inset-left));
+    pointer-events: none; visibility: hidden;
+  }
+  html.buehne .kapitel.da .platz { visibility: visible; }
+  html.buehne .kapitel.da .platz a, html.buehne .kapitel.da .platz button { pointer-events: auto; }
+  html.buehne .kapitel .text {
+    max-width: 34rem; padding: 30px 40px; margin: -30px -40px; border-radius: 28px;
+    background: radial-gradient(farthest-corner at 50% 50%, rgba(8, 10, 14, 0.6), rgba(8, 10, 14, 0.36) 38%, rgba(8, 10, 14, 0) 70%);
+    opacity: var(--s, 0); transform: translate3d(0, calc((1 - var(--s, 0)) * 22px), 0); will-change: opacity, transform;
+  }
+  html.buehne .hinweis, html.buehne .spar { opacity: var(--s, 0); }
+  /* Vorzeichnen (Skript der Seite): einmal kurz mit 2 % Deckkraft – dann hat der Browser die Textebene schon gezeichnet */
+  html.buehne .kapitel.warm .platz { visibility: visible; }
+  html.buehne .kapitel.warm .text { opacity: 0.02; }
+  html.buehne .kapitel p { color: #c9ced6; }
+  html.buehne .kapitel.rechts .platz { justify-content: end; }
+  html.buehne .kapitel.rechts .text { text-align: right; }
+  html.buehne .kapitel.oben .platz { align-content: start; padding-top: calc(96px + env(safe-area-inset-top)); }
+  html.buehne .kapitel.auftakt .platz, html.buehne .kapitel.finale .platz { justify-content: center; align-content: center; }
+  html.buehne .kapitel.auftakt .text { text-align: center; max-width: 42rem; }
+  html.buehne .kapitel.finale .text { text-align: center; display: grid; justify-items: center; max-width: 40rem; }
+  /* Überschrift mit kurzem Entschlüsseln beim Eintreten (nur am Desktop, Skript der Seite): die Kopie läuft im Textfluss,
+     der echte Text liegt unsichtbar darunter – bricht sie anders um, rückt der Absatz kurz nach, nichts überlappt */
+  html.buehne .kapitel h1 .echt, html.buehne .kapitel h2 .echt { transition: opacity 0.15s; }
+  html.buehne .kapitel h1 .echt, html.buehne .kapitel h2 .echt, html.buehne .kapitel h1 .spiel, html.buehne .kapitel h2 .spiel { white-space: pre-line; }
+  html.buehne .kapitel h1, html.buehne .kapitel h2 { position: relative; }
+  html.buehne .kapitel h1 .spiel, html.buehne .kapitel h2 .spiel { display: none; color: var(--cyan); }
+  html.buehne .kapitel h1.entschluesselt .echt, html.buehne .kapitel h2.entschluesselt .echt { position: absolute; inset: 0; opacity: 0; }
+  html.buehne .kapitel h1.entschluesselt .spiel, html.buehne .kapitel h2.entschluesselt .spiel { display: block; }
+  html.buehne .hinweis { bottom: calc(52px + env(safe-area-inset-bottom)); }
+  html.buehne .spar { bottom: calc(108px + env(safe-area-inset-bottom)); }
+}
+/* Bühne am Handy hochkant: Text mittig unten über den Tasten, höchstens drei Zeilen; statt des runden Hofs wird das Bild unter
+   dem Text zur Nacht – ein Verlauf über die ganze Breite, von 100 px über der Überschrift bis zur Unterkante, der mit dem Text
+   ein- und ausblendet (wie im Stand bis zum 24.11.). Der Verlauf ist die Fläche des Textblocks selbst: so ist die Ebene, die
+   der Browser dafür hält, genau so breit wie der Schirm. (Als ::before mit ±100vw war sie dreimal so breit – zehn solche
+   Ebenen kosteten am iPhone 13 rund 140 MB, und Safari nahm der Welt den Grafikkontext; 25.11.2026.)
+   Nur die Textebenen der Nachbarn bleiben bestehen (durchsichtig, einmal vorgezeichnet): kein spätes Bild beim Eintreten. */
+@media screen and (max-width: 720px), screen and (pointer: coarse) {
+  html.buehne .kapitel.nah .platz { visibility: visible; }
+}
+@media screen and (max-width: 720px) {
+  html.buehne .platz, html.buehne .kapitel.rechts .platz, html.buehne .kapitel.auftakt .platz { justify-content: stretch; align-content: end; padding: 0; }
+  html.buehne .kapitel.oben .platz { align-content: start; padding: 0; }
+  html.buehne .kapitel .text, html.buehne .kapitel.rechts .text, html.buehne .kapitel.auftakt .text {
+    max-width: none; margin: 0; border-radius: 0; text-align: center;
+    padding: 100px calc(44px + env(safe-area-inset-right)) calc(80px + env(safe-area-inset-bottom)) calc(44px + env(safe-area-inset-left));
+    background: linear-gradient(180deg, rgba(6, 9, 14, 0) 0, rgba(6, 9, 14, 0.14) 22px, rgba(6, 9, 14, 0.42) 52px, rgba(6, 9, 14, 0.7) 88px, rgba(6, 9, 14, 0.84) 132px, rgba(6, 9, 14, 0.9) 100%);
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.85), 0 1px 2px rgba(0, 0, 0, 0.8);
+  }
+  /* Im Auto steht der Text oben: derselbe Verlauf von der Oberkante herab */
+  html.buehne .kapitel.oben .text {
+    padding-top: calc(96px + env(safe-area-inset-top)); padding-bottom: 94px;
+    background: linear-gradient(0deg, rgba(6, 9, 14, 0) 0, rgba(6, 9, 14, 0.14) 20px, rgba(6, 9, 14, 0.42) 48px, rgba(6, 9, 14, 0.7) 82px, rgba(6, 9, 14, 0.84) 124px, rgba(6, 9, 14, 0.9) 100%);
+  }
+  /* Auftakt: unten wie die Kapitel, darunter der Hinweis „Scrollen“ */
+  html.buehne .kapitel.auftakt .text { padding-bottom: calc(138px + env(safe-area-inset-bottom)); }
+  html.buehne .hinweis { bottom: calc(80px + env(safe-area-inset-bottom)); }
+  html.buehne .spar { bottom: calc(132px + env(safe-area-inset-bottom)); }
+  /* Schluss (Logo vor dem Himmel): mittig, kein Band, der runde Hof bleibt */
+  html.buehne .kapitel.finale .platz { justify-content: center; align-content: center; padding: calc(72px + env(safe-area-inset-top)) calc(44px + env(safe-area-inset-right)) calc(80px + env(safe-area-inset-bottom)) calc(44px + env(safe-area-inset-left)); }
+  html.buehne .kapitel.finale .text { max-width: 100%; padding: 24px 12px; margin: -24px -12px; border-radius: 28px; background: radial-gradient(farthest-corner at 50% 60%, rgba(8, 10, 14, 0.66), rgba(8, 10, 14, 0.4) 40%, rgba(8, 10, 14, 0) 70%); }
+}
+@media screen and (max-width: 374px) { html.buehne .kapitel .text, html.buehne .kapitel.rechts .text, html.buehne .kapitel.auftakt .text { padding-left: calc(36px + env(safe-area-inset-left)); padding-right: calc(36px + env(safe-area-inset-right)); } html.buehne .kapitel.finale .platz { padding-left: calc(36px + env(safe-area-inset-left)); padding-right: calc(36px + env(safe-area-inset-right)); } }
+/* Bühne im flachen Querformat (Handy quer): wenig Höhe, die Tasten stehen im Kopf */
+@media screen and (max-height: 460px) and (orientation: landscape) {
+  html.buehne .platz { padding-top: calc(56px + env(safe-area-inset-top)); padding-bottom: calc(22px + env(safe-area-inset-bottom)); padding-right: calc(52px + env(safe-area-inset-right)); }
+  html.buehne .kapitel.oben .platz { padding-top: calc(60px + env(safe-area-inset-top)); }
+}
+/* … und ein kleines Handy quer (bis 720 px breit): das Band bleibt, aber flach */
+@media screen and (max-width: 720px) and (max-height: 460px) and (orientation: landscape) {
+  html.buehne .platz, html.buehne .kapitel.oben .platz { padding: 0; }
+  html.buehne .kapitel .text, html.buehne .kapitel.rechts .text, html.buehne .kapitel.auftakt .text { padding-top: 46px; padding-bottom: calc(20px + env(safe-area-inset-bottom)); padding-right: calc(52px + env(safe-area-inset-right)); }
+  html.buehne .kapitel.oben .text { padding-top: calc(58px + env(safe-area-inset-top)); padding-bottom: 46px; }
+  html.buehne .kapitel.finale .platz { padding: calc(56px + env(safe-area-inset-top)) calc(52px + env(safe-area-inset-right)) calc(18px + env(safe-area-inset-bottom)) calc(24px + env(safe-area-inset-left)); }
+}
+@media screen and (max-height: 300px) and (orientation: landscape) {
+  html.buehne .platz { padding-top: calc(62px + env(safe-area-inset-top)); padding-bottom: calc(10px + env(safe-area-inset-bottom)); }
+  html.buehne .kapitel h1 { font-size: clamp(22px, 4.2vw, 30px); }
+  html.buehne .kapitel h2 { font-size: clamp(18px, 3.2vw, 24px); margin-bottom: 4px; }
+  html.buehne .kapitel p { font-size: 13px; line-height: 1.38; }
+  html.buehne .finale-logo-rahmen { display: none; }
+}
+@media screen and (max-height: 230px) and (orientation: landscape) {
+  html.buehne .platz, html.buehne .kapitel.rechts .platz, html.buehne .kapitel.auftakt .platz, html.buehne .kapitel.finale .platz { align-content: start; }
+  html.buehne .kapitel p { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+}
+@media (prefers-reduced-motion: reduce) { html.buehne .kapitel .bild, html.buehne .kapitel.zeigt .bild, html.buehne .kapitel.live .bild { transition: none; } }
+
+/* ── Bewegung reduziert ── */
 @media (prefers-reduced-motion: reduce) {
-  .poster, canvas#welt { transition: none; }
+  .kapitel .bild { transition: none; }
   .hinweis::after { animation: none; }
+  html { scroll-behavior: auto; }
 }
 
-/* ── Ladebildschirm (nur HTML/CSS): sofort da, Wort für Wort, Ring des echten Logos = echter Fortschritt ── */
-.laden {
-  position: fixed; inset: 0; z-index: 50; display: grid; place-content: center; justify-items: center; gap: 26px;
-  padding: calc(24px + env(safe-area-inset-top)) calc(24px + env(safe-area-inset-right)) calc(24px + env(safe-area-inset-bottom)) calc(24px + env(safe-area-inset-left));
-  text-align: center;
-  /* Deckend (Luka 07.11.2026: beim Laden nichts von der Welt oder dem Standbild sehen). opacity 0.999 ändert keinen
-     einzigen Bildpunkt (unter einer 8-Bit-Stufe), aber der Browser zeichnet darunter alles vor: als „völlig verdeckt“
-     übersprang Chrome die Kapiteltexte, und sie kosteten beim ersten echten Erscheinen je 100 ms */
-  opacity: 0.999;
-  background: radial-gradient(120% 80% at 50% 42%, #10141a 0%, var(--asphalt) 62%, #07080a 100%);
-  transition: opacity 0.9s ease, visibility 0s linear 0.9s;
-  --laden-bogen: 0deg; --kx: 51.9%; --ky: 95.2%;
-}
-.laden-text { margin: 0; font-family: var(--titel); font-size: clamp(26px, 4.3vw, 50px); font-weight: 700; letter-spacing: -0.012em; line-height: 1.1; color: var(--licht); text-shadow: 0 2px 28px rgba(0, 0, 0, 0.85), 0 1px 3px rgba(0, 0, 0, 0.8); }
-.laden-zeile { display: block; }
-.laden-text .w { display: inline-block; opacity: 0; transform: translateY(10px); animation: laden-wort 0.6s ease-out forwards; }
-.laden-zeile:nth-child(1) .w:nth-child(1) { animation-delay: 0.1s; }
-.laden-zeile:nth-child(1) .w:nth-child(2) { animation-delay: 0.5s; }
-.laden-zeile:nth-child(2) .w:nth-child(1) { animation-delay: 1.2s; }
-.laden-zeile:nth-child(2) .w:nth-child(2) { animation-delay: 1.6s; }
-@keyframes laden-wort { to { opacity: 1; transform: none; } }
-.laden-logo { position: relative; width: min(40vmin, 230px); aspect-ratio: 900 / 893; }
-.laden-bild {
-  width: 100%; height: 100%; object-fit: contain; display: block;
-  /* dieselbe Maske wie das Finale-Logo: der Ring füllt sich von unten gegen den Uhrzeigersinn (--laden-bogen aus dem Fortschritt) */
-  -webkit-mask-image: conic-gradient(from 180deg at var(--mx) var(--my), #000 calc(var(--laden-bogen) - 8deg), rgba(0, 0, 0, 0) var(--laden-bogen));
-  mask-image: conic-gradient(from 180deg at var(--mx) var(--my), #000 calc(var(--laden-bogen) - 8deg), rgba(0, 0, 0, 0) var(--laden-bogen));
-}
-.laden-komet {
-  position: absolute; left: var(--kx); top: var(--ky); width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%;
-  background: #e6f9ff; box-shadow: 0 0 8px 3px rgba(39, 196, 232, 0.95), 0 0 26px 10px rgba(39, 196, 232, 0.45);
-  transition: left 0.25s linear, top 0.25s linear;
-}
-.laden-stand { margin: 0; display: flex; gap: 12px; align-items: baseline; font-size: 14px; color: var(--nebel); }
-.laden-prozent { font-family: var(--titel); font-variant-numeric: tabular-nums; color: var(--licht); font-weight: 600; min-width: 3.2em; text-align: right; }
-html.bereit .laden { opacity: 0; visibility: hidden; pointer-events: none; }
-/* Solange geladen wird, zeigt nur der Ladebildschirm Text: Kapiteltexte, Kapitelpunkte und Fuß bleiben unsichtbar (sonst lagen sie über den Ladewörtern).
-   Der Kopf (Logo, Satz, Überblick, Hauptaktion) und am Handy das Dock bleiben da – Luka 11.11.2026: das Wesentliche soll immer da sein */
-html.welt:not(.bereit) main, html.welt:not(.bereit) .kapitelnav, html.welt:not(.bereit) footer.fuss, html.welt:not(.bereit) .hinweis, html.welt:not(.bereit) .knopf { visibility: hidden; }
-.laden-ohne {
-  min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--rand); background: rgba(22, 24, 28, 0.9);
-  color: var(--licht); font: 600 14px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; cursor: pointer;
-}
-.laden-ohne[hidden] { display: none; }
-html.ruhig .laden, html.ohne-webgl .laden { display: none; }
-@media (prefers-reduced-motion: reduce) {
-  .laden { transition: none; }
-  .laden-text .w { animation: none; opacity: 1; transform: none; }
-  .laden-komet { display: none; transition: none; }
-}
-@media (max-width: 720px) {
-  .laden { gap: 20px; }
-  .laden-logo { width: min(44vmin, 190px); }
-}
-@media (max-height: 460px) and (orientation: landscape) {
-  /* Ladebildschirm im flachen Querformat (iPhone SE quer, 11.11.2026): Schriftzug, Logo und Stand waren zusammen höher als der
-     Schirm, der Schriftzug rutschte hinter die Tasten im Kopf. Eine Zeile, kleineres Logo, Platz für den Kopf. */
-  .laden { gap: 10px; padding-top: calc(60px + env(safe-area-inset-top)); padding-bottom: calc(10px + env(safe-area-inset-bottom)); }
-  .laden-text { font-size: clamp(20px, 3.4vw, 28px); }
-  .laden-zeile { display: inline; }
-  .laden-zeile + .laden-zeile { margin-left: 0.28em; }
-  .laden-logo { width: min(40vmin, 150px); }
-}
-
-/* ── Überblick: das Wesentliche auf einer Karte (Dialog über der Fahrt; ohne JavaScript ein Abschnitt am Seitenende) ── */
+/* ── Überblick: das Wesentliche auf einer Karte (Dialog über der Seite; ohne JavaScript ein Abschnitt am Seitenende) ── */
 dialog.ueberblick {
   box-sizing: border-box; padding: 0; margin: auto; inset: 0;
   width: min(780px, calc(100vw - 32px)); max-width: none; max-height: calc(100dvh - 32px);
@@ -401,7 +428,7 @@ dialog.ueberblick {
 dialog.ueberblick[open] { display: flex; flex-direction: column; animation: ue-auf 0.22s ease-out; }
 dialog.ueberblick::backdrop { background: rgba(6, 8, 10, 0.66); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 @keyframes ue-auf { from { opacity: 0; transform: translateY(10px); } }
-html.blick-offen { overflow: hidden; }   /* die Fahrt dahinter steht, solange der Überblick offen ist */
+html.blick-offen { overflow: hidden; }   /* die Seite dahinter steht, solange der Überblick offen ist */
 .ue-kopf { display: flex; align-items: center; gap: 12px; padding: 12px 14px 12px 22px; border-bottom: 1px solid var(--rand); flex: none; }
 .ue-kopf img { width: 36px; height: 36px; }
 .ue-kopf h2 { margin: 0; flex: 1; font-family: var(--titel); font-size: 18px; font-weight: 700; letter-spacing: 0; }
@@ -413,7 +440,7 @@ html.blick-offen { overflow: hidden; }   /* die Fahrt dahinter steht, solange de
 .ue-zu:hover { background: rgba(255, 255, 255, 0.12); }
 .ue-zu svg { width: 18px; height: 18px; }
 .ue-inhalt { overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; padding: 16px 22px calc(8px + env(safe-area-inset-bottom)); }
-.ue-satz { margin: 0 0 14px; font-size: 17px; color: #c9ced6; }
+.ue-satz { margin: 0 0 14px; font-size: 17px; color: var(--hell); }
 .ue-liste { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; }
 .ue-liste li { display: grid; grid-template-columns: 38px 1fr; gap: 12px; align-items: start; }
 .ue-liste svg { width: 38px; height: 38px; padding: 9px; border-radius: 11px; background: rgba(39, 196, 232, 0.12); color: var(--cyan); }
@@ -424,10 +451,19 @@ html.blick-offen { overflow: hidden; }   /* die Fahrt dahinter steht, solange de
 .ue-liste.schlicht li { display: block; }
 .ue-liste + .ue-liste.schlicht { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--rand); }   /* „Im Auto“ über die ganze Breite, direkt vor den zwei Aufnahmen */
 .ue-liste i { font-style: normal; font-size: 11px; font-weight: 600; color: var(--cyan); border: 1px solid rgba(39, 196, 232, 0.5); border-radius: 999px; padding: 1px 7px; margin-left: 6px; vertical-align: 1px; }
-.ue-bilder { margin: 16px 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+/* „Neu“ im Überblick (24.11.2026): was die App seit dem letzten Stand der Seite dazugelernt hat – ruhige Überschrift statt
+   Kasten (weiß, Titelschrift, ohne Cyan-Rahmen, ohne Leuchtpunkt, ohne Großbuchstaben); eine Haarlinie trennt die Listen */
+.ue-neu { margin: 0 0 20px; padding: 0 0 20px; border-bottom: 1px solid var(--rand); }
+.ue-neu h3 { margin: 0 0 12px; font-family: var(--titel); font-size: 17px; font-weight: 700; line-height: 1.25; letter-spacing: 0; color: var(--licht); }
+.ue-neu .ue-liste { gap: 12px 24px; }
+.ue-neu .ue-liste b { font-size: 14.5px; }
+.ue-neu .ue-liste span { font-size: 13.5px; }
+.ue-mehr { margin: 16px 0 0; font-size: 14.5px; }
+.ue-mehr a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; text-underline-offset: 3px; }
+.ue-bilder { margin: 10px 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .ue-bilder img { width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--rand); background: #0b0d0f; }
 .ue-bilder figcaption { grid-column: 1 / -1; font-size: 12.5px; color: var(--nebel); }
-.ue-preis { margin: 12px 0 0; font-size: 15px; line-height: 1.5; color: #c9ced6; }
+.ue-preis { margin: 12px 0 0; font-size: 15px; line-height: 1.5; color: var(--hell); }
 .ue-preis b { color: var(--licht); font-weight: 600; }
 .ue-aktion { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; margin-top: 14px; }
 .ue-aktion .stand { margin-top: 0; }
@@ -438,7 +474,7 @@ html.blick-offen { overflow: hidden; }   /* die Fahrt dahinter steht, solange de
 .ue-links a:hover { color: var(--licht); }
 /* Ohne JavaScript: der Überblick steht als ruhiger Abschnitt am Ende der Seite */
 html:not(.mit-js) dialog.ueberblick { display: block; position: relative; z-index: 2; margin: 24px auto 40px; max-height: none; }
-html:not(.mit-js) .ue-zu { display: none; }
+html:not(.mit-js) .ue-zu, html:not(.mit-js) .ue-mehr { display: none; }
 html:not(.mit-js) .ue-inhalt { overflow: visible; }
 @media (max-width: 620px) {
   dialog.ueberblick { width: 100vw; height: 100dvh; max-height: 100dvh; border: 0; border-radius: 0; }
@@ -462,7 +498,7 @@ html:not(.mit-js) .ue-inhalt { overflow: visible; }
 @media (max-width: 420px) { .ue-bilder { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { dialog.ueberblick[open] { animation: none; } }
 
-/* ── Dock (Handy hochkant): Überblick und Hauptaktion immer am unteren Rand, über der Fußzeile ── */
+/* ── Dock (Handy hochkant): Überblick und Hauptaktion immer am unteren Rand ── */
 .dock { display: none; }
 /* Hochkant IMMER, auch bei wenig Höhe (11.11.2026): mit eingeblendeten Browser-Leisten bleibt einem 320er-Handy weniger als
    461 px – dort fehlte das Dock, und die Tasten standen abgeschnitten im Kopf. Nur flaches Querformat nimmt die Tasten im Kopf. */
@@ -471,51 +507,58 @@ html:not(.mit-js) .ue-inhalt { overflow: visible; }
   .kapitel .aktion .taste { display: none; }
   .kapitel.auftakt .aktion { display: none; }
   .dock {
-    display: flex; justify-content: center; gap: 10px; position: fixed; left: 0; right: 0; z-index: 55; pointer-events: none;
-    bottom: 0; padding: 10px calc(16px + env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left));
-    background: rgba(11, 13, 15, 0.86); border-top: 1px solid var(--rand); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+    display: flex; justify-content: center; gap: 10px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 55; pointer-events: none;
+    padding: 26px calc(16px + env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left));
+    /* über der Fahrt schweben die Tasten auf einem weichen Verlauf (die Szene bleibt sichtbar), danach auf der Fläche der Seite */
+    background: linear-gradient(180deg, rgba(11, 13, 15, 0), rgba(11, 13, 15, 0.62) 46%, rgba(11, 13, 15, 0.86));
   }
   .dock .taste { pointer-events: auto; height: 44px; flex: 1 1 auto; max-width: 240px; padding: 0 12px; font-size: 14px; }
   .dock .taste::after { inset: 0; }
-  html:not(.welt) body { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
-  /* In der Welt schwebt das Dock ohne Leiste über der Fußzeile (die Welt bleibt sichtbar) */
-  html.welt .dock { bottom: calc(48px + env(safe-area-inset-bottom)); padding-top: 0; padding-bottom: 0; background: none; border: 0; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  footer.fuss { padding-bottom: calc(86px + env(safe-area-inset-bottom)); }   /* Platz für das Dock am Seitenende */
+  .fk-fuss .taste.haupt { display: none; }   /* steht im Dock */
 }
 
-/* Sehr schmale Handys: der Stand darf umbrechen; sehr niedrige quer: das Finale-Logo noch kleiner */
+/* Sehr schmale Handys: der Stand darf umbrechen */
 @media (max-width: 360px) { .stand { white-space: normal; } }
-@media (max-width: 340px) { html.welt .kapitel p { font-size: 13px !important; } html.welt .kapitel h1 { font-size: 20px; } }
-@media (max-width: 374px) { html.welt .kapitel p { font-size: 13.5px; } html.welt .kapitel, html.welt .kapitel.rechts, html.welt .kapitel.mitte, html.welt .kapitel.auftakt, html.welt .kapitel.finale { padding-left: calc(36px + env(safe-area-inset-left)); padding-right: calc(36px + env(safe-area-inset-right)); } }
-@media (max-height: 340px) and (orientation: landscape) { html.welt .finale-logo-rahmen { width: 46px; } }
-/* Kleine Handys hochkant (bis 600 px Höhe): das Finale-Logo kleiner, damit Überschrift, Satz mit Preisen und Stand zwischen Kopf und Dock passen */
-@media (max-width: 720px) and (max-height: 600px) and (orientation: portrait) { html.welt .finale-logo-rahmen { width: 84px; margin-bottom: 6px; } }
-
-/* Sehr wenig Höhe, hochkant (kleines Handy mit Browser-Leisten, 11.11.2026): Finale noch knapper, damit es über dem Dock bleibt */
-@media (max-width: 720px) and (max-height: 540px) and (orientation: portrait) {
-  html.welt .finale-logo-rahmen { width: 36px; margin-bottom: 0; }
-  html.welt .kapitel.finale h2 { font-size: 21px; }
-  html.welt .kapitel.finale p { font-size: 13px; line-height: 1.38; }
-  html.welt .kapitel.finale .stand { display: none; }   /* der Stand steht im Überblick */
-}
-/* Sehr wenig Höhe, quer (Android quer mit Adresszeile: rund 250 px, kleines Handy: rund 200 px; 11.11.2026): die Fußzeile lag
-   auf dem Absatz – ihre Links stehen auch im Überblick; Text kleiner und dichter unter den Kopf. */
-@media (max-height: 300px) and (orientation: landscape) {
-  html.welt footer.fuss { display: none; }
-  html.welt .kapitel { padding-top: calc(66px + env(safe-area-inset-top)); padding-bottom: calc(10px + env(safe-area-inset-bottom)); }
-  html.welt .kapitel h1 { font-size: clamp(22px, 4.2vw, 30px); }
-  html.welt .kapitel h2 { font-size: clamp(18px, 3.2vw, 24px); margin-bottom: 4px; }
-  html.welt .kapitel p { font-size: 13px; line-height: 1.38; }
-  html.welt .finale-logo-rahmen { display: none; }
-}
-@media (max-height: 260px) and (orientation: landscape) {
-  .laden-text { display: none; }
-  .laden { padding-top: calc(52px + env(safe-area-inset-top)); gap: 8px; }
-  .laden-logo { width: min(34vmin, 90px); }
-}
-/* Kleinstes Querformat (altes 320er-Handy quer, Adresszeile eingeblendet: rund 520 × 200 px): Kopf ohne Schriftzug, Absatz zwei Zeilen */
+@media (max-width: 374px) { .kapitel p { font-size: 13.5px; } .kapitel .text, .kapitel.rechts .text, .kapitel.auftakt .text { padding-left: calc(36px + env(safe-area-inset-left)); padding-right: calc(36px + env(safe-area-inset-right)); } }
+@media (max-width: 340px) { .kapitel p { font-size: 13px; } .kapitel h1 { font-size: 20px; } }
+/* Kleine Handys hochkant (bis 600 px Höhe): das Logo am Schluss kleiner, damit Überschrift, Satz mit Preisen und Stand zwischen Kopf und Dock passen */
+@media (max-width: 720px) and (max-height: 600px) and (orientation: portrait) { .finale-logo-rahmen { width: 84px; margin-bottom: 6px; } }
+@media (max-height: 340px) and (orientation: landscape) { .finale-logo-rahmen { width: 46px; } }
+/* Kleinstes Querformat (altes 320er-Handy quer, Adresszeile eingeblendet): Kopf ohne Schriftzug */
 @media (max-height: 460px) and (orientation: landscape) and (max-width: 560px) { header.kopf .marke b { display: none; } }
-@media (max-height: 230px) and (orientation: landscape) {
-  /* oben anfangen: was nicht passt, läuft unten hinaus statt hinter die Tasten im Kopf */
-  html.welt .kapitel, html.welt .kapitel.rechts, html.welt .kapitel.mitte, html.welt .kapitel.auftakt, html.welt .kapitel.finale, html.welt .kapitel.finale.phase-treffen { align-content: start; }
-  html.welt .kapitel p { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+
+/* ── Abschnitt „Was FREQ kann“: Rahmen (die Kacheln selbst: kacheln.css, lädt nach) ── */
+.funktionen {
+  position: relative; z-index: 2; background: var(--asphalt);
+  padding: 88px calc(20px + env(safe-area-inset-right)) 64px calc(20px + env(safe-area-inset-left));
+}
+.fk-kopf { max-width: 1120px; margin: 0 auto 28px; }
+.fk-kopf h2 { margin: 0 0 8px; font-family: var(--titel); font-size: clamp(23px, 3.2vw, 38px); font-weight: 700; letter-spacing: -0.01em; line-height: 1.12; }
+.fk-kopf p { margin: 0; max-width: 36rem; color: var(--nebel); font-size: clamp(15px, 1.2vw, 17px); }
+.fk-fuss { max-width: 1120px; margin: 24px auto 0; display: flex; flex-wrap: wrap; gap: 10px 12px; }
+.fk-fuss [hidden] { display: none; }
+.lade-zeichen { position: absolute; width: 0; height: 0; }
+.kacheln { list-style: none; margin: 0 auto; padding: 0; max-width: 1120px; }
+@media (max-width: 720px) { .funktionen { padding: 64px calc(12px + env(safe-area-inset-right)) 40px calc(12px + env(safe-area-inset-left)); } .fk-kopf { margin-bottom: 18px; padding: 0 4px; } }
+
+/* ── Drucken und Leseansicht: die Texte als gewöhnliches Dokument, je Abschnitt sein Bild ── */
+@media print {
+  :root { color-scheme: light; }
+  html, body { background: #fff; color: #111; }
+  canvas#welt, .kapitelnav, .dock, .hinweis, .spar, header.kopf .schalter, .fk-fuss, dialog.ueberblick .ue-zu, .springen { display: none !important; }
+  header.kopf { position: static; padding: 0 0 12px; }
+  .marke { color: #111; }
+  .kapitel { min-height: 0; break-inside: avoid; margin: 0 0 18px; }
+  .kapitel .bild, .kapitel.live .bild, .kapitel.nur-welt .bild { display: block; position: static; opacity: 1; height: auto; max-height: 70mm; margin: 0 0 8px; }
+  .kapitel .bild img { height: 70mm; }
+  .platz { min-height: 0 !important; display: block; padding: 0; }
+  .kapitel .text { background: none !important; text-shadow: none; margin: 0; padding: 0; max-width: none; text-align: left !important; }
+  .kapitel h1, .kapitel h2 { color: #111; font-size: 18pt; }
+  .kapitel p, .kapitel p b { color: #222; font-size: 11pt; }
+  .kapitel p.lang { display: block; } .kapitel p.kurz { display: none; }
+  .finale-logo-rahmen { width: 30mm; margin: 0 0 8px; }
+  .finale-logo { -webkit-mask-image: none; mask-image: none; }
+  .funktionen, footer.fuss { background: #fff; color: #111; }
+  footer.fuss a, .fk-kopf p { color: #333; }
 }

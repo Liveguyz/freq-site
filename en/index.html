@@ -19,179 +19,24 @@
 <link rel="alternate" hreflang="en" href="https://freqconvoi.com/en/">
 <link rel="icon" href="../bild/freq-touch.png">
 <link rel="apple-touch-icon" href="../bild/freq-touch.png">
-<link rel="preload" as="image" href="../welt/hero.webp" fetchpriority="high">
-<script>document.documentElement.classList.add('mit-js');</script>
+<link rel="preload" as="image" type="image/avif" href="../welt/szene/en-k0-hoch.avif?v=202611250932-e4c2f05" media="(max-aspect-ratio: 9/10)" fetchpriority="high">
+<link rel="preload" as="image" type="image/avif" href="../welt/szene/en-k0-quer.avif?v=202611250932-e4c2f05" media="(min-aspect-ratio: 901/1000)" fetchpriority="high">
 <link rel="preload" as="font" type="font/woff2" href="../schrift/saira-expanded-bold.woff2" crossorigin>
-<link rel="stylesheet" href="../welt/welt.css?v=202611242139-d7582c1">
-<link rel="stylesheet" href="../lade-kacheln.css?v=6">
-<link rel="stylesheet" href="../neu.css?v=2">
-<script defer src="../welt/welt.js?v=202611242139-d7582c1"></script>
-</head>
-<body data-basis="../">
-<a class="springen" href="#inhalt">Skip to content</a>
-<div class="poster" aria-hidden="true" style="background-image: url('../welt/hero.webp')"></div>
-<!-- Loading screen (HTML/CSS only, no WebGL, styled in lade-kacheln.css): a grid of tiles shows what FREQ can do while the world loads
-     (Luka, 19 Nov 2026). In the middle the real logo whose ring fills with the real progress. Every feature is a tile (.seite) in a slot (.kachel);
-     the small script below lets one tile fly out and a not yet shown one fly in (store: #kachel-lager). Only features that are built – wording as in the store text and the chapters. -->
-<div class="laden raster" id="ladeschirm">
-  <svg class="lade-zeichen" width="0" height="0" aria-hidden="true"><symbol id="l-mic" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></symbol><symbol id="l-fuel" viewBox="0 0 24 24"><path d="M4 20V6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v14M3 20h12M6.5 8h5M14 11h1.5a1.5 1.5 0 0 1 1.5 1.5V16a1.5 1.5 0 0 0 3 0V9l-2.5-2.5"/></symbol><symbol id="l-park" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 16.5v-9h3.2a2.8 2.8 0 0 1 0 5.6H9.5"/></symbol><symbol id="l-food" viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2M7 2v20M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></symbol><symbol id="l-wash" viewBox="0 0 24 24"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/></symbol><symbol id="l-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></symbol><symbol id="l-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol><symbol id="l-car" viewBox="0 0 24 24"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></symbol><symbol id="l-carf" viewBox="0 0 24 24"><path d="m21 8-2 2-1.5-3.7A2 2 0 0 0 15.65 5H8.4a2 2 0 0 0-1.9 1.3L5 10 3 8M7 14h.01M17 14h.01"/><rect x="3" y="10" width="18" height="8" rx="2"/><path d="M5 18v2M19 18v2"/></symbol><symbol id="l-bike" viewBox="0 0 24 24"><circle cx="5.5" cy="16.5" r="3.5"/><circle cx="18.5" cy="16.5" r="3.5"/><path d="M5.5 16.5 9 10h5l4.5 6.5M9 10 7.5 7H5M14 10l1.5-3H19"/></symbol><symbol id="l-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></symbol><symbol id="l-home" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></symbol><symbol id="l-bag" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol><symbol id="l-dl" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></symbol><symbol id="l-share" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></symbol><symbol id="l-eyeoff" viewBox="0 0 24 24"><path d="M9.9 4.24A9.1 9.1 0 0 1 12 4c6.5 0 10 8 10 8a13.2 13.2 0 0 1-1.67 2.68M6.6 6.6A13.5 13.5 0 0 0 2 12s3.5 8 10 8a9.7 9.7 0 0 0 5.4-1.6M2 2l20 20M14.1 14.1a3 3 0 0 1-4.2-4.2"/></symbol><symbol id="l-warn" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3M12 9v4M12 17h.01"/></symbol><symbol id="l-horn" viewBox="0 0 24 24"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></symbol><symbol id="l-coffee" viewBox="0 0 24 24"><path d="M17 8h1a4 4 0 1 1 0 8h-1M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4ZM6 2v2M10 2v2M14 2v2"/></symbol><symbol id="l-crown" viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 10H5z"/></symbol><symbol id="l-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol><symbol id="l-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol><symbol id="l-cam" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="12" rx="2.5"/><circle cx="12" cy="13" r="3.2"/><path d="M8 7l1.3-2.5h5.4L16 7"/></symbol><symbol id="l-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol><symbol id="l-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol><symbol id="l-vol" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5zM15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></symbol><symbol id="l-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></symbol><symbol id="l-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="l-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 5h13l-2.5 3.5L18 12H5"/></symbol><symbol id="l-cone" viewBox="0 0 24 24"><path d="M9.3 6.2 12 2l2.7 4.2M7.5 13h9M5.6 18h12.8M4 22h16M9.3 6.2 5.6 18M14.7 6.2 18.4 18"/></symbol><symbol id="l-usr" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></symbol><symbol id="l-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol><symbol id="l-m-r" viewBox="0 0 24 24"><path d="M7 21V12a4 4 0 0 1 4-4h8M15 3.5 19.5 8 15 12.5"/></symbol><symbol id="l-m-l" viewBox="0 0 24 24"><path d="M17 21V12a4 4 0 0 0-4-4H5M9 3.5 4.5 8 9 12.5"/></symbol><symbol id="l-m-u" viewBox="0 0 24 24"><path d="M12 21V4M6 10l6-6 6 6"/></symbol><symbol id="l-m-sr" viewBox="0 0 24 24"><path d="M9 21v-7.5c0-1.6.6-2.6 1.8-3.8L17 3.5M10.5 3.5H17V10"/></symbol></svg>
-  <div class="kacheln" id="kacheln" role="group" aria-label="What FREQ can do">
-    <div class="kachel k-mitte">
-      <div class="mitte">
-        <!-- id="laden" sitzt am Logo, nicht am ganzen Schirm: welt.js schreibt dorthin bei jedem Prozent den Fortschritt (--laden-bogen),
-             und der Browser rechnet dann nur das Logo neu statt aller Kacheln -->
-        <div class="laden-logo" id="laden" aria-hidden="true">
-          <picture class="laden-geist"><source srcset="../bild/freq-logo.webp" type="image/webp"><img src="../bild/freq-logo.png" alt="" width="900" height="893"></picture>
-          <picture><source srcset="../bild/freq-logo.webp" type="image/webp"><img class="laden-bild" src="../bild/freq-logo.png" alt="" width="900" height="893" fetchpriority="high"></picture>
-          <span class="laden-komet"></span>
-        </div>
-        <p class="laden-text" aria-hidden="true"><span class="laden-zeile"><span class="w">Drive</span> <span class="w">together.</span></span><span class="laden-zeile"><span class="w">Talk</span> <span class="w">together.</span></span></p>
-        <p class="laden-stand"><span class="laden-prozent" id="laden-prozent" aria-hidden="true">0 %</span><span class="laden-was" id="laden-was" role="status">Loading the world …</span></p>
-      </div>
-    </div>
-    <div class="kachel k-a">
-      <div class="seite an"><div class="szene k k1" aria-hidden="true"><div class="b s-co"><i class="rt"></i><i class="pk"></i><i class="mk m1"><span class="av sp">A</span>Anna</i><i class="mk m2"><span class="av">B</span>Ben</i><i class="dk"><span><svg class="ic" viewBox="0 0 24 24"><use href="#l-vol"/></svg><i class="sl"></i></span><span>Leave</span><i class="mi"><svg class="ic" viewBox="0 0 24 24"><use href="#l-mic"/></svg></i></i></div></div><p class="wort"><b>Convoy with radio</b><span>Everyone on one map, one open channel.</span></p></div>
-    </div>
-    <div class="kachel k-b">
-      <div class="seite an"><div class="szene k k2" aria-hidden="true"><div class="b s-bl"><i class="rt"></i><i class="cm">50</i><i class="pk"></i><i class="tc"><b>48</b><small class="r"><span class="zw"><span class="zs z3"><em>500 m</em><em>300 m</em><em>100 m</em></span></span></small><i class="ls">50</i></i></div></div><p class="wort"><b>Speed cameras, where legal</b><span>Warnings in many European countries.</span></p></div>
-    </div>
-    <div class="kachel k-c">
-      <div class="seite an"><div class="szene" aria-hidden="true"><div class="b s-st"><i class="st"><span>L</span><i class="pg"></i><span>R</span><i class="pg r"></i></i><i class="mk"><span class="av sp">A</span>Anna</i></div></div><p class="wort"><b>Stereo music and radio</b><span>Over Bluetooth. It dips briefly when someone talks.</span></p></div>
-    </div>
-    <div class="kachel k-d">
-      <div class="seite an"><div class="szene" aria-hidden="true"><div class="b s-pr"><div class="li"><div class="ka"><span><i class="ik f"><svg class="ic" viewBox="0 0 24 24"><use href="#l-fuel"/></svg></i>Fuel</span><span><i class="ik pa"><svg class="ic" viewBox="0 0 24 24"><use href="#l-park"/></svg></i>Parking</span><span><i class="ik fo"><svg class="ic" viewBox="0 0 24 24"><use href="#l-food"/></svg></i>Food</span><span><i class="ik ws"><svg class="ic" viewBox="0 0 24 24"><use href="#l-wash"/></svg></i>Car wash</span></div><div class="zl"><i class="ik f"><svg class="ic" viewBox="0 0 24 24"><use href="#l-fuel"/></svg></i><div class="tx"><p>Gleisdorf</p><small>6 km · +1 min</small></div><div class="re"><b>1.489</b><small>Diesel</small></div></div><div class="zl"><i class="ik e"><svg class="ic" viewBox="0 0 24 24"><use href="#l-zap"/></svg></i><div class="tx"><p>Fürstenfeld</p><small>9 km · +2 min</small></div><div class="re"><b>150 kW</b><small>Power</small></div></div></div></div></div><p class="wort"><b>Fuel, parking, food</b><span>As a stop for you or the whole convoy.</span></p></div>
-    </div>
-    <div class="kachel k-e">
-      <div class="seite an"><div class="szene sw0" aria-hidden="true"><div class="b s-au"><i class="dp"><i class="lb"><span>11:29</span><img src="../bild/freq-mark.webp" alt="" width="30" height="30"><i></i></i><i class="rt"></i><i class="pk"></i><div class="nc cd"><svg class="mv" viewBox="0 0 24 24"><use href="#l-m-r"/></svg><div><p class="d"><span class="zw"><span class="zs z3"><em>800 m</em><em>500 m</em><em>200 m</em></span></span></p><p class="n">Graz-Ost</p></div></div><i class="tc"><b>96</b><small>km/h</small><i class="ls">100</i></i></i></div></div><p class="wort"><b>CarPlay and Android Auto <i>Premium</i></b><span>Built for the car display: map, convoy, radio.</span></p></div>
-    </div>
-    <div class="kachel k-f">
-      <div class="seite an"><div class="szene k k1" aria-hidden="true"><div class="b s-gr"><i class="rt"></i><i class="pk"></i><div class="cd wa"><svg class="ic o" viewBox="0 0 24 24"><use href="#l-carf"/></svg><div class="tx"><p><b>Border: ~20 min</b></p><small>Spielfeld ·  <span class="zw"><span class="zs z3"><em>2.0 km</em><em>1.5 km</em><em>1.0 km</em></span></span> to go</small></div></div><div class="cd vg"><div class="tx"><p><b>Slovenia</b></p><small>E-vignette</small></div><small>I have it</small><i class="sw an t"></i></div></div></div><p class="wort"><b>Borders, vignettes, zones</b><span>Notices on the way – ZTL in Italy too.</span></p></div>
-    </div>
-    <div class="kachel k-g">
-      <div class="seite an"><div class="szene" aria-hidden="true"><div class="b s-of"><div class="li"><div class="zl"><i class="fl"></i><div class="tx"><p>Austria</p><small>Light · 118 MB</small></div><span class="x"><i class="bk"></i><svg class="ic ok" viewBox="0 0 24 24"><use href="#l-check"/></svg></span></div><div class="zl"><i class="fl it"></i><div class="tx"><p>Italy</p><small>Light · 286 MB</small></div><span class="cp"><svg class="ic" viewBox="0 0 24 24"><use href="#l-dl"/></svg></span></div><div class="zl"><i class="fl de"></i><div class="tx"><p>Germany</p><small>Light · 412 MB</small></div><span class="cp"><svg class="ic" viewBox="0 0 24 24"><use href="#l-dl"/></svg></span></div></div></div></div><p class="wort"><b>Offline maps</b><span>Download per country. One is free.</span></p></div>
-    </div>
-    <div class="kachel k-h">
-      <div class="seite an"><div class="szene k k2" aria-hidden="true"><div class="b s-me"><i class="dt d1"></i><i class="dt d2"></i><i class="pn"><svg class="ic" viewBox="0 0 24 24"><use href="#l-car"/></svg></i><i class="bs"><p>Cars &amp; Coffee Graz</p><small>Today · 12 km · <span class="zw"><span class="zs z3"><em>3 on the way</em><em>4 on the way</em><em>5 on the way</em></span></span></small></i></div></div><p class="wort"><b>Car meets near you</b><span>Meets from scene calendars. Not everywhere yet.</span></p></div>
-    </div>
-    <div class="kachel k-i"></div>
-    <div class="kachel k-j"></div>
-    <div class="kachel k-k"></div>
-    <div class="kachel k-l"></div>
-    <div class="kachel k-n"></div>
-    <div class="lager" id="kachel-lager" hidden>
-      <div class="seite an"><div class="szene k k3" aria-hidden="true"><div class="b s-gb"><svg class="ro" viewBox="0 0 150 220"><path class="ab" d="M75 220V150C75 120 50 105 40 60"/><path class="ca" d="M75 220V150C75 120 100 105 110 60V-20"/><path d="M75 220V150C75 120 100 105 110 60V-20"/></svg><i class="pk"></i><div class="nc cd"><div><svg class="mv" viewBox="0 0 24 24"><use href="#l-m-sr"/></svg><div><p class="d"><span class="zw"><span class="zs z3"><em>300 m</em><em>200 m</em><em>100 m</em></span></span><span class="sh">A9</span></p><p class="n">Towards Graz</p></div></div><div class="da"><svg class="mv" viewBox="0 0 24 24"><use href="#l-m-l"/></svg>Then</div></div></div></div><p class="wort"><b>Forks and “Then …” <i>New</i></b><span>“Keep slightly right” – and what comes next.</span></p></div>
-      <div class="seite an"><div class="szene k k1" aria-hidden="true"><div class="b s-vw"><i class="ab"></i><i class="rt"></i><i class="pk"></i><div class="cd"><p>Straight on: A9</p><small>Vignette required</small><i></i></div></div></div><p class="wort"><b>Vignette watch <i>New</i></b><span>No vignette? A warning before the slip road.</span></p></div>
-      <div class="seite an"><div class="szene sw0" aria-hidden="true"><div class="b s-ew"><div class="li"><div class="kp"><span class="ti">What do you drive?</span></div><div class="wl"><span><svg class="ic" viewBox="0 0 24 24"><use href="#l-car"/></svg>Car</span><span><svg class="ic" viewBox="0 0 24 24"><use href="#l-bike"/></svg>Motorcycle</span></div><div class="fa"><span style="background:#2cb8e3"></span><span style="background:#ff453a"></span><span style="background:#30d158"></span><span style="background:#bf5af2"></span><span style="background:#fff"></span></div></div></div></div><p class="wort"><b>What do you drive? <i>New</i></b><span>Your marker on the map – change it any time.</span></p></div>
-      <div class="seite an"><div class="szene k k2" aria-hidden="true"><div class="b s-fu"><i class="mr"><span class="av sp">M<svg class="ic kr" viewBox="0 0 24 24"><use href="#l-crown"/></svg></span><span class="av sp">A</span><span class="av sp">B</span><span class="av">C</span></i><i class="dk"><i class="mi"><svg class="ic" viewBox="0 0 24 24"><use href="#l-mic"/></svg></i><span>Mic on</span></i></div></div><p class="wort"><b>Radio without a button</b><span>Just talk. Nothing is recorded.</span></p></div>
-      <div class="seite an"><div class="szene k k3" aria-hidden="true"><div class="b s-te"><i class="rt"></i><i class="pk"></i><i class="tc"><b><span class="zw"><span class="zs z3"><em>100</em><em>84</em><em>70</em></span></span></b><small>km/h</small><i class="ls"><span>100</span><span>70</span></i></i><i class="vs">70 in 400 m</i></div></div><p class="wort"><b>Speed limit at a glance</b><span>With a preview: “70 in 400 m”.</span></p></div>
-      <div class="seite an"><div class="szene k k1" aria-hidden="true"><div class="b s-na"><svg class="ro" viewBox="0 0 150 60"><path class="ca" d="M75 60V34Q75 26 83 26H160"/><path d="M75 60V34Q75 26 83 26H160"/></svg><i class="pk"></i><div class="nc cd"><svg class="mv" viewBox="0 0 24 24"><use href="#l-m-r"/></svg><div><p class="d"><span class="zw"><span class="zs z3"><em>500 m</em><em>300 m</em><em>100 m</em></span></span><span class="sh">A2</span></p><p class="n">Graz-Ost</p></div><div class="sp"><svg class="mv" viewBox="0 0 24 24"><use href="#l-m-u"/></svg><svg class="mv" viewBox="0 0 24 24"><use href="#l-m-u"/></svg><svg class="mv" viewBox="0 0 24 24"><use href="#l-m-r"/></svg><svg class="mv" viewBox="0 0 24 24"><use href="#l-m-r"/></svg></div></div></div></div><p class="wort"><b>Navigation with a voice</b><span>Clear guidance, lane arrows, up to three routes.</span></p></div>
-      <div class="seite an"><div class="szene" aria-hidden="true"><div class="b s-af"><div class="li"><div class="kp"><span class="ti">Planned rides</span><span class="kn"><svg class="ic" viewBox="0 0 24 24"><use href="#l-plus"/></svg>Plan</span></div><div class="af"><p>Saturday ride</p><small>Sat 10:00 · Hauptplatz, Graz</small><div class="zu"><span class="av">A</span><span class="av">B</span><span class="av">C</span><span class="zw"><span class="zs z3"><em>3 going</em><em>4 going</em><em>5 going</em></span></span></div></div></div></div></div><p class="wort"><b>Plan drives <i>Premium</i></b><span>Date, meeting point, destination – FREQ reminds you to leave.</span></p></div>
-      <div class="seite an"><div class="szene k k2" aria-hidden="true"><div class="b s-mo"><i class="rt"></i><i class="pk"></i><i class="tc"><b>84</b><small><i class="nl"></i><span class="zw"><span class="zs z3"><em>32°</em><em>18°</em><em>8°</em></span></span></small><i class="ls">100</i></i><i class="gk g1"><svg class="ic" viewBox="0 0 24 24"><use href="#l-vol"/></svg></i><i class="gk g2"><svg class="ic" viewBox="0 0 24 24"><use href="#l-horn"/></svg></i></div></div><p class="wort"><b>Motorcycle mode</b><span>Big buttons for gloves, lean angle on the speedo.</span></p></div>
-      <div class="seite an"><div class="szene" aria-hidden="true"><div class="b s-la"><div class="li"><div class="zl"><i class="ik e"><svg class="ic" viewBox="0 0 24 24"><use href="#l-zap"/></svg></i><div class="tx"><p>Gleisdorf fast charger</p><small><b><span class="zw"><span class="zs z2"><em>2 of 4 free</em><em>3 of 4 free</em></span></span></b> · 150 kW</small></div></div><div class="zl"><i class="ik e"><svg class="ic" viewBox="0 0 24 24"><use href="#l-zap"/></svg></i><div class="tx"><p>Lieboch charging park</p><small><b>1 of 2 free</b> · 50 kW</small></div></div><div class="zl"><i class="ik e"><svg class="ic" viewBox="0 0 24 24"><use href="#l-zap"/></svg></i><div class="tx"><p>Söding charger</p><small>unknown · 22 kW</small></div></div></div></div></div><p class="wort"><b>Charging stations</b><span>Free or occupied, in the first countries.</span></p></div>
-      <div class="seite an"><div class="szene sw0" aria-hidden="true"><div class="b s-sp"><i class="uh">09:41</i><div class="cd"><svg class="mv" viewBox="0 0 24 24"><use href="#l-m-r"/></svg><div><p><span class="zw"><span class="zs z3"><em>300 m</em><em>200 m</em><em>100 m</em></span></span></p><small>Graz-Ost</small></div><div class="re"><b>11:54</b><small>Arrival</small></div><img src="../bild/freq-mark.webp" alt="" width="30" height="30"></div></div></div><p class="wort"><b>On your lock screen</b><span>Next turn and arrival at a glance.</span></p></div>
-      <div class="seite an"><div class="szene k k3" aria-hidden="true"><div class="b s-sa"><i class="rt"></i><i class="pk"></i><div class="hk cd wa"><p><svg class="ic o" viewBox="0 0 24 24"><use href="#l-carf"/></svg>Traffic jam +15 min</p><small>A2 before Graz-Ost</small><small>ASFINAG</small><div><span class="kn to">OK</span><span class="kn">Avoid</span></div></div></div></div><p class="wort"><b>Jams and closures</b><span>In Austria, coloured on your route.</span></p></div>
-      <div class="seite an"><div class="szene" aria-hidden="true"><div class="b s-we"><div class="li"><div class="zl"><span>Send crash reports</span><i class="sw"></i></div><div class="zl"><span>Share my hard braking</span><i class="sw"></i></div><div class="zl"><span>Learn routes</span><i class="sw an"></i></div></div></div></div><p class="wort"><b>No ads</b><span>No tracking, no selling of data.</span></p></div>
-      <div class="seite an"><div class="szene" aria-hidden="true"><div class="b s-gs"><div class="li"><div class="kp"><b class="ti">Convoy</b><small><span class="zw"><span class="zs z3"><em>13</em><em>14</em><em>15</em></span></span> in the convoy · for 1 h 2 min</small></div><div class="gr"><span class="av on">M<svg class="ic kr" viewBox="0 0 24 24"><use href="#l-crown"/></svg></span><span class="av on">A</span><span class="av on">B</span><span class="av on">C</span><span class="av on">D</span><span class="av on">E</span><span class="av on">F</span><span class="av on">G</span><span class="av on">H</span><span class="av on">J</span><span class="av on">K</span><span class="av on">L</span><span class="av on">N</span><span class="av on">P</span><span class="av on">R</span></div></div></div></div><p class="wort"><b>Large convoys <i>Premium</i></b><span>Up to 15 cars. Riders need no subscription.</span></p></div>
-      <div class="seite an"><div class="szene" aria-hidden="true"><div class="b s-fb"><div class="li"><div class="sk"><svg viewBox="0 0 44 44"><path d="M4 40C16 38 6 22 20 20S30 8 40 4"/></svg><i></i></div><div class="tx"><p>Trip finished</p><small>Distance <b>86 km</b></small><small>Time <b>1 h 12 min</b></small><span class="kn"><svg class="ic" viewBox="0 0 24 24"><use href="#l-share"/></svg>Share</span></div></div></div></div><p class="wort"><b>Trip finished</b><span>Distance, time and your track – as an image to share.</span></p></div>
-      <div class="seite an"><div class="szene" aria-hidden="true"><div class="b s-wa"><div class="li"><div class="kp"><span class="cp">All</span><span class="cp an">Self-service</span><span class="cp">Automatic</span></div><div class="zl"><i class="ik ws"><svg class="ic" viewBox="0 0 24 24"><use href="#l-wash"/></svg></i><div class="tx"><p>Weiz self-service</p><small>in 4 km · +2 min</small></div></div><div class="zl"><i class="ik ws"><svg class="ic" viewBox="0 0 24 24"><use href="#l-wash"/></svg></i><div class="tx"><p>Lieboch wash bay</p><small>in 11 km · +4 min</small></div></div><div class="zl"><i class="ik ws"><svg class="ic" viewBox="0 0 24 24"><use href="#l-wash"/></svg></i><div class="tx"><p>Söding wash bay</p><small>in 19 km · +6 min</small></div></div></div></div></div><p class="wort"><b>Find a car wash</b><span>Self-service or automatic – as a convoy stop too.</span></p></div>
-      <div class="seite an"><div class="szene" aria-hidden="true"><div class="b s-ss"><div class="li"><div class="su"><svg class="ic" viewBox="0 0 24 24"><use href="#l-search"/></svg><span class="x"><span>Where to?</span><span>Hauptplatz, Graz</span></span><svg class="ic" viewBox="0 0 24 24"><use href="#l-mic"/></svg></div><div class="fv"><span><svg class="ic" viewBox="0 0 24 24"><use href="#l-home"/></svg>Home</span><span><svg class="ic" viewBox="0 0 24 24"><use href="#l-bag"/></svg>Work</span><span><svg class="ic" viewBox="0 0 24 24"><use href="#l-star"/></svg>Schöckl</span></div></div></div></div><p class="wort"><b>Voice search and favourites</b><span>Just say your destination. Recognised on your phone.</span></p></div>
-      <div class="seite an"><div class="szene k k2" aria-hidden="true"><div class="b s-ps"><svg class="ro" viewBox="0 0 150 220"><path class="ca" d="M30 220V196L58 180 22 162 58 144 30 128V-20"/><path d="M30 220V196L58 180 22 162 58 144 30 128V-20"/><path class="zu" d="M58 180 22 162 58 144"/></svg><div class="hk cd wa"><p><svg class="ic o" viewBox="0 0 24 24"><use href="#l-warn"/></svg>Timmelsjoch: closed</p><small>Province of Bolzano</small><div><span class="kn">Avoid</span></div></div></div></div><p class="wort"><b>Pass closures</b><span>Checked before you go. Live in South Tyrol.</span></p></div>
-      <div class="seite an"><div class="szene" aria-hidden="true"><div class="b s-un"><div class="li"><div class="zl"><span class="av on">M</span><div class="tx"><p>Mia (you)</p><small class="x"><span>Online</span><span>Offline</span></small></div></div><div class="zl"><div class="tx"><p>Invisible</p><small>Friends see you offline</small></div><i class="sw an t"></i></div></div></div></div><p class="wort"><b>Invisible</b><span>One switch, and friends see you offline.</span></p></div>
-      <div class="seite an"><div class="szene k k3" aria-hidden="true"><div class="b s-an"><i class="zf"><svg class="ic" viewBox="0 0 24 24"><use href="#l-flag"/></svg></i><span class="av a1">A</span><span class="av a2">B</span><span class="av a3">C</span><i class="bs"><b>Everyone there ~14:35</b><small><span class="zw"><span class="zs z2"><em>3 of 5 arrived</em><em>4 of 5 arrived</em></span></span></small></i></div></div><p class="wort"><b>Arrive together</b><span>One arrival time for the whole convoy.</span></p></div>
-      <div class="seite an"><div class="szene k k1" aria-hidden="true"><div class="b s-ab"><i class="rt"></i><i class="cm">80</i><i class="pk"></i><i class="tc"><b>78</b><small>Ø <span class="zw"><span class="zs z3"><em>79</em><em>81</em><em>80</em></span></span></small><i class="ls">80</i></i></div></div><p class="wort"><b>Average speed zones</b><span>Your average, live. Official data in Austria.</span></p></div>
-      <div class="seite an"><div class="szene" aria-hidden="true"><div class="b s-ru"><div class="li"><div class="to"><svg class="ic" viewBox="0 0 24 24"><use href="#l-mic"/></svg><span class="x"><span>„Anna!“</span><span>Calling Anna</span></span></div><div class="zl"><span class="av on">A</span><div class="tx"><p>Anna</p><small>On the radio</small></div><span class="kn">Call</span></div><div class="zl"><span class="av on">B</span><div class="tx"><p>Ben</p><small>On the radio</small></div><span class="kn">Call</span></div><div class="zl"><span class="av">C</span><div class="tx"><p>Cem</p><small>No radio</small></div></div></div></div></div><p class="wort"><b>Call by voice</b><span>“Anna!” – recognised only on your phone.</span></p></div>
-      <div class="seite an"><div class="szene k k2" aria-hidden="true"><div class="b s-pa"><i class="rt"></i><i class="pk"></i><div class="hk cd"><p>On the road for 2 h. Time for a break?</p><div><span class="kn to">Later</span><span class="kn">Show</span></div></div></div></div><p class="wort"><b>Break reminder</b><span>After two hours, quietly.</span></p></div>
-      <div class="seite an"><div class="szene k" aria-hidden="true"><div class="b s-3d"><i class="eb"><i class="rt"></i></i><i class="hs h4"></i><i class="hs h1"></i><i class="hs h3"></i><i class="hs h2"></i><i class="pk"></i></div></div><p class="wort"><b>3D map</b><span>Light or dark, as you like.</span></p></div>
-      <div class="seite an"><div class="szene" aria-hidden="true"><div class="b s-ml"><div class="li"><div class="kp"><span class="ti">Report</span></div><div class="ka"><span><i class="ik" style="background:#d0021b"><svg class="ic" viewBox="0 0 24 24"><use href="#l-cam"/></svg></i>Camera</span><span><i class="ik" style="background:#2457d6"><svg class="ic" viewBox="0 0 24 24"><use href="#l-shield"/></svg></i>Police</span><span><i class="ik" style="background:#b85c00"><svg class="ic" viewBox="0 0 24 24"><use href="#l-carf"/></svg></i>Jam</span><span><i class="ik" style="background:#8a6100"><svg class="ic" viewBox="0 0 24 24"><use href="#l-cone"/></svg></i>Roadworks</span></div><small class="hi">Hold and say “jam”.</small></div></div></div><p class="wort"><b>Report with one tap</b><span>Jams, roadworks, accidents – by voice too.</span></p></div>
-      <div class="seite an"><div class="szene k k1" aria-hidden="true"><div class="b s-zu"><i class="zo"><svg class="ic" viewBox="0 0 24 24"><use href="#l-home"/></svg></i><i class="pk"></i><i class="pl"><svg class="ic" viewBox="0 0 24 24"><use href="#l-eyeoff"/></svg>Home · hidden from friends</i></div></div><p class="wort"><b>Home zone</b><span>There, friends don’t see your position.</span></p></div>
-      <div class="seite an"><div class="szene" aria-hidden="true"><div class="b s-ei"><div class="li"><div class="kp"><span class="ti">Your code</span></div><div class="co"><b>K7M4XQ</b><span class="kn"><svg class="ic" viewBox="0 0 24 24"><use href="#l-share"/></svg>Share</span></div><div class="zl"><div class="tx"><p>Nearby</p><small>Both search at once</small></div><span class="kn to">Start search</span></div></div></div></div><p class="wort"><b>Invite by link</b><span>Or just hold your phones side by side.</span></p></div>
-    </div>
-  </div>
-  <button class="laden-ohne" id="laden-ohne" type="button" hidden>View without 3D</button>
-</div>
 <script>
-// Kacheln im Ladebildschirm (Luka 20.11.2026): jede Funktion ist eine Kachel (.seite) in einem Platz (.kachel). Kachel für Kachel
-// fliegt eine hinaus und eine noch nicht gezeigte herein, bis alle gezeigt wurden – dann von vorn. Wie viele Plätze zu sehen sind,
-// sagt das Raster (CSS: Handy wenige, Vollbild viele). Steht bewusst hier und nicht im Welt-Bündel: es läuft, bevor die Welt geladen ist.
-(() => {
-  const html = document.documentElement, laden = document.getElementById('ladeschirm'), raster = document.getElementById('kacheln'), lager = document.getElementById('kachel-lager');
-  if (!laden || !raster || !lager) return;
-  const start = performance.now();
-  const ruhig = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const plaetze = Array.from(raster.querySelectorAll('.kachel:not(.k-mitte)'));
-  // Warteschlange: was noch nicht gezeigt wurde, in der Reihenfolge der Wichtigkeit (das Lager steht schon so im HTML)
-  const alle = plaetze.map((k) => k.querySelector('.seite')).filter(Boolean).concat(Array.from(lager.children));
-  let warte = Array.from(lager.children);
-  const naechste = () => {
-    if (!warte.length) warte = alle.filter((s) => s.parentNode === lager);   // alle gezeigt: von vorn, ohne die, die gerade zu sehen sind
-    return warte.shift() || null;
-  };
-  const einlagern = (s) => { s.classList.remove('rein', 'raus', 'erst'); lager.appendChild(s); };
-  // Plätze füllen: ein sichtbarer leerer Platz bekommt die nächste Kachel; ein ausgeblendeter (Drehen, kleineres Fenster) gibt seine
-  // Kachel zurück nach vorn in die Warteschlange – nichts geht verloren
-  let sichtbar = [], gestartet = false;
-  const verteilen = () => {
-    const neu = plaetze.filter((k) => getComputedStyle(k).display !== 'none');
-    if (neu.length === sichtbar.length && neu.every((k, i) => k === sichtbar[i])) return;
-    sichtbar = neu;
-    const zurueck = [];
-    for (const k of plaetze) if (!neu.includes(k)) for (const s of Array.from(k.children)) { einlagern(s); if (!s.classList.contains('raus')) zurueck.push(s); }
-    warte = zurueck.concat(warte.filter((s) => !zurueck.includes(s)));
-    for (const k of neu) if (!k.querySelector('.seite:not(.raus)')) {
-      const s = naechste(); if (!s) continue;
-      s.classList.add(gestartet ? 'rein' : 'erst'); k.appendChild(s);
-    }
-  };
-  verteilen();
-  gestartet = true;
-  window.addEventListener('resize', verteilen);
-  // Wechsel: ab 2,8 s reihum ein Platz (Sprungweite teilerfremd: nie zwei Nachbarn hintereinander). Die alte Kachel fliegt hinaus und
-  // kommt danach ins Lager (dort steht alles still), die neue fliegt herein. Nur Klassen an diesen zwei Kacheln, nie am Raster.
-  let zug = 0, takt = 0, aus = false;
-  const wechsel = () => {
-    if (aus) return;
-    const n = sichtbar.length;
-    if (n && !document.hidden) {
-      const k = sichtbar[(zug++ * (n % 3 ? 3 : n % 2 ? 2 : 5)) % n];
-      const alt = k.querySelector('.seite:not(.raus)'), neu = naechste();
-      if (neu) {
-        if (alt) { alt.classList.remove('rein', 'erst'); alt.classList.add('raus'); setTimeout(() => { if (alt.parentNode === k) einlagern(alt); }, ruhig ? 600 : 520); }
-        neu.classList.add('rein'); k.appendChild(neu);
-      }
-    }
-    takt = setTimeout(wechsel, ruhig ? 3600 : n >= 10 ? 1300 : 1700);   // großes Raster: etwas schneller, damit mehr der 34 drankommen
-  };
-  takt = setTimeout(wechsel, 2800);
-  // k1 (Luka 20.11.2026): die Kacheln bleiben bis zum Schluss stehen. Ist alles geladen, misst welt.js in einer Probefahrt die
-  // Bildzeiten (danach wählt es die Qualitätsstufe). Damit die Kacheln diese Messung nicht verfälschen, frieren sie dann ein:
-  // kein Wechsel mehr, alle Schleifen angehalten (.ruhe in lade-kacheln.css) – es bleibt ein stehendes Bild wie beim alten Ladebild.
-  const wache = setInterval(() => {
-    const w = window.FREQ && window.FREQ.welt;
-    if (!w || !w.allesGeladen) return;
-    clearInterval(wache); aus = true; clearTimeout(takt);
-    laden.classList.add('ruhe');
-  }, 100);
-  const halt = () => { aus = true; clearTimeout(takt); clearInterval(wache); window.removeEventListener('resize', verteilen); beobachter.disconnect(); };
-  // Ende: welt.js setzt html.bereit (Vorhang blendet aus) – oder ruhig/ohne-webgl (kein Ladebildschirm)
-  const ende = () => {
-    const c = html.classList;
-    if (c.contains('ruhig') || c.contains('ohne-webgl')) { halt(); return; }
-    if (!c.contains('bereit')) return;
-    halt();
-    const fertig = () => { c.remove('laden-halten'); setTimeout(() => laden.classList.add('aus'), 1100); };
-    // Sehr schnelles Laden (unter 1,5 s): nicht aufblitzen, der Aufbau spielt zu Ende, dann wird weich ausgeblendet
-    const rest = 1500 - (performance.now() - start);
-    if (rest > 0 && !ruhig) { c.add('laden-halten'); setTimeout(fertig, rest); } else fertig();
-  };
-  const beobachter = new MutationObserver(ende);
-  beobachter.observe(html, { attributes: true, attributeFilter: ['class'] });
-})();
+// Vor dem ersten Bild: mit JavaScript steht die Seite als Bühne (der Kapiteltext fest, die Welt dahinter) – außer bei
+// „Bewegung reduzieren“, dort bleibt sie eine gewöhnliche Seite (welt/welt.css).
+(function (h) { h.classList.add('mit-js'); try { if (!matchMedia('(prefers-reduced-motion: reduce)').matches) h.classList.add('buehne'); } catch (e) {} })(document.documentElement);
 </script>
-<noscript><style>.laden.raster { display: none; }</style></noscript>
+<link rel="stylesheet" href="../welt/welt.css?v=202611250932-e4c2f05">
+<link rel="stylesheet" href="../kacheln.css?v=7" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="../kacheln.css?v=7"></noscript>
+</head>
+<body data-basis="../" data-welt="../welt/welt.js?v=202611250932-e4c2f05">
+<a class="springen" href="#inhalt">Skip to content</a>
+<!-- Die Bühne: die 3D-Welt liegt fest hinter der Seite. Jeder Abschnitt bringt sein Standbild mit (picture.bild, genau so groß
+     wie die Leinwand); ist seine Szene geladen, blendet das Standbild aus und die Welt dahinter übernimmt (welt/quelle/main.js). -->
 <canvas id="welt" aria-hidden="true"></canvas>
 
-<!-- Header: always there, even while the world loads – logo, one sentence, overview and the main action (on phones the two buttons sit in the dock at the bottom).
-     Main action “Notify me” (Luka, 11 Nov 2026): an e-mail from the visitor’s own mail app, the page stores nothing. The test page stays unlinked. -->
 <header class="kopf" id="kopf">
   <a class="marke" href="index.html" aria-label="FREQ — Home">
     <picture>
@@ -213,116 +58,199 @@
 </header>
 
 <nav class="kapitelnav" aria-label="Chapters">
-  <button type="button" aria-label="Chapter 1: Night"></button>
-  <button type="button" aria-label="Chapter 2: Convoy"></button>
-  <button type="button" aria-label="Chapter 3: Radio"></button>
-  <button type="button" aria-label="Chapter 4: Speed cameras and limits"></button>
-  <button type="button" aria-label="Chapter 5: Navigation"></button>
-  <button type="button" aria-label="Chapter 6: Average speed zones"></button>
-  <button type="button" aria-label="Chapter 7: Stops"></button>
-  <button type="button" aria-label="Chapter 8: In the car"></button>
-  <button type="button" aria-label="Chapter 9: Car meets and finale"></button>
+  <button type="button" aria-label="Start"></button>
+  <button type="button" aria-label="Convoy"></button>
+  <button type="button" aria-label="Radio"></button>
+  <button type="button" aria-label="Speed cameras and limits"></button>
+  <button type="button" aria-label="Navigation"></button>
+  <button type="button" aria-label="Average speed zones"></button>
+  <button type="button" aria-label="Stops"></button>
+  <button type="button" aria-label="In the car"></button>
+  <button type="button" aria-label="Car meets"></button>
+  <button type="button" aria-label="Price and launch"></button>
 </nav>
 
 <main id="inhalt">
-  <section class="kapitel auftakt" id="k0" data-gewicht="1.7" aria-labelledby="t0">
-    <div class="text">
+  <section class="kapitel auftakt da zeigt" id="k0" aria-labelledby="t0" style="--s:1">
+    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="../welt/szene/en-k0-hoch.avif?v=202611250932-e4c2f05"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="../welt/szene/en-k0-hoch.webp?v=202611250932-e4c2f05"><source type="image/avif" srcset="../welt/szene/en-k0-quer.avif?v=202611250932-e4c2f05"><img src="../welt/szene/en-k0-quer.webp?v=202611250932-e4c2f05" alt="A wet road at night: a convoy of four cars approaches with headlights on." width="1800" height="1200" fetchpriority="high" decoding="sync"></picture>
+    <div class="platz">
+      <div class="text">
       <h1 id="t0">Drive together. Talk together.</h1>
-      <p>FREQ is navigation and convoy radio in one app – for iPhone and Android.</p>
+      <p>FREQ is navigation and convoy radio in one app, for iPhone and Android.</p>
       <div class="aktion">
         <a class="taste haupt gross" href="mailto:administration@freqconvoi.com?subject=Notify%20me%20when%20FREQ%20launches" title="Writes an e-mail to administration@freqconvoi.com">Notify me</a>
         <a class="taste gross" href="#ueberblick" data-blick aria-haspopup="dialog">Everything at a glance</a>
       </div>
     </div>
-    <div class="hinweis" aria-hidden="true">Scroll to set off</div>
+      <p class="hinweis" aria-hidden="true">Scroll to set off</p>
+      <p class="spar" hidden>Your device is saving data, so this page shows still images. <button type="button" id="welt-laden">Load the 3D drive</button></p>
+    </div>
   </section>
 
-  <section class="kapitel links" id="k1" data-gewicht="1.3" aria-labelledby="t1" data-w-namen="Anna,Ben,Mia,Tom">
-    <div class="text">
+  <section class="kapitel links" id="k1" aria-labelledby="t1" data-w-namen="Anna,Ben,Mia,Tom">
+    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="../welt/szene/en-k1-hoch.avif?v=202611250932-e4c2f05"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="../welt/szene/en-k1-hoch.webp?v=202611250932-e4c2f05"><source type="image/avif" srcset="../welt/szene/en-k1-quer.avif?v=202611250932-e4c2f05"><img src="../welt/szene/en-k1-quer.webp?v=202611250932-e4c2f05" alt="The convoy from above: each driver’s face over their car, the route as a line on the road." width="1800" height="1200" loading="lazy" decoding="async"></picture>
+    <div class="platz">
+      <div class="text">
       <h2 id="t1">Convoy: everyone on one map.</h2>
-      <p class="lang">Everyone rides along as a <b>face on your map</b>. The admin sets the destination, <b>every phone computes its own route</b> – and everyone arrives at the same spot.</p>
+      <p class="lang">Everyone rides along as a <b>face on your map</b>. The admin sets the destination, <b>every phone computes its own route</b>, and everyone arrives at the same spot.</p>
       <p class="kurz">Everyone as a <b>face on your map</b>. The admin sets the destination, every phone computes its route.</p>
-      <p class="beispiel">For example: Anna sets the destination, Ben leaves ten minutes later – his route starts right where he is.</p>
+      <p class="beispiel">For example: Anna sets the destination, Ben leaves ten minutes later. His route starts right where he is.</p>
+    </div>
     </div>
   </section>
 
-  <section class="kapitel rechts" id="k2" data-gewicht="1.25" aria-labelledby="t2" data-w-spricht="Anna is talking">
-    <div class="text">
+  <section class="kapitel rechts" id="k2" aria-labelledby="t2" data-w-spricht="Anna is talking">
+    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="../welt/szene/en-k2-hoch.avif?v=202611250932-e4c2f05"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="../welt/szene/en-k2-hoch.webp?v=202611250932-e4c2f05"><source type="image/avif" srcset="../welt/szene/en-k2-quer.avif?v=202611250932-e4c2f05"><img src="../welt/szene/en-k2-quer.webp?v=202611250932-e4c2f05" alt="A car in the convoy at night, the driver’s face above it with radio waves: Anna is talking." width="1800" height="1200" loading="lazy" decoding="async"></picture>
+    <div class="platz">
+      <div class="text">
       <h2 id="t2">Radio: talk like you’re in the same car.</h2>
-      <p class="lang">An open channel for everyone in the convoy – <b>no button to press</b>. “Quiet” when you want music, <b>“Call Anna”</b> when you need someone. Nothing is recorded.</p>
-      <p class="kurz">An open channel for everyone in the convoy – <b>no button to press</b>. Nothing is recorded.</p>
+      <p class="lang">An open channel for everyone in the convoy, <b>no button to press</b>. “Quiet” when you want music, <b>“Call Anna”</b> when you need someone. Nothing is recorded.</p>
+      <p class="kurz">An open channel for everyone in the convoy, <b>no button to press</b>. Nothing is recorded.</p>
+    </div>
     </div>
   </section>
 
-  <section class="kapitel links" id="k3" data-gewicht="2" aria-labelledby="t3" data-w-einheit="km/h" data-w-vorschau="70 in 400 m" data-w-gefahr="Hazard reported" data-w-vollbremsung="Hard braking in the convoy" data-w-akku="15 %" data-w-blitzer="Speed camera · 800 m" data-w-blitzer-tempo="Limit 70" data-w-radar="800 m">
-    <div class="text">
+  <section class="kapitel links" id="k3" aria-labelledby="t3" data-w-einheit="km/h" data-w-vorschau="70 in 400 m" data-w-gefahr="Hazard reported" data-w-vollbremsung="Hard braking in the convoy" data-w-akku="15 %" data-w-blitzer="Speed camera · 800 m" data-w-blitzer-tempo="Limit 70" data-w-radar="800 m">
+    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="../welt/szene/en-k3-hoch.avif?v=202611250932-e4c2f05"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="../welt/szene/en-k3-hoch.webp?v=202611250932-e4c2f05"><source type="image/avif" srcset="../welt/szene/en-k3-quer.avif?v=202611250932-e4c2f05"><img src="../welt/szene/en-k3-quer.webp?v=202611250932-e4c2f05" alt="Behind the lead car: the speedometer shows the speed, a panel warns of a speed camera in 800 metres." width="1800" height="1200" loading="lazy" decoding="async"></picture>
+    <div class="platz">
+      <div class="text">
       <h2 id="t3">Warned before it gets tight.</h2>
-      <p class="lang"><b>Two warnings instead of constant beeping</b> – for fixed speed cameras in more than 30 countries, <b>only where it is legal</b>. The speed limit sits next to your speed. And when someone in the convoy brakes hard, everyone sees it.</p>
-      <p class="kurz"><b>Two warnings instead of constant beeping</b> for fixed speed cameras – <b>only where it is legal</b>.</p>
-      <p class="beispiel">For example: “70 in 400 m” announces the new limit, then FREQ warns of the camera – and the whole convoy eases off.</p>
+      <p class="lang"><b>Two warnings instead of constant beeping</b> for fixed speed cameras in more than 30 countries, <b>only where it is legal</b>. The speed limit sits next to your speed. And when someone in the convoy brakes hard, everyone sees it.</p>
+      <p class="kurz"><b>Two warnings instead of constant beeping</b> for fixed speed cameras, <b>only where it is legal</b>.</p>
+      <p class="beispiel">For example: “70 in 400 m” announces the new limit, then FREQ warns of the camera, and the whole convoy eases off.</p>
+    </div>
     </div>
   </section>
 
-  <section class="kapitel rechts" id="k4" data-gewicht="1.4" aria-labelledby="t4" data-w-schild-oben="A1" data-w-schild-unten="Exit 12" data-w-ansage="In 300 metres, turn right" data-w-ansage-jetzt="Take the exit" data-w-landstrasse="No motorway">
-    <div class="text">
+  <section class="kapitel rechts" id="k4" aria-labelledby="t4" data-w-schild-oben="A1" data-w-schild-unten="Exit 12" data-w-ansage="In 300 metres, turn right" data-w-ansage-jetzt="Take the exit" data-w-landstrasse="No motorway">
+    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="../welt/szene/en-k4-hoch.avif?v=202611250932-e4c2f05"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="../welt/szene/en-k4-hoch.webp?v=202611250932-e4c2f05"><source type="image/avif" srcset="../welt/szene/en-k4-quer.avif?v=202611250932-e4c2f05"><img src="../welt/szene/en-k4-quer.webp?v=202611250932-e4c2f05" alt="The lead car takes the exit, the route follows the ramp; above it the prompt “Take the exit”." width="1800" height="1200" loading="lazy" decoding="async"></picture>
+    <div class="platz">
+      <div class="text">
       <h2 id="t4">Navigation with its own voice.</h2>
-      <p class="lang">Clear announcements such as <b>“In 300 metres, turn right”</b> – now also at forks (<b>“keep slightly right”</b>) and with <b>“Then …”</b> for the step after. Plus lane arrows, up to three routes and, if you like, <b>no motorways</b> or no tolls.</p>
+      <p class="lang">Clear announcements such as <b>“In 300 metres, turn right”</b>, now also at forks (<b>“keep slightly right”</b>) and with <b>“Then …”</b> for the step after. Plus lane arrows and up to three routes, with <b>no motorways</b> or no tolls if you like.</p>
       <p class="kurz">Clear announcements such as <b>“In 300 metres, turn right”</b>. Plus lane arrows and up to three routes.</p>
-      <p class="beispiel">New: without a vignette, FREQ warns you before the slip road – “Caution, the motorway entrance is on the left.”</p>
+      <p class="beispiel">New: without a vignette, FREQ warns you before the slip road: “Caution, the motorway entrance is on the left.”</p>
+    </div>
     </div>
   </section>
 
-  <section class="kapitel links" id="k5" data-gewicht="1.4" aria-labelledby="t5" data-w-abschnitt="Average speed" data-w-abschnitt-rest="2.4 km left" data-w-abschnitt-beginn="Average speed check starts" data-w-amtlich="Official data · Austria">
-    <div class="text">
+  <section class="kapitel links" id="k5" aria-labelledby="t5" data-w-abschnitt="Average speed" data-w-abschnitt-rest="2.4 km left" data-w-abschnitt-beginn="Average speed check starts" data-w-amtlich="Official data · Austria">
+    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="../welt/szene/en-k5-hoch.avif?v=202611250932-e4c2f05"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="../welt/szene/en-k5-hoch.webp?v=202611250932-e4c2f05"><source type="image/avif" srcset="../welt/szene/en-k5-quer.avif?v=202611250932-e4c2f05"><img src="../welt/szene/en-k5-quer.webp?v=202611250932-e4c2f05" alt="A gantry over the road and the FREQ panel with average speed and limit for the average speed zone." width="1800" height="1200" loading="lazy" decoding="async"></picture>
+    <div class="platz">
+      <div class="text">
       <h2 id="t5">Average speed zones: your average, live.</h2>
-      <p class="lang">Inside the zone FREQ shows your <b>average next to the limit</b> – on the car display also what is left: <b>“2.4 km left”</b>. Austria’s zones come from the <b>official regulations</b>.</p>
+      <p class="lang">Inside the zone FREQ shows your <b>average next to the limit</b>, on the car display also what is left: <b>“2.4 km left”</b>. Austria’s zones come from the <b>official regulations</b>.</p>
       <p class="kurz">Inside the zone FREQ shows your <b>average next to the limit</b>. Austria: official data.</p>
     </div>
+    </div>
   </section>
 
-  <section class="kapitel rechts" id="k6" data-gewicht="1.4" aria-labelledby="t6" data-w-frei="Free" data-w-belegt="Occupied" data-w-offen="Open until 22:00" data-w-pause="Break? Rest area in 2 km" data-w-preise="Diesel,Petrol,Prices live in FREQ">
-    <div class="text">
+  <section class="kapitel rechts" id="k6" aria-labelledby="t6" data-w-frei="Free" data-w-belegt="Occupied" data-w-offen="Open until 22:00" data-w-pause="Break? Rest area in 2 km" data-w-preise="Diesel,Petrol,Prices live in FREQ">
+    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="../welt/szene/en-k6-hoch.avif?v=202611250932-e4c2f05"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="../welt/szene/en-k6-hoch.webp?v=202611250932-e4c2f05"><source type="image/avif" srcset="../welt/szene/en-k6-quer.avif?v=202611250932-e4c2f05"><img src="../welt/szene/en-k6-quer.webp?v=202611250932-e4c2f05" alt="A fuel station and charging points at a rest area, labelled “Open until 22:00”, “Free” and “Occupied”." width="1800" height="1200" loading="lazy" decoding="async"></picture>
+    <div class="platz">
+      <div class="text">
       <h2 id="t6">Fuel, break, food – for everyone.</h2>
       <p class="lang">In a convoy the admin sets the <b>stop for everyone</b>. Fuel stations show the price in Austria, charging stations show free or occupied in the first countries. After two hours FREQ quietly suggests a break.</p>
       <p class="kurz">The admin sets the <b>stop for everyone</b>. Fuel prices in Austria, a break suggestion after two hours.</p>
     </div>
+    </div>
   </section>
 
-  <section class="kapitel links oben" id="k7" data-gewicht="1.3" aria-labelledby="t7" data-w-abstand="350 m" data-w-strasse="Main Street" data-w-ziel="Destination" data-w-convoy="Convoy" data-w-sprechen="Talk" data-w-ruhe="Quiet" data-w-rest="12 km · 14 min" data-w-ankunft="21:56" data-w-ankunft-wort="Arrival" data-w-min-wort="min" data-w-blitzer-fest="Speed camera" data-w-apps="Phone,Music,Maps,Messages,Podcasts,FREQ,Radio,Settings">
-    <div class="text">
+  <section class="kapitel links oben" id="k7" aria-labelledby="t7" data-w-abstand="350 m" data-w-strasse="Main Street" data-w-ziel="Destination" data-w-convoy="Convoy" data-w-sprechen="Talk" data-w-ruhe="Quiet" data-w-rest="12 km · 14 min" data-w-ankunft="21:56" data-w-ankunft-wort="Arrival" data-w-min-wort="min" data-w-blitzer-fest="Speed camera" data-w-apps="Phone,Music,Maps,Messages,Podcasts,FREQ,Radio,Settings">
+    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="../welt/szene/en-k7-hoch.avif?v=202611250932-e4c2f05"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="../welt/szene/en-k7-hoch.webp?v=202611250932-e4c2f05"><source type="image/avif" srcset="../welt/szene/en-k7-quer.avif?v=202611250932-e4c2f05"><img src="../welt/szene/en-k7-quer.webp?v=202611250932-e4c2f05" alt="View from the driver’s seat of the car display running FREQ: map, turn card and speedometer." width="1800" height="1200" loading="lazy" decoding="async"></picture>
+    <div class="platz">
+      <div class="text">
       <h2 id="t7">In the car, on the big screen.</h2>
       <p class="lang">Built for <b>CarPlay</b> and <b>Android Auto</b>: speedometer with speed limit, <b>camera panel</b> with distance, your convoy as faces, radio on screen – part of FREQ Premium.</p>
       <p class="kurz">For <b>CarPlay</b> and <b>Android Auto</b>: speedometer, camera panel, convoy and radio – part of FREQ Premium.</p>
       <p class="beispiel">New in Android Auto: forks, the “Then” step, the vignette notice and panning the map with “Re-center”.</p>
     </div>
+    </div>
   </section>
 
-  <section class="kapitel finale" id="k8" data-gewicht="2.2" aria-labelledby="t8" data-w-treffen="Car meet · 12 on the way" data-w-treffen-waren="25+ FREQ drivers were there">
-    <!-- First phase of the finale: the car meet in the car park (welt/quelle/finale.js), then logo and ending -->
-    <div class="text treffen">
-      <h2 id="t8a">Car meets near you.</h2>
+  <section class="kapitel links" id="k8" aria-labelledby="t8" data-w-treffen="Car meet · 12 on the way" data-w-treffen-waren="Cars &amp; Coffee · Sat 10:00">
+    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="../welt/szene/en-k8-hoch.avif?v=202611250932-e4c2f05"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="../welt/szene/en-k8-hoch.webp?v=202611250932-e4c2f05"><source type="image/avif" srcset="../welt/szene/en-k8-quer.avif?v=202611250932-e4c2f05"><img src="../welt/szene/en-k8-quer.webp?v=202611250932-e4c2f05" alt="A car meet in a car park next to the road, cars with their headlights on." width="1800" height="1200" loading="lazy" decoding="async"></picture>
+    <div class="platz">
+      <div class="text">
+      <h2 id="t8">Car meets near you.</h2>
       <p class="lang">Meets from <b>scene calendars</b>, right inside FREQ: one tap sets the route, and you see how many are on their way. Not everywhere yet.</p>
       <p class="kurz">Meets from <b>scene calendars</b>, right inside FREQ: one tap sets the route. Not everywhere yet.</p>
     </div>
-    <div class="text">
+    </div>
+  </section>
+
+  <section class="kapitel finale" id="k9" aria-labelledby="t9">
+    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="../welt/szene/en-k9-hoch.avif?v=202611250932-e4c2f05"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="../welt/szene/en-k9-hoch.webp?v=202611250932-e4c2f05"><source type="image/avif" srcset="../welt/szene/en-k9-quer.avif?v=202611250932-e4c2f05"><img src="../welt/szene/en-k9-quer.webp?v=202611250932-e4c2f05" alt="Night sky over the mountains, below it the road with the convoy driving off." width="1800" height="1200" loading="lazy" decoding="async"></picture>
+    <div class="platz">
+      <div class="text">
       <div class="finale-logo-rahmen">
         <picture>
           <source srcset="../bild/freq-logo.webp" type="image/webp">
-          <img class="finale-logo" src="../bild/freq-logo.png" alt="FREQ" width="900" height="893" fetchpriority="low">
+          <img class="finale-logo" src="../bild/freq-logo.png" alt="FREQ" width="900" height="893" loading="lazy" decoding="async">
         </picture>
       </div>
-      <h2 id="t8">Free to start.<br>No ads.</h2>
-      <p class="lang">Navigation, warnings and reporting stay free. <b>FREQ Premium</b> adds the car display and large convoys: €2.99 a month or €24.99 a year, with a 7-day free trial. Not in the stores yet – built in Vienna.</p>
+      <h2 id="t9">Free to start.<br>No ads.</h2>
+      <p class="lang">Navigation, warnings and reporting stay free. <b>FREQ Premium</b> adds the car display and large convoys: €2.99 a month or €24.99 a year, with a 7-day free trial. Not in the stores yet, built in Vienna.</p>
       <p class="kurz">Navigation, warnings and reporting stay free. <b>FREQ Premium</b>: €2.99 a month or €24.99 a year.</p>
       <div class="aktion">
         <a class="taste haupt gross" href="mailto:administration@freqconvoi.com?subject=Notify%20me%20when%20FREQ%20launches" title="Writes an e-mail to administration@freqconvoi.com">Notify me</a>
-        <span class="stand"><span class="puls" aria-hidden="true"></span>In development — Vienna, 2026</span>
+        <span class="stand"><span class="puls" aria-hidden="true"></span>In development, Vienna 2026</span>
       </div>
+    </div>
     </div>
   </section>
 </main>
 
-<!-- Overview: the essentials on one card, one tap away from anywhere in the ride (without JavaScript a normal section at the end of the page) -->
+<!-- Was FREQ kann: die Kacheln, die bis zum 24.11.2026 der Ladebildschirm waren – nachgebaute Ausschnitte aus der App. Zwölf stehen
+     da, die übrigen klappt die Taste auf (ohne JavaScript stehen alle da). Stil: kacheln.css (lädt, ohne die Seite aufzuhalten). -->
+<section class="funktionen ruhe" id="funktionen" aria-labelledby="fk-titel">
+  <svg class="lade-zeichen" width="0" height="0" aria-hidden="true"><symbol id="l-mic" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></symbol><symbol id="l-fuel" viewBox="0 0 24 24"><path d="M4 20V6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v14M3 20h12M6.5 8h5M14 11h1.5a1.5 1.5 0 0 1 1.5 1.5V16a1.5 1.5 0 0 0 3 0V9l-2.5-2.5"/></symbol><symbol id="l-park" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 16.5v-9h3.2a2.8 2.8 0 0 1 0 5.6H9.5"/></symbol><symbol id="l-food" viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2M7 2v20M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></symbol><symbol id="l-wash" viewBox="0 0 24 24"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/></symbol><symbol id="l-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></symbol><symbol id="l-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol><symbol id="l-car" viewBox="0 0 24 24"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></symbol><symbol id="l-carf" viewBox="0 0 24 24"><path d="m21 8-2 2-1.5-3.7A2 2 0 0 0 15.65 5H8.4a2 2 0 0 0-1.9 1.3L5 10 3 8M7 14h.01M17 14h.01"/><rect x="3" y="10" width="18" height="8" rx="2"/><path d="M5 18v2M19 18v2"/></symbol><symbol id="l-bike" viewBox="0 0 24 24"><circle cx="5.5" cy="16.5" r="3.5"/><circle cx="18.5" cy="16.5" r="3.5"/><path d="M5.5 16.5 9 10h5l4.5 6.5M9 10 7.5 7H5M14 10l1.5-3H19"/></symbol><symbol id="l-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></symbol><symbol id="l-home" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></symbol><symbol id="l-bag" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol><symbol id="l-dl" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></symbol><symbol id="l-share" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></symbol><symbol id="l-eyeoff" viewBox="0 0 24 24"><path d="M9.9 4.24A9.1 9.1 0 0 1 12 4c6.5 0 10 8 10 8a13.2 13.2 0 0 1-1.67 2.68M6.6 6.6A13.5 13.5 0 0 0 2 12s3.5 8 10 8a9.7 9.7 0 0 0 5.4-1.6M2 2l20 20M14.1 14.1a3 3 0 0 1-4.2-4.2"/></symbol><symbol id="l-warn" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3M12 9v4M12 17h.01"/></symbol><symbol id="l-horn" viewBox="0 0 24 24"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></symbol><symbol id="l-coffee" viewBox="0 0 24 24"><path d="M17 8h1a4 4 0 1 1 0 8h-1M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4ZM6 2v2M10 2v2M14 2v2"/></symbol><symbol id="l-crown" viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 10H5z"/></symbol><symbol id="l-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol><symbol id="l-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol><symbol id="l-cam" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="12" rx="2.5"/><circle cx="12" cy="13" r="3.2"/><path d="M8 7l1.3-2.5h5.4L16 7"/></symbol><symbol id="l-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol><symbol id="l-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol><symbol id="l-vol" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5zM15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></symbol><symbol id="l-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></symbol><symbol id="l-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="l-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 5h13l-2.5 3.5L18 12H5"/></symbol><symbol id="l-cone" viewBox="0 0 24 24"><path d="M9.3 6.2 12 2l2.7 4.2M7.5 13h9M5.6 18h12.8M4 22h16M9.3 6.2 5.6 18M14.7 6.2 18.4 18"/></symbol><symbol id="l-usr" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></symbol><symbol id="l-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol><symbol id="l-m-r" viewBox="0 0 24 24"><path d="M7 21V12a4 4 0 0 1 4-4h8M15 3.5 19.5 8 15 12.5"/></symbol><symbol id="l-m-l" viewBox="0 0 24 24"><path d="M17 21V12a4 4 0 0 0-4-4H5M9 3.5 4.5 8 9 12.5"/></symbol><symbol id="l-m-u" viewBox="0 0 24 24"><path d="M12 21V4M6 10l6-6 6 6"/></symbol><symbol id="l-m-sr" viewBox="0 0 24 24"><path d="M9 21v-7.5c0-1.6.6-2.6 1.8-3.8L17 3.5M10.5 3.5H17V10"/></symbol></svg>
+  <div class="fk-kopf">
+    <h2 id="fk-titel">What FREQ can do</h2>
+    <p>Cut-outs from the app, rebuilt for this page. All of it is built.</p>
+  </div>
+  <ul class="kacheln">
+    <li class="kachel"><article class="seite an"><div class="szene k k1" aria-hidden="true"><div class="b s-co"><i class="rt"></i><i class="pk"></i><i class="mk m1"><span class="av sp">A</span>Anna</i><i class="mk m2"><span class="av">B</span>Ben</i><i class="dk"><span><svg class="ic" viewBox="0 0 24 24"><use href="#l-vol"/></svg><i class="sl"></i></span><span>Leave</span><i class="mi"><svg class="ic" viewBox="0 0 24 24"><use href="#l-mic"/></svg></i></i></div></div><div class="wort"><h3>Convoy with radio</h3><p>Everyone on one map, one open channel.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene k k2" aria-hidden="true"><div class="b s-bl"><i class="rt"></i><i class="cm">50</i><i class="pk"></i><i class="tc"><b>48</b><small class="r"><span class="zw"><span class="zs z3"><em>500 m</em><em>300 m</em><em>100 m</em></span></span></small><i class="ls">50</i></i></div></div><div class="wort"><h3>Speed cameras, where legal</h3><p>Warnings in many European countries.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene" aria-hidden="true"><div class="b s-st"><i class="st"><span>L</span><i class="pg"></i><span>R</span><i class="pg r"></i></i><i class="mk"><span class="av sp">A</span>Anna</i></div></div><div class="wort"><h3>Stereo music and radio</h3><p>Over Bluetooth. It dips briefly when someone talks.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene" aria-hidden="true"><div class="b s-pr"><div class="li"><div class="ka"><span><i class="ik f"><svg class="ic" viewBox="0 0 24 24"><use href="#l-fuel"/></svg></i>Fuel</span><span><i class="ik pa"><svg class="ic" viewBox="0 0 24 24"><use href="#l-park"/></svg></i>Parking</span><span><i class="ik fo"><svg class="ic" viewBox="0 0 24 24"><use href="#l-food"/></svg></i>Food</span><span><i class="ik ws"><svg class="ic" viewBox="0 0 24 24"><use href="#l-wash"/></svg></i>Car wash</span></div><div class="zl"><i class="ik f"><svg class="ic" viewBox="0 0 24 24"><use href="#l-fuel"/></svg></i><div class="tx"><p>Gleisdorf</p><small>6 km · +1 min</small></div><div class="re"><b>1.489</b><small>Diesel</small></div></div><div class="zl"><i class="ik e"><svg class="ic" viewBox="0 0 24 24"><use href="#l-zap"/></svg></i><div class="tx"><p>Fürstenfeld</p><small>9 km · +2 min</small></div><div class="re"><b>150 kW</b><small>Power</small></div></div></div></div></div><div class="wort"><h3>Fuel, parking, food</h3><p>As a stop for you or the whole convoy.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene sw0" aria-hidden="true"><div class="b s-au"><i class="dp"><i class="lb"><span>11:29</span><img src="../bild/freq-mark.webp" alt="" width="30" height="30"><i></i></i><i class="rt"></i><i class="pk"></i><div class="nc cd"><svg class="mv" viewBox="0 0 24 24"><use href="#l-m-r"/></svg><div><p class="d"><span class="zw"><span class="zs z3"><em>800 m</em><em>500 m</em><em>200 m</em></span></span></p><p class="n">Graz-Ost</p></div></div><i class="tc"><b>96</b><small>km/h</small><i class="ls">100</i></i></i></div></div><div class="wort"><h3>CarPlay and Android Auto <i>Premium</i></h3><p>Built for the car display: map, convoy, radio.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene k k1" aria-hidden="true"><div class="b s-gr"><i class="rt"></i><i class="pk"></i><div class="cd wa"><svg class="ic o" viewBox="0 0 24 24"><use href="#l-carf"/></svg><div class="tx"><p><b>Border: ~20 min</b></p><small>Spielfeld ·  <span class="zw"><span class="zs z3"><em>2.0 km</em><em>1.5 km</em><em>1.0 km</em></span></span> to go</small></div></div><div class="cd vg"><div class="tx"><p><b>Slovenia</b></p><small>E-vignette</small></div><small>I have it</small><i class="sw an t"></i></div></div></div><div class="wort"><h3>Borders, vignettes, zones</h3><p>Notices on the way, ZTL in Italy included.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene" aria-hidden="true"><div class="b s-of"><div class="li"><div class="zl"><i class="fl"></i><div class="tx"><p>Austria</p><small>Light · 118 MB</small></div><span class="x"><i class="bk"></i><svg class="ic ok" viewBox="0 0 24 24"><use href="#l-check"/></svg></span></div><div class="zl"><i class="fl it"></i><div class="tx"><p>Italy</p><small>Light · 286 MB</small></div><span class="cp"><svg class="ic" viewBox="0 0 24 24"><use href="#l-dl"/></svg></span></div><div class="zl"><i class="fl de"></i><div class="tx"><p>Germany</p><small>Light · 412 MB</small></div><span class="cp"><svg class="ic" viewBox="0 0 24 24"><use href="#l-dl"/></svg></span></div></div></div></div><div class="wort"><h3>Offline maps</h3><p>Download per country. One is free.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene k k2" aria-hidden="true"><div class="b s-me"><i class="dt d1"></i><i class="dt d2"></i><i class="pn"><svg class="ic" viewBox="0 0 24 24"><use href="#l-car"/></svg></i><i class="bs"><p>Cars &amp; Coffee Graz</p><small>Today · 12 km · <span class="zw"><span class="zs z3"><em>3 on the way</em><em>4 on the way</em><em>5 on the way</em></span></span></small></i></div></div><div class="wort"><h3>Car meets near you</h3><p>Meets from scene calendars. Not everywhere yet.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene k k3" aria-hidden="true"><div class="b s-gb"><svg class="ro" viewBox="0 0 150 220"><path class="ab" d="M75 220V150C75 120 50 105 40 60"/><path class="ca" d="M75 220V150C75 120 100 105 110 60V-20"/><path d="M75 220V150C75 120 100 105 110 60V-20"/></svg><i class="pk"></i><div class="nc cd"><div><svg class="mv" viewBox="0 0 24 24"><use href="#l-m-sr"/></svg><div><p class="d"><span class="zw"><span class="zs z3"><em>300 m</em><em>200 m</em><em>100 m</em></span></span><span class="sh">A9</span></p><p class="n">Towards Graz</p></div></div><div class="da"><svg class="mv" viewBox="0 0 24 24"><use href="#l-m-l"/></svg>Then</div></div></div></div><div class="wort"><h3>Forks and “Then …” <i>New</i></h3><p>“Keep slightly right” and what comes next.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene k k1" aria-hidden="true"><div class="b s-vw"><i class="ab"></i><i class="rt"></i><i class="pk"></i><div class="cd"><p>Straight on: A9</p><small>Vignette required</small><i></i></div></div></div><div class="wort"><h3>Vignette watch <i>New</i></h3><p>No vignette? A warning before the slip road.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene sw0" aria-hidden="true"><div class="b s-ew"><div class="li"><div class="kp"><span class="ti">What do you drive?</span></div><div class="wl"><span><svg class="ic" viewBox="0 0 24 24"><use href="#l-car"/></svg>Car</span><span><svg class="ic" viewBox="0 0 24 24"><use href="#l-bike"/></svg>Motorcycle</span></div><div class="fa"><span style="background:#2cb8e3"></span><span style="background:#ff453a"></span><span style="background:#30d158"></span><span style="background:#bf5af2"></span><span style="background:#fff"></span></div></div></div></div><div class="wort"><h3>What do you drive? <i>New</i></h3><p>Your marker on the map. Change it any time.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene k k2" aria-hidden="true"><div class="b s-fu"><i class="mr"><span class="av sp">M<svg class="ic kr" viewBox="0 0 24 24"><use href="#l-crown"/></svg></span><span class="av sp">A</span><span class="av sp">B</span><span class="av">C</span></i><i class="dk"><i class="mi"><svg class="ic" viewBox="0 0 24 24"><use href="#l-mic"/></svg></i><span>Mic on</span></i></div></div><div class="wort"><h3>Radio without a button</h3><p>Just talk. Nothing is recorded.</p></div></article></li>
+  </ul>
+  <ul class="kacheln mehr" id="kacheln-mehr">
+    <li class="kachel"><article class="seite an"><div class="szene k k3" aria-hidden="true"><div class="b s-te"><i class="rt"></i><i class="pk"></i><i class="tc"><b><span class="zw"><span class="zs z3"><em>100</em><em>84</em><em>70</em></span></span></b><small>km/h</small><i class="ls"><span>100</span><span>70</span></i></i><i class="vs">70 in 400 m</i></div></div><div class="wort"><h3>Speed limit at a glance</h3><p>With a preview: “70 in 400 m”.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene k k1" aria-hidden="true"><div class="b s-na"><svg class="ro" viewBox="0 0 150 60"><path class="ca" d="M75 60V34Q75 26 83 26H160"/><path d="M75 60V34Q75 26 83 26H160"/></svg><i class="pk"></i><div class="nc cd"><svg class="mv" viewBox="0 0 24 24"><use href="#l-m-r"/></svg><div><p class="d"><span class="zw"><span class="zs z3"><em>500 m</em><em>300 m</em><em>100 m</em></span></span><span class="sh">A2</span></p><p class="n">Graz-Ost</p></div><div class="sp"><svg class="mv" viewBox="0 0 24 24"><use href="#l-m-u"/></svg><svg class="mv" viewBox="0 0 24 24"><use href="#l-m-u"/></svg><svg class="mv" viewBox="0 0 24 24"><use href="#l-m-r"/></svg><svg class="mv" viewBox="0 0 24 24"><use href="#l-m-r"/></svg></div></div></div></div><div class="wort"><h3>Navigation with a voice</h3><p>Clear guidance, lane arrows, up to three routes.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene" aria-hidden="true"><div class="b s-af"><div class="li"><div class="kp"><span class="ti">Planned rides</span><span class="kn"><svg class="ic" viewBox="0 0 24 24"><use href="#l-plus"/></svg>Plan</span></div><div class="af"><p>Saturday ride</p><small>Sat 10:00 · Hauptplatz, Graz</small><div class="zu"><span class="av">A</span><span class="av">B</span><span class="av">C</span><span class="zw"><span class="zs z3"><em>3 going</em><em>4 going</em><em>5 going</em></span></span></div></div></div></div></div><div class="wort"><h3>Plan drives <i>Premium</i></h3><p>Date, meeting point and destination. FREQ reminds you to leave.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene k k2" aria-hidden="true"><div class="b s-mo"><i class="rt"></i><i class="pk"></i><i class="tc"><b>84</b><small><i class="nl"></i><span class="zw"><span class="zs z3"><em>32°</em><em>18°</em><em>8°</em></span></span></small><i class="ls">100</i></i><i class="gk g1"><svg class="ic" viewBox="0 0 24 24"><use href="#l-vol"/></svg></i><i class="gk g2"><svg class="ic" viewBox="0 0 24 24"><use href="#l-horn"/></svg></i></div></div><div class="wort"><h3>Motorcycle mode</h3><p>Big buttons for gloves, lean angle on the speedo.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene" aria-hidden="true"><div class="b s-la"><div class="li"><div class="zl"><i class="ik e"><svg class="ic" viewBox="0 0 24 24"><use href="#l-zap"/></svg></i><div class="tx"><p>Gleisdorf fast charger</p><small><b><span class="zw"><span class="zs z2"><em>2 of 4 free</em><em>3 of 4 free</em></span></span></b> · 150 kW</small></div></div><div class="zl"><i class="ik e"><svg class="ic" viewBox="0 0 24 24"><use href="#l-zap"/></svg></i><div class="tx"><p>Lieboch charging park</p><small><b>1 of 2 free</b> · 50 kW</small></div></div><div class="zl"><i class="ik e"><svg class="ic" viewBox="0 0 24 24"><use href="#l-zap"/></svg></i><div class="tx"><p>Söding charger</p><small>unknown · 22 kW</small></div></div></div></div></div><div class="wort"><h3>Charging stations</h3><p>Free or occupied, in the first countries.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene sw0" aria-hidden="true"><div class="b s-sp"><i class="uh">09:41</i><div class="cd"><svg class="mv" viewBox="0 0 24 24"><use href="#l-m-r"/></svg><div><p><span class="zw"><span class="zs z3"><em>300 m</em><em>200 m</em><em>100 m</em></span></span></p><small>Graz-Ost</small></div><div class="re"><b>11:54</b><small>Arrival</small></div><img src="../bild/freq-mark.webp" alt="" width="30" height="30"></div></div></div><div class="wort"><h3>On your lock screen</h3><p>Next turn and arrival at a glance.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene k k3" aria-hidden="true"><div class="b s-sa"><i class="rt"></i><i class="pk"></i><div class="hk cd wa"><p><svg class="ic o" viewBox="0 0 24 24"><use href="#l-carf"/></svg>Traffic jam +15 min</p><small>A2 before Graz-Ost</small><small>ASFINAG</small><div><span class="kn to">OK</span><span class="kn">Avoid</span></div></div></div></div><div class="wort"><h3>Jams and closures</h3><p>In Austria, coloured on your route.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene" aria-hidden="true"><div class="b s-we"><div class="li"><div class="zl"><span>Send crash reports</span><i class="sw"></i></div><div class="zl"><span>Share my hard braking</span><i class="sw"></i></div><div class="zl"><span>Learn routes</span><i class="sw an"></i></div></div></div></div><div class="wort"><h3>No ads</h3><p>No tracking, no selling of data.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene" aria-hidden="true"><div class="b s-gs"><div class="li"><div class="kp"><b class="ti">Convoy</b><small><span class="zw"><span class="zs z3"><em>13</em><em>14</em><em>15</em></span></span> in the convoy · for 1 h 2 min</small></div><div class="gr"><span class="av on">M<svg class="ic kr" viewBox="0 0 24 24"><use href="#l-crown"/></svg></span><span class="av on">A</span><span class="av on">B</span><span class="av on">C</span><span class="av on">D</span><span class="av on">E</span><span class="av on">F</span><span class="av on">G</span><span class="av on">H</span><span class="av on">J</span><span class="av on">K</span><span class="av on">L</span><span class="av on">N</span><span class="av on">P</span><span class="av on">R</span></div></div></div></div><div class="wort"><h3>Large convoys <i>Premium</i></h3><p>Up to 15 cars. Riders need no subscription.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene" aria-hidden="true"><div class="b s-fb"><div class="li"><div class="sk"><svg viewBox="0 0 44 44"><path d="M4 40C16 38 6 22 20 20S30 8 40 4"/></svg><i></i></div><div class="tx"><p>Trip finished</p><small>Distance <b>86 km</b></small><small>Time <b>1 h 12 min</b></small><span class="kn"><svg class="ic" viewBox="0 0 24 24"><use href="#l-share"/></svg>Share</span></div></div></div></div><div class="wort"><h3>Trip finished</h3><p>Distance, time and your track as an image to share.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene" aria-hidden="true"><div class="b s-wa"><div class="li"><div class="kp"><span class="cp">All</span><span class="cp an">Self-service</span><span class="cp">Automatic</span></div><div class="zl"><i class="ik ws"><svg class="ic" viewBox="0 0 24 24"><use href="#l-wash"/></svg></i><div class="tx"><p>Weiz self-service</p><small>in 4 km · +2 min</small></div></div><div class="zl"><i class="ik ws"><svg class="ic" viewBox="0 0 24 24"><use href="#l-wash"/></svg></i><div class="tx"><p>Lieboch wash bay</p><small>in 11 km · +4 min</small></div></div><div class="zl"><i class="ik ws"><svg class="ic" viewBox="0 0 24 24"><use href="#l-wash"/></svg></i><div class="tx"><p>Söding wash bay</p><small>in 19 km · +6 min</small></div></div></div></div></div><div class="wort"><h3>Find a car wash</h3><p>Self-service or automatic, as a convoy stop too.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene" aria-hidden="true"><div class="b s-ss"><div class="li"><div class="su"><svg class="ic" viewBox="0 0 24 24"><use href="#l-search"/></svg><span class="x"><span>Where to?</span><span>Hauptplatz, Graz</span></span><svg class="ic" viewBox="0 0 24 24"><use href="#l-mic"/></svg></div><div class="fv"><span><svg class="ic" viewBox="0 0 24 24"><use href="#l-home"/></svg>Home</span><span><svg class="ic" viewBox="0 0 24 24"><use href="#l-bag"/></svg>Work</span><span><svg class="ic" viewBox="0 0 24 24"><use href="#l-star"/></svg>Schöckl</span></div></div></div></div><div class="wort"><h3>Voice search and favourites</h3><p>Just say your destination. Recognised on your phone.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene k k2" aria-hidden="true"><div class="b s-ps"><svg class="ro" viewBox="0 0 150 220"><path class="ca" d="M30 220V196L58 180 22 162 58 144 30 128V-20"/><path d="M30 220V196L58 180 22 162 58 144 30 128V-20"/><path class="zu" d="M58 180 22 162 58 144"/></svg><div class="hk cd wa"><p><svg class="ic o" viewBox="0 0 24 24"><use href="#l-warn"/></svg>Timmelsjoch: closed</p><small>Province of Bolzano</small><div><span class="kn">Avoid</span></div></div></div></div><div class="wort"><h3>Pass closures</h3><p>Checked before you go. Live in South Tyrol.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene" aria-hidden="true"><div class="b s-un"><div class="li"><div class="zl"><span class="av on">M</span><div class="tx"><p>Mia (you)</p><small class="x"><span>Online</span><span>Offline</span></small></div></div><div class="zl"><div class="tx"><p>Invisible</p><small>Friends see you offline</small></div><i class="sw an t"></i></div></div></div></div><div class="wort"><h3>Invisible</h3><p>One switch, and friends see you offline.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene k k3" aria-hidden="true"><div class="b s-an"><i class="zf"><svg class="ic" viewBox="0 0 24 24"><use href="#l-flag"/></svg></i><span class="av a1">A</span><span class="av a2">B</span><span class="av a3">C</span><i class="bs"><b>Everyone there ~14:35</b><small><span class="zw"><span class="zs z2"><em>3 of 5 arrived</em><em>4 of 5 arrived</em></span></span></small></i></div></div><div class="wort"><h3>Arrive together</h3><p>One arrival time for the whole convoy.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene k k1" aria-hidden="true"><div class="b s-ab"><i class="rt"></i><i class="cm">80</i><i class="pk"></i><i class="tc"><b>78</b><small>Ø <span class="zw"><span class="zs z3"><em>79</em><em>81</em><em>80</em></span></span></small><i class="ls">80</i></i></div></div><div class="wort"><h3>Average speed zones</h3><p>Your average, live. Official data in Austria.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene" aria-hidden="true"><div class="b s-ru"><div class="li"><div class="to"><svg class="ic" viewBox="0 0 24 24"><use href="#l-mic"/></svg><span class="x"><span>„Anna!“</span><span>Calling Anna</span></span></div><div class="zl"><span class="av on">A</span><div class="tx"><p>Anna</p><small>On the radio</small></div><span class="kn">Call</span></div><div class="zl"><span class="av on">B</span><div class="tx"><p>Ben</p><small>On the radio</small></div><span class="kn">Call</span></div><div class="zl"><span class="av">C</span><div class="tx"><p>Cem</p><small>No radio</small></div></div></div></div></div><div class="wort"><h3>Call by voice</h3><p>“Anna!” is recognised only on your phone.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene k k2" aria-hidden="true"><div class="b s-pa"><i class="rt"></i><i class="pk"></i><div class="hk cd"><p>On the road for 2 h. Time for a break?</p><div><span class="kn to">Later</span><span class="kn">Show</span></div></div></div></div><div class="wort"><h3>Break reminder</h3><p>After two hours, quietly.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene k" aria-hidden="true"><div class="b s-3d"><i class="eb"><i class="rt"></i></i><i class="hs h4"></i><i class="hs h1"></i><i class="hs h3"></i><i class="hs h2"></i><i class="pk"></i></div></div><div class="wort"><h3>3D map</h3><p>Light or dark, as you like.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene" aria-hidden="true"><div class="b s-ml"><div class="li"><div class="kp"><span class="ti">Report</span></div><div class="ka"><span><i class="ik" style="background:#d0021b"><svg class="ic" viewBox="0 0 24 24"><use href="#l-cam"/></svg></i>Camera</span><span><i class="ik" style="background:#2457d6"><svg class="ic" viewBox="0 0 24 24"><use href="#l-shield"/></svg></i>Police</span><span><i class="ik" style="background:#b85c00"><svg class="ic" viewBox="0 0 24 24"><use href="#l-carf"/></svg></i>Jam</span><span><i class="ik" style="background:#8a6100"><svg class="ic" viewBox="0 0 24 24"><use href="#l-cone"/></svg></i>Roadworks</span></div><small class="hi">Hold and say “jam”.</small></div></div></div><div class="wort"><h3>Report with one tap</h3><p>Jams, roadworks or accidents, by voice too.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene k k1" aria-hidden="true"><div class="b s-zu"><i class="zo"><svg class="ic" viewBox="0 0 24 24"><use href="#l-home"/></svg></i><i class="pk"></i><i class="pl"><svg class="ic" viewBox="0 0 24 24"><use href="#l-eyeoff"/></svg>Home · hidden from friends</i></div></div><div class="wort"><h3>Home zone</h3><p>There, friends don’t see your position.</p></div></article></li>
+    <li class="kachel"><article class="seite an"><div class="szene" aria-hidden="true"><div class="b s-ei"><div class="li"><div class="kp"><span class="ti">Your code</span></div><div class="co"><b>K7M4XQ</b><span class="kn"><svg class="ic" viewBox="0 0 24 24"><use href="#l-share"/></svg>Share</span></div><div class="zl"><div class="tx"><p>Nearby</p><small>Both search at once</small></div><span class="kn to">Start search</span></div></div></div></div><div class="wort"><h3>Invite by link</h3><p>Or just hold your phones side by side.</p></div></article></li>
+  </ul>
+  <p class="fk-fuss"><button class="taste gross" type="button" id="kacheln-knopf" aria-expanded="false" aria-controls="kacheln-mehr" data-mehr="Show all 34 features" data-weniger="Show fewer" hidden>Show all 34 features</button>
+  <a class="taste haupt gross" href="mailto:administration@freqconvoi.com?subject=Notify%20me%20when%20FREQ%20launches" title="Writes an e-mail to administration@freqconvoi.com">Notify me</a></p>
+</section>
+
 <dialog class="ueberblick" id="ueberblick" aria-labelledby="ue-titel">
   <div class="ue-kopf">
     <picture>
@@ -333,12 +261,12 @@
     <form method="dialog"><button class="ue-zu" type="submit" aria-label="Close overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></form>
   </div>
   <div class="ue-inhalt">
-    <p class="ue-satz">Navigation and convoy radio in one app – for iPhone and Android.</p>
+    <p class="ue-satz">Navigation and convoy radio in one app, for iPhone and Android.</p>
     <section class="ue-neu" aria-labelledby="ue-neu-titel">
     <h3 id="ue-neu-titel">New in November</h3>
     <ul class="ue-liste schlicht">
       <li>
-        <div><b>Forks and “Then …”</b><span>“Keep slightly right” at the fork, “Then …” for the step after – plus an optional junction sketch with lanes.</span></div>
+        <div><b>Forks and “Then …”</b><span>“Keep slightly right” at the fork, “Then …” for the step after. Plus an optional junction sketch with lanes.</span></div>
       </li>
       <li>
         <div><b>Vignette watch</b><span>Without a vignette, FREQ warns you before slip roads that need one: “Caution, the motorway entrance is on the left.”</span></div>
@@ -347,7 +275,7 @@
         <div><b>“No tolls” stays on</b><span>Choose it once and it still applies after a restart.</span></div>
       </li>
       <li>
-        <div><b>New onboarding</b><span>Three cards show what FREQ does. Then “What do you drive?” – your marker on the map, change it anytime.</span></div>
+        <div><b>New onboarding</b><span>Three cards show what FREQ does. Then “What do you drive?”: your marker on the map, change it anytime.</span></div>
       </li>
       <li>
         <div><b>Livelier dark map</b><span>Water, green spaces and roads stand out better at night. “North up” shows the map flat.</span></div>
@@ -367,11 +295,11 @@
       </li>
       <li>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2"/><path d="M7.8 7.8a6 6 0 0 0 0 8.4M16.2 7.8a6 6 0 0 1 0 8.4M4.9 4.9a10 10 0 0 0 0 14.2M19.1 4.9a10 10 0 0 1 0 14.2"/></svg>
-        <div><b>Radio without a button</b><span>An open channel in the convoy. “Call Anna” is enough – nothing is recorded.</span></div>
+        <div><b>Radio without a button</b><span>An open channel in the convoy. “Call Anna” is enough. Nothing is recorded.</span></div>
       </li>
       <li>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="12" rx="2.5"/><circle cx="12" cy="13" r="3.2"/><path d="M8 7l1.3-2.5h5.4L16 7"/></svg>
-        <div><b>Speed cameras and average speed zones</b><span>In more than 30 countries, official zones in Austria – only where it is legal.</span></div>
+        <div><b>Speed cameras and average speed zones</b><span>In more than 30 countries, official zones in Austria. Only where it is legal.</span></div>
       </li>
       <li>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 17.5a9 9 0 1 1 15 0"/><path d="M12 13.5l4-5.5"/><circle cx="12" cy="13.5" r="1.3"/></svg>
@@ -380,10 +308,10 @@
     </ul>
     <ul class="ue-liste schlicht">
       <li>
-        <div><b>Report with one tap</b><span>Traffic jam, roadworks, accident – and where it is legal, speed cameras and police too.</span></div>
+        <div><b>Report with one tap</b><span>Traffic jam, roadworks, accident. Where it is legal, speed cameras and police too.</span></div>
       </li>
       <li>
-        <div><b>Car meets near you</b><span>Meets from scene calendars – one tap sets the route there. Not everywhere yet.</span></div>
+        <div><b>Car meets near you</b><span>Meets from scene calendars. One tap sets the route there. Not everywhere yet.</span></div>
       </li>
       <li>
         <div><b>Borders, vignettes, zones</b><span>Notices for vignettes, low-emission zones (Germany) and ZTL zones (Italy).</span></div>
@@ -395,17 +323,18 @@
         <div><b>In the car <i>Premium</i></b><span>Built for CarPlay and Android Auto: speedometer, camera panel, convoy and radio on the big screen.</span></div>
       </li>
     </ul>
+    <p class="ue-mehr"><a href="#funktionen" data-zu>See all features as tiles</a></p>
     <figure class="ue-bilder">
       <picture><source srcset="../bild/auto-blitzer.webp" type="image/webp"><img src="../bild/auto-blitzer.jpg" alt="FREQ on the car display (German interface): turn card, map and the fixed speed camera panel with limit 80, speed 79 and 250 m to go" width="710" height="480" loading="lazy" decoding="async"></picture>
       <picture><source srcset="../bild/auto-abschnitt.webp" type="image/webp"><img src="../bild/auto-abschnitt.jpg" alt="FREQ on the car display (German interface): the average speed panel with average 74, limit 80 and 2.0 km left" width="710" height="480" loading="lazy" decoding="async"></picture>
-      <figcaption>FREQ on the car display – captured in the CarPlay simulator (German interface).</figcaption>
+      <figcaption>FREQ on the car display, captured in the CarPlay simulator (German interface).</figcaption>
     </figure>
     <p class="ue-preis"><b>Free to start, no ads.</b> Navigation, warnings and reporting stay free, and so do small convoys. <b>FREQ Premium</b> adds the car display and convoys of up to 15 cars: €2.99 a month or €24.99 a year, with a 7-day free trial.</p>
     <div class="ue-aktion">
       <a class="taste haupt gross" href="mailto:administration@freqconvoi.com?subject=Notify%20me%20when%20FREQ%20launches" title="Writes an e-mail to administration@freqconvoi.com">Notify me</a>
       <span class="stand warte"><span class="puls" aria-hidden="true"></span>Not in the stores yet</span>
     </div>
-    <p class="ue-hinweis">The button opens your mail app – an empty e-mail to <a href="mailto:administration@freqconvoi.com?subject=Notify%20me%20when%20FREQ%20launches">administration@freqconvoi.com</a> is enough, we will get in touch at launch.</p>
+    <p class="ue-hinweis">The button opens your mail app. An empty e-mail to <a href="mailto:administration@freqconvoi.com?subject=Notify%20me%20when%20FREQ%20launches">administration@freqconvoi.com</a> is enough, we will get in touch at launch.</p>
     <nav class="ue-links" aria-label="Legal and help">
       <a href="privacy.html">Privacy</a>
       <a href="terms.html">Terms</a>
@@ -417,7 +346,7 @@
   </div>
 </dialog>
 
-<!-- Dock (phones only): the two buttons from the header, always at the bottom edge -->
+<!-- Dock (nur Handy): die zwei Tasten aus dem Kopf, immer am unteren Rand -->
 <div class="dock">
   <a class="taste" href="#ueberblick" data-blick aria-haspopup="dialog">Overview</a>
   <a class="taste haupt" href="mailto:administration@freqconvoi.com?subject=Notify%20me%20when%20FREQ%20launches" title="Writes an e-mail to administration@freqconvoi.com">Notify me</a>
@@ -425,33 +354,186 @@
 
 <footer class="fuss">
   <a href="privacy.html">Privacy</a>
-  <a class="zweit" href="terms.html">Terms</a>
+  <a href="terms.html">Terms</a>
   <a href="support.html">Support</a>
-  <a class="zweit" href="delete-account.html">Delete account</a>
+  <a href="delete-account.html">Delete account</a>
   <a href="imprint.html">Imprint</a>
-  <a class="zweit" href="credits.html">Credits</a>
+  <a href="credits.html">Credits</a>
   <span>© 2026 FREQ · Maps © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors</span>
 </footer>
 <script>
-// Overview: a dialog over the ride (header, dock and the opening chapter open it). Deliberately here and not in the world
-// bundle: it also works while the world loads, without WebGL and with “reduce motion”. Same code as on the German page.
+// Das Nötige für die Seite selbst – steht bewusst hier und nicht im Welt-Bündel: es läuft sofort, auch ohne WebGL, bei
+// „Bewegung reduzieren“ und im Datensparmodus. Kein Tracking, kein Speicher.
 (() => {
-  const html = document.documentElement, d = document.getElementById('ueberblick');
-  if (!d || !d.showModal) { html.classList.remove('mit-js'); return; }
-  let zurueck = null;
-  const auf = (e) => {
-    if (e) e.preventDefault();
-    if (d.open) return;
-    zurueck = document.activeElement;
-    d.showModal(); d.scrollTop = 0; html.classList.add('blick-offen');
+  const d = document, w = window, html = d.documentElement;
+  const ruhig = w.matchMedia('(prefers-reduced-motion: reduce)');
+  // Überblick: Dialog über der Seite (Kopf, Dock und Auftakt öffnen ihn)
+  const blick = d.getElementById('ueberblick');
+  if (!blick || !blick.showModal) html.classList.remove('mit-js');
+  else {
+    let zurueck = null;
+    const auf = (e) => { if (e) e.preventDefault(); if (blick.open) return; zurueck = d.activeElement; blick.showModal(); blick.scrollTop = 0; html.classList.add('blick-offen'); };
+    for (const t of d.querySelectorAll('[data-blick]')) t.addEventListener('click', auf);
+    blick.addEventListener('close', () => { html.classList.remove('blick-offen'); if (zurueck && zurueck.focus) zurueck.focus({ preventScroll: true }); });
+    blick.addEventListener('click', (e) => { if (e.target === blick) blick.close(); else if (e.target.closest && e.target.closest('[data-zu]')) { zurueck = null; blick.close(); } });   // Tipp neben die Karte schließt; ein Sprung in die Seite auch
+    if (location.hash === '#ueberblick') auf();
+    w.addEventListener('hashchange', () => { if (location.hash === '#ueberblick') auf(); });
+  }
+  // Kapitelpunkte: zeigen, wo man ist, und scrollen zum Abschnitt (der Browser scrollt, nichts wird festgehalten)
+  const abschnitte = Array.from(d.querySelectorAll('main .kapitel')), punkte = Array.from(d.querySelectorAll('.kapitelnav button'));
+  if (!html.classList.contains('mit-js')) html.classList.remove('buehne');
+  const buehne = html.classList.contains('buehne');
+  const punkt = (i) => punkte.forEach((p, k) => (k === i ? p.setAttribute('aria-current', 'true') : p.removeAttribute('aria-current')));
+  let oben = [], hoch = [];
+  const messen = () => {
+    const sy = w.scrollY; oben = []; hoch = [];
+    for (const a of abschnitte) { const r = a.getBoundingClientRect(); oben.push(r.top + sy); hoch.push(r.height || 1); }
+    // Der Schluss ist um eine Bildhöhe länger (über dieses Stück zieht der Rest der Seite herauf): für ihn zählt sein eigener Teil
+    const n = hoch.length; if (n > 1) hoch[n - 1] = Math.min(hoch[n - 1], hoch[n - 2]);
   };
-  for (const t of document.querySelectorAll('[data-blick]')) t.addEventListener('click', auf);
-  d.addEventListener('close', () => { html.classList.remove('blick-offen'); if (zurueck && zurueck.focus) zurueck.focus({ preventScroll: true }); });
-  d.addEventListener('click', (e) => { if (e.target === d) d.close(); });   // a tap next to the card closes it
-  // While the overview is open, arrow, page and space keys belong to it (otherwise the world behind keeps driving)
-  window.addEventListener('keydown', (e) => { if (d.open) e.stopPropagation(); }, true);
-  if (location.hash === '#ueberblick') auf();
-  window.addEventListener('hashchange', () => { if (location.hash === '#ueberblick') auf(); });
+  // Auf der Bühne landet der Sprung ein Stück im Abschnitt: dort steht sein Text schon ganz da (der Schluss blendet später ein)
+  const ziel = (i) => Math.round(oben[i] + (buehne && i ? (i === abschnitte.length - 1 ? 0.3 : 0.12) * hoch[i] : 0));
+  punkte.forEach((p, i) => p.addEventListener('click', () => { if (!abschnitte[i]) return; messen(); w.scrollTo({ top: ziel(i), behavior: ruhig.matches ? 'auto' : 'smooth' }); }));
+  if (buehne) {
+    // Die Bühne (Luka 25.11.2026: „Der Text soll stehen bleiben … wie früher“): jeder Kapiteltext steht fest an seinem Platz
+    // und blendet mit dem Scrollen ein und aus wie im Stand bis zum 24.11. (Deckkraft und 22 px Hub aus dem Scrollstand) –
+    // nur ist jetzt jeder Abschnitt gleich lang, und sein Text steht über gut vier Fünftel davon voll da (früher gut die
+    // Hälfte). Steht hier und nicht im Welt-Bündel: es gilt sofort, auch solange die Welt lädt und ohne WebGL.
+    const n = abschnitte.length;
+    const glatt = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+    const fenster = (x, a, b, c, e) => glatt(a, b, x) * (1 - glatt(c, e, x));
+    // Anteil x des Abschnitts (0 = liegt oben an, 1 = der nächste liegt an) → Deckkraft. Der Auftakt steht von Anfang an,
+    // der Schluss kommt etwas später (die Kamera hebt erst zum Himmel) und bleibt.
+    const sicht = (i, x) => (i === 0 ? fenster(x, -2, -1, 0.915, 0.985) : i === n - 1 ? fenster(x, 0.06, 0.24, 3, 4) : fenster(x, 0.015, 0.085, 0.915, 0.985));
+    // Überschrift: kurzes Entschlüsseln beim Eintreten auf einer Kopie (aria-hidden); nur mit Maus – am Handy zeichnete jedes
+    // Bild davon die Überschrift neu (Hänger bis 150 ms, gemessen 07.11.2026), dort blendet sie nur weich ein
+    const entschl = !w.matchMedia('(pointer: coarse), (max-width: 720px)').matches;
+    const GROSS = 'ABCDEFGHKLMNOPRSTUVXYZ#%&', KLEIN = 'abcdeghknopqrsuvxyz', ZIFFER = '0123456789';
+    const ersatz = (c) => { const q = /[A-ZÄÖÜ]/.test(c) ? GROSS : /[0-9]/.test(c) ? ZIFFER : KLEIN; return q[Math.floor(Math.random() * q.length)]; };
+    if (entschl) for (const a of abschnitte) {
+      const h = a.querySelector('h1, h2'); if (!h) continue;
+      const text = Array.from(h.childNodes).map((k) => (k.nodeName === 'BR' ? '\n' : k.textContent)).join('');
+      const echt = d.createElement('span'); echt.className = 'echt'; echt.textContent = text;
+      const spiel = d.createElement('span'); spiel.className = 'spiel'; spiel.setAttribute('aria-hidden', 'true');
+      h.textContent = ''; h.append(echt, spiel);
+      a._kopf = { h, spiel, text };
+    }
+    const entschluesseln = (a) => {
+      const k = a._kopf; if (!k) return;
+      const jetzt = performance.now(); if (jetzt - (a._zuletzt || -1e9) < 1200) { a._zuletzt = jetzt; return; }
+      a._zuletzt = jetzt;
+      const text = k.text, dauer = 420;
+      k.h.classList.add('entschluesselt');
+      const schritt = () => {
+        const x = Math.min(1, (performance.now() - jetzt) / dauer);
+        let s = '';
+        for (let i = 0; i < text.length; i++) {
+          const c = text[i];
+          if (c === ' ' || c === '.' || c === ',' || c === ':' || c === '\n') { s += c; continue; }
+          s += x * 1.25 - i / text.length * 0.25 > 0.95 ? c : (Math.random() < 0.6 ? ersatz(c) : c);
+        }
+        k.spiel.textContent = s;
+        if (x < 1) a._spielId = requestAnimationFrame(schritt);
+        else { k.spiel.textContent = ''; k.h.classList.remove('entschluesselt'); }
+      };
+      if (a._spielId) cancelAnimationFrame(a._spielId);
+      a._spielId = requestAnimationFrame(schritt);
+    };
+    // Textebene eines Nachbarn vorzeichnen (Handy): eine ganz durchsichtige Ebene zeichnet der Browser gar nicht erst – der
+    // Text kostete dann beim Eintreten ins Kapitel ein spätes Bild (iPhone 13, 25.11.2026: 50–70 ms genau an jeder
+    // Kapitelgrenze; am 11.11. schon am Pixel gemessen). Wird ein Abschnitt Nachbar, steht sein Text darum drei Bilder lang
+    // mit 2 % Deckkraft da (nicht zu sehen) und bleibt danach als durchsichtige Ebene bestehen, bis er dran ist.
+    const grob = w.matchMedia('(pointer: coarse), (max-width: 720px)').matches;
+    const vorzeichnen = (el) => {
+      el.classList.add('warm');
+      requestAnimationFrame(() => requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove('warm'))));
+    };
+    let aktiv = -1, geplant = false;
+    const stelle = () => {
+      geplant = false;
+      const sy = w.scrollY;
+      let a = 0; while (a < n - 1 && sy >= oben[a + 1]) a++;
+      for (let i = 0; i < n; i++) {
+        const el = abschnitte[i], nah = Math.abs(i - a) <= 1;
+        const s = nah ? Math.round(sicht(i, (sy - oben[i]) / hoch[i]) * 1000) / 1000 : 0;
+        if (el._s !== s) { el._s = s; el.style.setProperty('--s', String(s)); el.classList.toggle('da', s > 0.005); }
+        if (el._nah !== nah) { el._nah = nah; el.classList.toggle('nah', nah); if (nah && grob && s === 0) vorzeichnen(el); }
+      }
+      if (a === aktiv) return;
+      const alt = aktiv; aktiv = a;
+      punkt(a);
+      // Standbild: das des aktuellen Abschnitts (solange seine Szene nicht läuft: .live aus welt/quelle/main.js). Das neue
+      // blendet über dem alten ein; läuft im neuen Abschnitt schon die Szene, blendet das alte einfach aus.
+      const szene = abschnitte[a].classList.contains('live');
+      for (let i = 0; i < n; i++) {
+        const el = abschnitte[i];
+        if (i === a) { el.classList.remove('halten'); el.classList.add('zeigt'); }
+        else if (el.classList.contains('zeigt')) { el.classList.toggle('halten', !szene); el.classList.remove('zeigt'); }
+      }
+      if (alt >= 0) entschluesseln(abschnitte[a]);
+    };
+    const plane = () => { if (!geplant) { geplant = true; requestAnimationFrame(stelle); } };
+    const neu = () => { messen(); stelle(); };
+    w.addEventListener('scroll', plane, { passive: true });
+    w.addEventListener('resize', neu);
+    w.addEventListener('orientationchange', neu);
+    w.addEventListener('load', neu);
+    w.addEventListener('pageshow', neu);
+    neu();
+    // Verweis auf ein Kapitel (…/#k3): ein Stück in den Abschnitt hinein, dort steht sein Text schon ganz da
+    const zuKapitel = () => { const m = /^#k(\d)$/.exec(location.hash); if (!m || !abschnitte[+m[1]]) return; messen(); w.scrollTo(0, ziel(+m[1])); stelle(); };
+    if (location.hash) w.addEventListener('load', () => setTimeout(zuKapitel, 0));
+    w.addEventListener('hashchange', zuKapitel);
+  }
+  if ('IntersectionObserver' in w) {
+    if (!buehne) {
+      const io = new IntersectionObserver((es) => { for (const e of es) if (e.isIntersecting) punkt(abschnitte.indexOf(e.target)); }, { rootMargin: '-45% 0px -55% 0px' });
+      abschnitte.forEach((a) => io.observe(a));
+    }
+    const main = d.querySelector('main');
+    new IntersectionObserver(([e]) => html.classList.toggle('nach-fahrt', !e.isIntersecting && e.boundingClientRect.top < 0)).observe(main);
+    // Kacheln: ihre kleinen Bewegungen laufen nur, solange der Abschnitt im Bild ist
+    const fk = d.getElementById('funktionen');
+    if (fk && !ruhig.matches) new IntersectionObserver(([e]) => fk.classList.toggle('ruhe', !e.isIntersecting), { rootMargin: '80px 0px' }).observe(fk);
+  }
+  const knopf = d.getElementById('kacheln-knopf'), mehr = d.getElementById('kacheln-mehr');
+  if (knopf && mehr) {
+    knopf.hidden = false;
+    const abschnitt = d.getElementById('funktionen');
+    knopf.addEventListener('click', () => { const auf = abschnitt.classList.toggle('offen'); knopf.setAttribute('aria-expanded', String(auf)); knopf.textContent = auf ? knopf.dataset.weniger : knopf.dataset.mehr; if (!auf) abschnitt.scrollIntoView({ block: 'start' }); });
+  }
+  // Die 3D-Welt kommt nach, wenn die Seite steht: nicht bei „Bewegung reduzieren“, nicht im Datensparmodus, nicht auf sehr
+  // langsamer Leitung (dort bleibt es bei den Standbildern; im Datensparmodus lädt eine Taste sie trotzdem).
+  const c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  const sparen = !!c && (c.saveData || /(^|-)2g$/.test(c.effectiveType || ''));
+  let geholt = false;
+  const holen = () => {
+    if (geholt) return; geholt = true;
+    // Zuerst die Standbilder der übrigen Abschnitte anfordern (zusammen rund 0,3 MB): wer gleich losscrollt, sieht sie sofort –
+    // nie eine leere Fläche, während die Welt (mehrere MB, mit niedrigem Vorrang) noch über die Leitung kommt
+    for (const b of d.querySelectorAll('main .kapitel .bild img[loading="lazy"]')) { b.fetchPriority = 'high'; b.loading = 'eager'; }
+    // … und das Logo des Schlusses: geladen und entpackt, bevor sein Text zum ersten Mal einblendet
+    const lg = d.querySelector('.finale-logo'); if (lg) { lg.loading = 'eager'; if (lg.decode) lg.decode().catch(() => {}); }
+    const s = d.createElement('script'); s.src = d.body.dataset.welt; s.async = true; s.fetchPriority = 'low';
+    s.onerror = () => { html.classList.add('ohne-webgl'); };
+    d.head.appendChild(s);
+  };
+  if (ruhig.matches) html.classList.add('ruhig');
+  else if (sparen && !/[?&]welt=1/.test(location.search)) {
+    html.classList.add('sparsam');
+    const sp = d.querySelector('.spar'), kn = d.getElementById('welt-laden');
+    if (sp && kn) { sp.hidden = false; kn.addEventListener('click', () => { sp.hidden = true; html.classList.remove('sparsam'); holen(); }); }
+  } else if (!/[?&]welt=0/.test(location.search)) {
+    // Erst wenn das Startbild wirklich gemalt ist (Safari malte es sonst erst, nachdem die Welt den Hauptfaden wieder freigab)
+    const los = () => {
+      const bild = d.querySelector('.auftakt .bild img');
+      const weiter = () => requestAnimationFrame(() => (w.requestIdleCallback ? w.requestIdleCallback(holen, { timeout: 800 }) : setTimeout(holen, 120)));
+      if (bild && bild.decode) bild.decode().then(weiter, weiter); else weiter();
+    };
+    if (d.readyState === 'complete') los(); else w.addEventListener('load', los, { once: true });
+  }
+  // Zwischenspeicher für den zweiten Besuch (sw.js: Welt-Dateien cache-first, HTML network-first, kein Tracking)
+  if ('serviceWorker' in navigator && /^https?:/.test(location.protocol)) w.addEventListener('load', () => { navigator.serviceWorker.register(d.body.dataset.basis + 'sw.js').catch(() => {}); });
 })();
 </script>
 </body>

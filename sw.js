@@ -2,9 +2,12 @@
 // Versionierte Welt-Dateien (welt/, bild/) cache-first; HTML, Unterseiten, Rechtstexte und Stil network-first mit
 // Rückfall auf den Zwischenspeicher. Neue Version = neuer Cache-Name: alte Caches werden beim Aktivieren gelöscht,
 // die Seite verweist per ?v= auf die neuen Welt-Dateien. Kein Tracking, nichts verlässt das Gerät.
-const VERSION = '202611242139-d7582c1';
+const VERSION = '202611250932-e4c2f05';
 const CACHE = 'freq-welt-' + VERSION;
-const KERN = ['welt/welt.js?v=' + VERSION, 'welt/welt.css?v=' + VERSION, 'welt/hero.webp', 'bild/freq-logo.webp', 'bild/freq-mark.webp'];
+// Beim Einrichten nur das Kleine, das jede Ansicht braucht (Stil, Zeichen). Das Welt-Bündel, die Standbilder und die Modelle
+// kommen von selbst in den Zwischenspeicher, sobald die Seite sie lädt (cache-first unten, „merken“ nach dem Laden) –
+// bis zum 24.11.2026 holte schon das Einrichten das Bündel und das große Logo (zusammen über 500 KB), auch im Datensparmodus.
+const KERN = ['welt/welt.css?v=' + VERSION, 'bild/freq-mark.webp'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(KERN).catch(() => {})).then(() => self.skipWaiting()));
@@ -32,18 +35,20 @@ self.addEventListener('fetch', (e) => {
   const fest = /\/(welt|bild)\//.test(url.pathname) && !/\.html$/.test(url.pathname);
   if (fest) {
     // Welt-Dateien: aus dem Zwischenspeicher, sonst laden und merken (beim zweiten Besuch sofort da)
-    e.respondWith(caches.open(CACHE).then(async (c) => {
-      const hit = await c.match(req);
-      if (hit) return hit;
+    // Streikt der Zwischenspeicher (voller Speicher, privates Fenster), geht die Anfrage einfach ans Netz – der Service
+    // Worker darf nie der Grund sein, dass etwas nicht lädt.
+    e.respondWith((async () => {
+      let c = null;
+      try { c = await caches.open(CACHE); const hit = await c.match(req); if (hit) return hit; } catch (x) { c = null; }
       const res = await fetch(req);
-      if (res && res.ok) c.put(req, res.clone());
+      if (c && res && res.ok) { try { c.put(req, res.clone()).catch(() => {}); } catch (x) { /* dann ohne Merken */ } }
       return res;
-    }));
+    })());
     return;
   }
   // HTML, Unterseiten, Rechtstexte, stil.css: erst das Netz (nie veraltet), bei Ausfall der Zwischenspeicher
   e.respondWith(fetch(req).then((res) => {
-    if (res && res.ok) caches.open(CACHE).then((c) => c.put(req, res.clone()));
+    if (res && res.ok) { const kopie = res.clone(); caches.open(CACHE).then((c) => c.put(req, kopie)).catch(() => {}); }   // gleich kopieren: später ist der Inhalt schon gelesen
     return res;
-  }).catch(() => caches.match(req)));
+  }).catch(() => caches.match(req).then((hit) => hit || Response.error())));
 });
