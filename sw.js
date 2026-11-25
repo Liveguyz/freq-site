@@ -2,7 +2,7 @@
 // Versionierte Welt-Dateien (welt/, bild/) cache-first; HTML, Unterseiten, Rechtstexte und Stil network-first mit
 // Rückfall auf den Zwischenspeicher. Neue Version = neuer Cache-Name: alte Caches werden beim Aktivieren gelöscht,
 // die Seite verweist per ?v= auf die neuen Welt-Dateien. Kein Tracking, nichts verlässt das Gerät.
-const VERSION = '202611250952-4c905c1';
+const VERSION = '202611251039-82a98af';
 const CACHE = 'freq-welt-' + VERSION;
 // Beim Einrichten nur das Kleine, das jede Ansicht braucht (Stil, Zeichen). Das Welt-Bündel, die Standbilder und die Modelle
 // kommen von selbst in den Zwischenspeicher, sobald die Seite sie lädt (cache-first unten, „merken“ nach dem Laden) –
