@@ -342,7 +342,10 @@ footer.fuss span a { display: inline; min-height: 0; text-decoration: underline;
   html.buehne .kapitel.oben .platz { align-content: start; padding-top: calc(96px + env(safe-area-inset-top)); }
   html.buehne .kapitel.auftakt .platz, html.buehne .kapitel.finale .platz { justify-content: center; align-content: center; }
   html.buehne .kapitel.auftakt .text { text-align: center; max-width: 42rem; }
-  html.buehne .kapitel.finale .text { text-align: center; display: grid; justify-items: center; max-width: 40rem; }
+  html.buehne .kapitel.finale .text { text-align: center; display: grid; justify-items: center; max-width: 34rem; }
+  /* Überschriften brechen am breiten Schirm um wie früher („Convoy: alle auf / einer Karte.“); das Ausgleichen der Zeilen
+     gab es dort nur am Handy */
+  html.buehne .kapitel h1, html.buehne .kapitel h2 { text-wrap: wrap; }
   /* Überschrift mit kurzem Entschlüsseln beim Eintreten (nur am Desktop, Skript der Seite): die Kopie läuft im Textfluss,
      der echte Text liegt unsichtbar darunter – bricht sie anders um, rückt der Absatz kurz nach, nichts überlappt */
   html.buehne .kapitel h1 .echt, html.buehne .kapitel h2 .echt { transition: opacity 0.15s; }
@@ -364,11 +367,14 @@ footer.fuss span a { display: inline; min-height: 0; text-decoration: underline;
   html.buehne .kapitel.nah .platz { visibility: visible; }
 }
 @media screen and (max-width: 720px) {
+  html.buehne .kapitel h1, html.buehne .kapitel h2 { text-wrap: balance; }
+  html.buehne .kapitel p { font-size: 15px; line-height: 1.45; }   /* auch der Satz im Auftakt, wie früher */
   html.buehne .platz, html.buehne .kapitel.rechts .platz, html.buehne .kapitel.auftakt .platz { justify-content: stretch; align-content: end; padding: 0; }
   html.buehne .kapitel.oben .platz { align-content: start; padding: 0; }
   html.buehne .kapitel .text, html.buehne .kapitel.rechts .text, html.buehne .kapitel.auftakt .text {
     max-width: none; margin: 0; border-radius: 0; text-align: center;
-    padding: 100px calc(44px + env(safe-area-inset-right)) calc(80px + env(safe-area-inset-bottom)) calc(44px + env(safe-area-inset-left));
+    /* 56 px Rand links und rechts: dieselbe Spaltenbreite wie früher (44 px am Abschnitt + 12 px am Text) – gleiche Zeilenumbrüche */
+    padding: 100px calc(56px + env(safe-area-inset-right)) calc(80px + env(safe-area-inset-bottom)) calc(56px + env(safe-area-inset-left));
     background: linear-gradient(180deg, rgba(6, 9, 14, 0) 0, rgba(6, 9, 14, 0.14) 22px, rgba(6, 9, 14, 0.42) 52px, rgba(6, 9, 14, 0.7) 88px, rgba(6, 9, 14, 0.84) 132px, rgba(6, 9, 14, 0.9) 100%);
     text-shadow: 0 1px 10px rgba(0, 0, 0, 0.85), 0 1px 2px rgba(0, 0, 0, 0.8);
   }
@@ -381,11 +387,14 @@ footer.fuss span a { display: inline; min-height: 0; text-decoration: underline;
   html.buehne .kapitel.auftakt .text { padding-bottom: calc(138px + env(safe-area-inset-bottom)); }
   html.buehne .hinweis { bottom: calc(80px + env(safe-area-inset-bottom)); }
   html.buehne .spar { bottom: calc(132px + env(safe-area-inset-bottom)); }
+  /* Datensparmodus: der Satz mit der Taste „3D-Fahrt laden“ braucht zwei Zeilen zwischen Absatz und Hinweis */
+  html.buehne.sparsam .kapitel.auftakt .text { padding-bottom: calc(196px + env(safe-area-inset-bottom)); }
   /* Schluss (Logo vor dem Himmel): mittig, kein Band, der runde Hof bleibt */
   html.buehne .kapitel.finale .platz { justify-content: center; align-content: center; padding: calc(72px + env(safe-area-inset-top)) calc(44px + env(safe-area-inset-right)) calc(80px + env(safe-area-inset-bottom)) calc(44px + env(safe-area-inset-left)); }
   html.buehne .kapitel.finale .text { max-width: 100%; padding: 24px 12px; margin: -24px -12px; border-radius: 28px; background: radial-gradient(farthest-corner at 50% 60%, rgba(8, 10, 14, 0.66), rgba(8, 10, 14, 0.4) 40%, rgba(8, 10, 14, 0) 70%); }
 }
-@media screen and (max-width: 374px) { html.buehne .kapitel .text, html.buehne .kapitel.rechts .text, html.buehne .kapitel.auftakt .text { padding-left: calc(36px + env(safe-area-inset-left)); padding-right: calc(36px + env(safe-area-inset-right)); } html.buehne .kapitel.finale .platz { padding-left: calc(36px + env(safe-area-inset-left)); padding-right: calc(36px + env(safe-area-inset-right)); } }
+@media screen and (max-width: 374px) { html.buehne .kapitel .text, html.buehne .kapitel.rechts .text, html.buehne .kapitel.auftakt .text { padding-left: calc(48px + env(safe-area-inset-left)); padding-right: calc(48px + env(safe-area-inset-right)); } html.buehne .kapitel.finale .platz { padding-left: calc(36px + env(safe-area-inset-left)); padding-right: calc(36px + env(safe-area-inset-right)); } html.buehne .kapitel p { font-size: 13.5px; } }
+@media screen and (max-width: 340px) { html.buehne .kapitel p { font-size: 13px; } html.buehne .kapitel h1 { font-size: 20px; } }
 /* Bühne im flachen Querformat (Handy quer): wenig Höhe, die Tasten stehen im Kopf */
 @media screen and (max-height: 460px) and (orientation: landscape) {
   html.buehne .platz { padding-top: calc(56px + env(safe-area-inset-top)); padding-bottom: calc(22px + env(safe-area-inset-bottom)); padding-right: calc(52px + env(safe-area-inset-right)); }

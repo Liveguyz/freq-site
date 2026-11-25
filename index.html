@@ -19,19 +19,28 @@
 <link rel="alternate" hreflang="en" href="https://freqconvoi.com/en/">
 <link rel="icon" href="bild/freq-touch.png">
 <link rel="apple-touch-icon" href="bild/freq-touch.png">
-<link rel="preload" as="image" type="image/avif" href="welt/szene/de-k0-hoch.avif?v=202611250932-e4c2f05" media="(max-aspect-ratio: 9/10)" fetchpriority="high">
-<link rel="preload" as="image" type="image/avif" href="welt/szene/de-k0-quer.avif?v=202611250932-e4c2f05" media="(min-aspect-ratio: 901/1000)" fetchpriority="high">
+<link rel="preload" as="image" type="image/avif" href="welt/szene/de-k0-hoch.avif?v=202611250952-4c905c1" media="(max-aspect-ratio: 9/10)" fetchpriority="high">
+<link rel="preload" as="image" type="image/avif" href="welt/szene/de-k0-quer.avif?v=202611250952-4c905c1" media="(min-aspect-ratio: 901/1000)" fetchpriority="high">
 <link rel="preload" as="font" type="font/woff2" href="schrift/saira-expanded-bold.woff2" crossorigin>
 <script>
 // Vor dem ersten Bild: mit JavaScript steht die Seite als Bühne (der Kapiteltext fest, die Welt dahinter) – außer bei
-// „Bewegung reduzieren“, dort bleibt sie eine gewöhnliche Seite (welt/welt.css).
-(function (h) { h.classList.add('mit-js'); try { if (!matchMedia('(prefers-reduced-motion: reduce)').matches) h.classList.add('buehne'); } catch (e) {} })(document.documentElement);
+// „Bewegung reduzieren“ und in alten Browsern, dort bleibt sie eine gewöhnliche Seite (welt/welt.css). Läuft das Skript am
+// Seitenende nicht durch (es meldet sich mit FREQ_SEITE), fällt die Bühne wieder weg: lieber Text im Fluss als kein Text.
+(function (h, w) {
+  h.classList.add('mit-js');
+  try {
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches && w.CSS && CSS.supports('opacity', 'var(--s, 0)') && 'noModule' in HTMLScriptElement.prototype && 'HTMLDialogElement' in w) {
+      h.classList.add('buehne');
+      document.addEventListener('DOMContentLoaded', function () { if (!w.FREQ_SEITE) h.classList.remove('buehne'); });
+    }
+  } catch (e) { /* dann ohne Bühne */ }
+})(document.documentElement, window);
 </script>
-<link rel="stylesheet" href="welt/welt.css?v=202611250932-e4c2f05">
+<link rel="stylesheet" href="welt/welt.css?v=202611250952-4c905c1">
 <link rel="stylesheet" href="kacheln.css?v=7" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="kacheln.css?v=7"></noscript>
 </head>
-<body data-basis="" data-welt="welt/welt.js?v=202611250932-e4c2f05">
+<body data-basis="" data-welt="welt/welt.js?v=202611250952-4c905c1">
 <a class="springen" href="#inhalt">Zum Inhalt</a>
 <!-- Die Bühne: die 3D-Welt liegt fest hinter der Seite. Jeder Abschnitt bringt sein Standbild mit (picture.bild, genau so groß
      wie die Leinwand); ist seine Szene geladen, blendet das Standbild aus und die Welt dahinter übernimmt (welt/quelle/main.js). -->
@@ -72,7 +81,7 @@
 
 <main id="inhalt">
   <section class="kapitel auftakt da zeigt" id="k0" aria-labelledby="t0" style="--s:1">
-    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="welt/szene/de-k0-hoch.avif?v=202611250932-e4c2f05"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="welt/szene/de-k0-hoch.webp?v=202611250932-e4c2f05"><source type="image/avif" srcset="welt/szene/de-k0-quer.avif?v=202611250932-e4c2f05"><img src="welt/szene/de-k0-quer.webp?v=202611250932-e4c2f05" alt="Nachts auf nasser Straße: ein Convoy aus vier Autos kommt mit Scheinwerfern entgegen." width="1800" height="1200" fetchpriority="high" decoding="sync"></picture>
+    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="welt/szene/de-k0-hoch.avif?v=202611250952-4c905c1"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="welt/szene/de-k0-hoch.webp?v=202611250952-4c905c1"><source type="image/avif" srcset="welt/szene/de-k0-quer.avif?v=202611250952-4c905c1"><img src="welt/szene/de-k0-quer.webp?v=202611250952-4c905c1" alt="Nachts auf nasser Straße: ein Convoy aus vier Autos kommt mit Scheinwerfern entgegen." width="1800" height="1200" fetchpriority="high" decoding="sync"></picture>
     <div class="platz">
       <div class="text">
       <h1 id="t0">Gemeinsam fahren. Gemeinsam funken.</h1>
@@ -88,7 +97,7 @@
   </section>
 
   <section class="kapitel links" id="k1" aria-labelledby="t1" data-w-namen="Anna,Ben,Mia,Tom">
-    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="welt/szene/de-k1-hoch.avif?v=202611250932-e4c2f05"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="welt/szene/de-k1-hoch.webp?v=202611250932-e4c2f05"><source type="image/avif" srcset="welt/szene/de-k1-quer.avif?v=202611250932-e4c2f05"><img src="welt/szene/de-k1-quer.webp?v=202611250932-e4c2f05" alt="Der Convoy von oben: über jedem Auto das Gesicht des Fahrers, die Route als Linie auf der Straße." width="1800" height="1200" loading="lazy" decoding="async"></picture>
+    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="welt/szene/de-k1-hoch.avif?v=202611250952-4c905c1"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="welt/szene/de-k1-hoch.webp?v=202611250952-4c905c1"><source type="image/avif" srcset="welt/szene/de-k1-quer.avif?v=202611250952-4c905c1"><img src="welt/szene/de-k1-quer.webp?v=202611250952-4c905c1" alt="Der Convoy von oben: über jedem Auto das Gesicht des Fahrers, die Route als Linie auf der Straße." width="1800" height="1200" loading="lazy" decoding="async"></picture>
     <div class="platz">
       <div class="text">
       <h2 id="t1">Convoy: alle auf einer Karte.</h2>
@@ -100,7 +109,7 @@
   </section>
 
   <section class="kapitel rechts" id="k2" aria-labelledby="t2" data-w-spricht="Anna spricht">
-    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="welt/szene/de-k2-hoch.avif?v=202611250932-e4c2f05"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="welt/szene/de-k2-hoch.webp?v=202611250932-e4c2f05"><source type="image/avif" srcset="welt/szene/de-k2-quer.avif?v=202611250932-e4c2f05"><img src="welt/szene/de-k2-quer.webp?v=202611250932-e4c2f05" alt="Ein Auto im Convoy bei Nacht, darüber das Gesicht der Fahrerin mit Funkwellen: Anna spricht." width="1800" height="1200" loading="lazy" decoding="async"></picture>
+    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="welt/szene/de-k2-hoch.avif?v=202611250952-4c905c1"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="welt/szene/de-k2-hoch.webp?v=202611250952-4c905c1"><source type="image/avif" srcset="welt/szene/de-k2-quer.avif?v=202611250952-4c905c1"><img src="welt/szene/de-k2-quer.webp?v=202611250952-4c905c1" alt="Ein Auto im Convoy bei Nacht, darüber das Gesicht der Fahrerin mit Funkwellen: Anna spricht." width="1800" height="1200" loading="lazy" decoding="async"></picture>
     <div class="platz">
       <div class="text">
       <h2 id="t2">Funk: reden wie im selben Auto.</h2>
@@ -111,7 +120,7 @@
   </section>
 
   <section class="kapitel links" id="k3" aria-labelledby="t3" data-w-einheit="km/h" data-w-vorschau="70 in 400 m" data-w-gefahr="Gefahr gemeldet" data-w-vollbremsung="Vollbremsung im Convoy" data-w-akku="15 %" data-w-blitzer="Blitzer · 800 m" data-w-blitzer-tempo="Tempo 70" data-w-radar="800 m">
-    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="welt/szene/de-k3-hoch.avif?v=202611250932-e4c2f05"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="welt/szene/de-k3-hoch.webp?v=202611250932-e4c2f05"><source type="image/avif" srcset="welt/szene/de-k3-quer.avif?v=202611250932-e4c2f05"><img src="welt/szene/de-k3-quer.webp?v=202611250932-e4c2f05" alt="Hinter dem ersten Auto: der Tacho zeigt das Tempo, eine Tafel warnt vor einem Blitzer in 800 Metern." width="1800" height="1200" loading="lazy" decoding="async"></picture>
+    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="welt/szene/de-k3-hoch.avif?v=202611250952-4c905c1"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="welt/szene/de-k3-hoch.webp?v=202611250952-4c905c1"><source type="image/avif" srcset="welt/szene/de-k3-quer.avif?v=202611250952-4c905c1"><img src="welt/szene/de-k3-quer.webp?v=202611250952-4c905c1" alt="Hinter dem ersten Auto: der Tacho zeigt das Tempo, eine Tafel warnt vor einem Blitzer in 800 Metern." width="1800" height="1200" loading="lazy" decoding="async"></picture>
     <div class="platz">
       <div class="text">
       <h2 id="t3">Gewarnt, bevor es brenzlig wird.</h2>
@@ -123,7 +132,7 @@
   </section>
 
   <section class="kapitel rechts" id="k4" aria-labelledby="t4" data-w-schild-oben="A1" data-w-schild-unten="Ausfahrt 12" data-w-ansage="In 300 Metern rechts abbiegen" data-w-ansage-jetzt="Ausfahrt nehmen" data-w-landstrasse="Ohne Autobahn">
-    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="welt/szene/de-k4-hoch.avif?v=202611250932-e4c2f05"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="welt/szene/de-k4-hoch.webp?v=202611250932-e4c2f05"><source type="image/avif" srcset="welt/szene/de-k4-quer.avif?v=202611250932-e4c2f05"><img src="welt/szene/de-k4-quer.webp?v=202611250932-e4c2f05" alt="Das erste Auto nimmt die Ausfahrt, die Route führt über die Rampe; darüber der Hinweis „Ausfahrt nehmen“." width="1800" height="1200" loading="lazy" decoding="async"></picture>
+    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="welt/szene/de-k4-hoch.avif?v=202611250952-4c905c1"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="welt/szene/de-k4-hoch.webp?v=202611250952-4c905c1"><source type="image/avif" srcset="welt/szene/de-k4-quer.avif?v=202611250952-4c905c1"><img src="welt/szene/de-k4-quer.webp?v=202611250952-4c905c1" alt="Das erste Auto nimmt die Ausfahrt, die Route führt über die Rampe; darüber der Hinweis „Ausfahrt nehmen“." width="1800" height="1200" loading="lazy" decoding="async"></picture>
     <div class="platz">
       <div class="text">
       <h2 id="t4">Navigation mit eigener Stimme.</h2>
@@ -135,7 +144,7 @@
   </section>
 
   <section class="kapitel links" id="k5" aria-labelledby="t5" data-w-abschnitt="Abschnittskontrolle" data-w-abschnitt-rest="noch 2,4 km" data-w-abschnitt-beginn="Beginn Abschnittskontrolle" data-w-amtlich="Amtliche Daten · Österreich">
-    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="welt/szene/de-k5-hoch.avif?v=202611250932-e4c2f05"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="welt/szene/de-k5-hoch.webp?v=202611250932-e4c2f05"><source type="image/avif" srcset="welt/szene/de-k5-quer.avif?v=202611250932-e4c2f05"><img src="welt/szene/de-k5-quer.webp?v=202611250932-e4c2f05" alt="Eine Messbrücke über der Straße und das FREQ-Feld mit Schnitt und Tempolimit der Abschnittskontrolle." width="1800" height="1200" loading="lazy" decoding="async"></picture>
+    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="welt/szene/de-k5-hoch.avif?v=202611250952-4c905c1"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="welt/szene/de-k5-hoch.webp?v=202611250952-4c905c1"><source type="image/avif" srcset="welt/szene/de-k5-quer.avif?v=202611250952-4c905c1"><img src="welt/szene/de-k5-quer.webp?v=202611250952-4c905c1" alt="Eine Messbrücke über der Straße und das FREQ-Feld mit Schnitt und Tempolimit der Abschnittskontrolle." width="1800" height="1200" loading="lazy" decoding="async"></picture>
     <div class="platz">
       <div class="text">
       <h2 id="t5">Abschnittskontrolle: dein Schnitt, live.</h2>
@@ -146,7 +155,7 @@
   </section>
 
   <section class="kapitel rechts" id="k6" aria-labelledby="t6" data-w-frei="Frei" data-w-belegt="Belegt" data-w-offen="Offen bis 22:00" data-w-pause="Pause? Rastplatz in 2 km" data-w-preise="Diesel,Super,Preise live in FREQ">
-    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="welt/szene/de-k6-hoch.avif?v=202611250932-e4c2f05"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="welt/szene/de-k6-hoch.webp?v=202611250932-e4c2f05"><source type="image/avif" srcset="welt/szene/de-k6-quer.avif?v=202611250932-e4c2f05"><img src="welt/szene/de-k6-quer.webp?v=202611250932-e4c2f05" alt="Tankstelle und Ladesäulen am Rastplatz mit den Hinweisen „Offen bis 22:00“, „Frei“ und „Belegt“." width="1800" height="1200" loading="lazy" decoding="async"></picture>
+    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="welt/szene/de-k6-hoch.avif?v=202611250952-4c905c1"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="welt/szene/de-k6-hoch.webp?v=202611250952-4c905c1"><source type="image/avif" srcset="welt/szene/de-k6-quer.avif?v=202611250952-4c905c1"><img src="welt/szene/de-k6-quer.webp?v=202611250952-4c905c1" alt="Tankstelle und Ladesäulen am Rastplatz mit den Hinweisen „Offen bis 22:00“, „Frei“ und „Belegt“." width="1800" height="1200" loading="lazy" decoding="async"></picture>
     <div class="platz">
       <div class="text">
       <h2 id="t6">Tanken, Pause, Essen – für alle.</h2>
@@ -157,7 +166,7 @@
   </section>
 
   <section class="kapitel links oben" id="k7" aria-labelledby="t7" data-w-abstand="350 m" data-w-strasse="Hauptstraße" data-w-ziel="Ziel" data-w-convoy="Convoy" data-w-sprechen="Sprechen" data-w-ruhe="Ruhe" data-w-rest="12 km · 14 min" data-w-ankunft="21:56" data-w-ankunft-wort="Ankunft" data-w-min-wort="Min." data-w-blitzer-fest="Fester Blitzer" data-w-apps="Telefon,Musik,Karten,Nachrichten,Podcasts,FREQ,Radio,Einstellungen">
-    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="welt/szene/de-k7-hoch.avif?v=202611250932-e4c2f05"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="welt/szene/de-k7-hoch.webp?v=202611250932-e4c2f05"><source type="image/avif" srcset="welt/szene/de-k7-quer.avif?v=202611250932-e4c2f05"><img src="welt/szene/de-k7-quer.webp?v=202611250932-e4c2f05" alt="Blick vom Fahrersitz auf das Auto-Display mit FREQ: Karte, Abbiegehinweis und Tacho." width="1800" height="1200" loading="lazy" decoding="async"></picture>
+    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="welt/szene/de-k7-hoch.avif?v=202611250952-4c905c1"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="welt/szene/de-k7-hoch.webp?v=202611250952-4c905c1"><source type="image/avif" srcset="welt/szene/de-k7-quer.avif?v=202611250952-4c905c1"><img src="welt/szene/de-k7-quer.webp?v=202611250952-4c905c1" alt="Blick vom Fahrersitz auf das Auto-Display mit FREQ: Karte, Abbiegehinweis und Tacho." width="1800" height="1200" loading="lazy" decoding="async"></picture>
     <div class="platz">
       <div class="text">
       <h2 id="t7">Im Auto auf dem großen Bildschirm.</h2>
@@ -169,7 +178,7 @@
   </section>
 
   <section class="kapitel links" id="k8" aria-labelledby="t8" data-w-treffen="Car-Meet · 12 fahren hin" data-w-treffen-waren="Cars &amp; Coffee · Sa 10:00">
-    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="welt/szene/de-k8-hoch.avif?v=202611250932-e4c2f05"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="welt/szene/de-k8-hoch.webp?v=202611250932-e4c2f05"><source type="image/avif" srcset="welt/szene/de-k8-quer.avif?v=202611250932-e4c2f05"><img src="welt/szene/de-k8-quer.webp?v=202611250932-e4c2f05" alt="Ein Car-Meet auf einem Parkplatz neben der Straße, Autos mit eingeschalteten Scheinwerfern." width="1800" height="1200" loading="lazy" decoding="async"></picture>
+    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="welt/szene/de-k8-hoch.avif?v=202611250952-4c905c1"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="welt/szene/de-k8-hoch.webp?v=202611250952-4c905c1"><source type="image/avif" srcset="welt/szene/de-k8-quer.avif?v=202611250952-4c905c1"><img src="welt/szene/de-k8-quer.webp?v=202611250952-4c905c1" alt="Ein Car-Meet auf einem Parkplatz neben der Straße, Autos mit eingeschalteten Scheinwerfern." width="1800" height="1200" loading="lazy" decoding="async"></picture>
     <div class="platz">
       <div class="text">
       <h2 id="t8">Car-Meets in deiner Nähe.</h2>
@@ -180,7 +189,7 @@
   </section>
 
   <section class="kapitel finale" id="k9" aria-labelledby="t9">
-    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="welt/szene/de-k9-hoch.avif?v=202611250932-e4c2f05"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="welt/szene/de-k9-hoch.webp?v=202611250932-e4c2f05"><source type="image/avif" srcset="welt/szene/de-k9-quer.avif?v=202611250932-e4c2f05"><img src="welt/szene/de-k9-quer.webp?v=202611250932-e4c2f05" alt="Nachthimmel über den Bergen, unten die Straße, auf der der Convoy davonfährt." width="1800" height="1200" loading="lazy" decoding="async"></picture>
+    <picture class="bild"><source media="(max-aspect-ratio: 9/10)" type="image/avif" srcset="welt/szene/de-k9-hoch.avif?v=202611250952-4c905c1"><source media="(max-aspect-ratio: 9/10)" type="image/webp" srcset="welt/szene/de-k9-hoch.webp?v=202611250952-4c905c1"><source type="image/avif" srcset="welt/szene/de-k9-quer.avif?v=202611250952-4c905c1"><img src="welt/szene/de-k9-quer.webp?v=202611250952-4c905c1" alt="Nachthimmel über den Bergen, unten die Straße, auf der der Convoy davonfährt." width="1800" height="1200" loading="lazy" decoding="async"></picture>
     <div class="platz">
       <div class="text">
       <div class="finale-logo-rahmen">
@@ -423,7 +432,6 @@
       const jetzt = performance.now(); if (jetzt - (a._zuletzt || -1e9) < 1200) { a._zuletzt = jetzt; return; }
       a._zuletzt = jetzt;
       const text = k.text, dauer = 420;
-      k.h.classList.add('entschluesselt');
       const schritt = () => {
         const x = Math.min(1, (performance.now() - jetzt) / dauer);
         let s = '';
@@ -433,11 +441,11 @@
           s += x * 1.25 - i / text.length * 0.25 > 0.95 ? c : (Math.random() < 0.6 ? ersatz(c) : c);
         }
         k.spiel.textContent = s;
-        if (x < 1) a._spielId = requestAnimationFrame(schritt);
+        if (x < 1) { k.h.classList.add('entschluesselt'); a._spielId = requestAnimationFrame(schritt); }
         else { k.spiel.textContent = ''; k.h.classList.remove('entschluesselt'); }
       };
       if (a._spielId) cancelAnimationFrame(a._spielId);
-      a._spielId = requestAnimationFrame(schritt);
+      schritt();   // gleich: die Kopie hat ihren Text, bevor sie an die Stelle der Überschrift tritt (sonst war die ein Bild lang leer)
     };
     // Textebene eines Nachbarn vorzeichnen (Handy): eine ganz durchsichtige Ebene zeichnet der Browser gar nicht erst – der
     // Text kostete dann beim Eintreten ins Kapitel ein spätes Bild (iPhone 13, 25.11.2026: 50–70 ms genau an jeder
@@ -448,11 +456,12 @@
       el.classList.add('warm');
       requestAnimationFrame(() => requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove('warm'))));
     };
-    let aktiv = -1, geplant = false;
+    let aktiv = -1, geplant = false, platz = null;
     const stelle = () => {
       geplant = false;
       const sy = w.scrollY;
       let a = 0; while (a < n - 1 && sy >= oben[a + 1]) a++;
+      platz = sy < oben[n - 1] + hoch[n - 1] ? [a, (sy - oben[a]) / hoch[a], hoch[a]] : null;   // wo in der Fahrt (für Größenwechsel)
       for (let i = 0; i < n; i++) {
         const el = abschnitte[i], nah = Math.abs(i - a) <= 1;
         const s = nah ? Math.round(sicht(i, (sy - oben[i]) / hoch[i]) * 1000) / 1000 : 0;
@@ -473,7 +482,14 @@
       if (alt >= 0) entschluesseln(abschnitte[a]);
     };
     const plane = () => { if (!geplant) { geplant = true; requestAnimationFrame(stelle); } };
-    const neu = () => { messen(); stelle(); };
+    // Fenstergröße oder Lage des Handys ändern die Länge der Abschnitte: am selben Platz der Fahrt bleiben (derselbe Abschnitt,
+    // derselbe Anteil) – der Browser hielte sonst nur die Pixelzahl, und man stünde in einem anderen Kapitel
+    const neu = () => {
+      const war = platz;
+      messen();
+      if (war && Math.abs(hoch[war[0]] - war[2]) > 1) { const y = Math.round(oben[war[0]] + Math.max(0, war[1]) * hoch[war[0]]); if (Math.abs(y - w.scrollY) > 2) w.scrollTo(0, y); }
+      stelle();
+    };
     w.addEventListener('scroll', plane, { passive: true });
     w.addEventListener('resize', neu);
     w.addEventListener('orientationchange', neu);
@@ -484,6 +500,7 @@
     const zuKapitel = () => { const m = /^#k(\d)$/.exec(location.hash); if (!m || !abschnitte[+m[1]]) return; messen(); w.scrollTo(0, ziel(+m[1])); stelle(); };
     if (location.hash) w.addEventListener('load', () => setTimeout(zuKapitel, 0));
     w.addEventListener('hashchange', zuKapitel);
+    w.FREQ_SEITE = 1;   // die Bühne steht (siehe Skript im Kopf)
   }
   if ('IntersectionObserver' in w) {
     if (!buehne) {
